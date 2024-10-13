@@ -62,6 +62,34 @@ class AdminDao {
             return [err, null];
         }
     }
+
+    // 获取信息
+    static async info(id) {
+        try {
+            // 查询管理员是否存在
+            const admin = await Admin.findOne({
+                where: {
+                    id
+                },
+                attributes: {
+                    exclude: [
+                        'password',
+                        'updated_at',
+                        'deleted_at',
+                        'created_at'
+                    ]
+                }
+            });
+
+            if (!admin) {
+                throw new Existing('管理员不存在');
+            }
+
+            return [null, admin];
+        } catch (err) {
+            return [err, null];
+        }
+    }
 }
 
 module.exports = {

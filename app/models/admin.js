@@ -3,10 +3,9 @@ const {Model, DataTypes} = require('sequelize');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 
-// 定义管理员模型
+// 管理表模型
 class Admin extends Model {}
 
-// 初始管理员模型
 Admin.init(
     {
         id: {

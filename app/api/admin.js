@@ -1,5 +1,4 @@
 const Router = require('koa-router');
-
 const {AdminDao} = require('@dao/admin');
 const {RegisterValidator, LoginValidator} = require('@validators/admin');
 const {LoginManager} = require('@service/login');

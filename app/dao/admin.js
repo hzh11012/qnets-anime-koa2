@@ -1,5 +1,5 @@
 const {Admin} = require('@models/admin');
-const {Existing, AuthFailed} = require('@core/http-exception');
+const {NotFound, Existing, AuthFailed} = require('@core/http-exception');
 const bcrypt = require('bcryptjs');
 
 class AdminDao {
@@ -47,7 +47,7 @@ class AdminDao {
             });
 
             if (!admin) {
-                throw new Existing('手机号不存在');
+                throw new NotFound('手机号不存在');
             }
 
             // 验证密码是否正确
@@ -82,7 +82,7 @@ class AdminDao {
             });
 
             if (!admin) {
-                throw new Existing('管理员不存在');
+                throw new NotFound('管理员不存在');
             }
 
             return [null, admin];

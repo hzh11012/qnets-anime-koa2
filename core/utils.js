@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 // 颁布令牌
-const generateToken = function (uid, scope) {
+const generateToken = (uid, scope) => {
     const token = jwt.sign(
         {
             uid,
@@ -15,6 +15,13 @@ const generateToken = function (uid, scope) {
     return token;
 };
 
+// 验证令牌
+const verifyToken = token => {
+    const decode = jwt.verify(token, process.env.SECRET_KEY);
+    return decode;
+};
+
 module.exports = {
-    generateToken
+    generateToken,
+    verifyToken
 };

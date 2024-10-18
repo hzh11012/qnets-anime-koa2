@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
 const basicAuth = require('basic-auth');
 const {Forbidden} = require('@core/http-exception');
+const {verifyToken} = require('@core/utils');
 
 class Auth {
     constructor(level) {
@@ -19,10 +19,7 @@ class Auth {
             }
 
             try {
-                var decode = jwt.verify(
-                    tokenToken.name,
-                    process.env.SECRET_KEY
-                );
+                var decode = verifyToken(tokenToken.name);
             } catch (error) {
                 if (error.name === 'TokenExpiredError') {
                     errMsg = 'token已过期';

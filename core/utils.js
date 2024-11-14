@@ -1,27 +1,21 @@
-const jwt = require('jsonwebtoken');
+const {Base64} = require('js-base64');
+const random = length => {
+    const chars = '0123456789';
+    let result = '';
 
-// 颁布令牌
-const generateToken = (uid, scope) => {
-    const token = jwt.sign(
-        {
-            uid,
-            scope
-        },
-        process.env.SECRET_KEY,
-        {
-            expiresIn: process.env.EXPIRES_IN
-        }
-    );
-    return token;
+    while (length > 0) {
+        length--;
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
 };
 
-// 验证令牌
-const verifyToken = token => {
-    const decode = jwt.verify(token, process.env.SECRET_KEY);
-    return decode;
+const encodeBase64 = (access_token) => {
+    const base64 = Base64.encode(access_token + ':');
+    return 'Basic ' + base64;
 };
 
 module.exports = {
-    generateToken,
-    verifyToken
+    random,
+    encodeBase64
 };

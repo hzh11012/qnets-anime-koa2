@@ -13,6 +13,8 @@
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "got-cjs": "^12.5.4",
+    "js-base64": "^3.7.7",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",

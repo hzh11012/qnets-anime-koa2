@@ -13,7 +13,7 @@ const router = new Router({
 });
 
 // 提交纠错
-router.post('/create', new Auth().m, async ctx => {
+router.post('/create', new Auth(1).m, async ctx => {
     const parameter = CorrectionCreateValidator(ctx.request.body);
     // 获取用户ID
     const id = ctx.auth.uid;

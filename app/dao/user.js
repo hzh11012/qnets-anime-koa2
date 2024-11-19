@@ -1,6 +1,6 @@
 const {User} = require('@app/models/user');
-const {NotFound, Existing} = require('@core/http-exception');
 const {random} = require('@core/utils');
+const {Op} = require('sequelize');
 
 class UserDao {
     // 用户信息创建/获取
@@ -26,6 +26,48 @@ class UserDao {
         try {
             const res = await user.save();
             return [null, res];
+        } catch (err) {
+            return [err, null];
+        }
+    }
+
+    static async list(params) {
+        const {
+            page = 1,
+            pageSize = 10,
+            scope,
+            keyword,
+            type = 'nickname',
+            order = 'DESC',
+            orderBy = 'created_at'
+        } = params;
+        let filter = {
+            deleted_at: null
+        };
+
+        if (Array.isArray(scope)) {
+            filter.scope = {
+                [Op.in]: scope
+            };
+        }
+
+        if (keyword) {
+            filter[type] = {
+                [Op.like]: `%${keyword}%`
+            };
+        }
+
+        try {
+            const list = await User.findAndCountAll({
+                limit: pageSize,
+                offset: (page - 1) * pageSize,
+                where: filter,
+                attributes: {
+                    exclude: ['updated_at', 'deleted_at']
+                },
+                order: [[orderBy, order]]
+            });
+            return [null, list];
         } catch (err) {
             return [err, null];
         }

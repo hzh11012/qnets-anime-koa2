@@ -60,9 +60,12 @@ User.init(
             allowNull: true,
             comment: '删除时间',
             get() {
-                return moment(this.getDataValue('deleted_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                if (this.getDataValue('deleted_at')) {
+                    return moment(this.getDataValue('deleted_at')).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    );
+                }
+                return null;
             }
         }
     },

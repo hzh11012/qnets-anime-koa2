@@ -66,7 +66,7 @@ router.post('/admin_edit', new Auth(2).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('删除用户成功');
+        ctx.body = res.success('修改用户信息成功');
     } else {
         ctx.body = res.fail(err);
     }

@@ -25,7 +25,7 @@ router.post('/create', new Auth(1).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('提交成功');
+        ctx.body = res.success('提交纠错信息成功');
     } else {
         ctx.body = res.fail(err);
     }

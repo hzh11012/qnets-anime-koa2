@@ -1,22 +1,12 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/
+http://localhost:5200/api/user/
 ```
 
-# 用户
+## 接口鉴权
 
-## 用户信息
-
-```
-GET    /user/info
-```
-
-### 参数说明
-
-无
-
-### 必需携带token
+> 接口无特殊说明，必须携带token
 
 在 Postman 软件里选择 Authorization，Type选择Basic Auth，Username 填写上token值即可。
 
@@ -48,6 +38,20 @@ ajax({
 config.headers['Authorization'] = _encode();
 ```
 
+# 用户
+
+## 用户信息
+
+> scope = 0
+
+```
+GET    /info
+```
+
+### 参数说明
+
+无
+
 ### 成功操作返回
 
 ```json
@@ -56,11 +60,106 @@ config.headers['Authorization'] = _encode();
     "msg": "success",
     "errorCode": 0,
     "data": {
+        "id": 1,
         "phone": "166****6241",
         "scope": 0,
         "nickname": "用户25244885",
         "avatar": null,
         "created_at": "2024-11-14 11:33:00"
     }
+}
+```
+
+## 用户列表
+
+> scope = 2
+
+```
+POST    /list
+```
+
+### 参数说明
+
+| 参数     | 类型              | 默认值         | 说明                                         |
+| -------- | ----------------- | -------------- | -------------------------------------------- |
+| page     | `number`          | 1              | 分页，从 1 开始                              |
+| pageSize | `number`          | 10             | 每页数量                                     |
+| order    | `'DESC' \| 'ASC'` | `'DESC'`       | 排序字段                                     |
+| orderBy  | `string`          | `'created_at'` | 排序方式                                     |
+| scope    | `number[]`        |                | 用户权限，-1-封禁 0-游客 1-正式会员 2-管理员 |
+| type     | `string`          | `'nickname'`   | 搜索范围                                     |
+| keyword  | `string`          |                | 搜索关键字                                   |
+
+### 成功操作返回
+
+```json
+{
+    "code": 200,
+    "msg": "获取用户列表成功",
+    "errorCode": 0,
+    "data": {
+        "count": 1,
+        "rows": [
+            {
+                "created_at": "2024-11-14 11:33:00",
+                "id": 1,
+                "phone": "166****6241",
+                "nickname": "用户25244885",
+                "avatar": null,
+                "scope": 2
+            }
+        ]
+    }
+}
+```
+
+## 用户删除 - admin
+
+> scope = 2
+
+```
+POST    /admin_delete
+```
+
+### 参数说明
+
+| 参数 | 类型     | 默认值 | 说明   |
+| ---- | -------- | ------ | ------ |
+| id   | `number` |        | 用户id |
+
+### 成功操作返回
+
+```json
+{
+    "msg": "修改用户信息成功",
+    "code": 200,
+    "errorCode": 0
+}
+```
+
+## 用户修改 - admin
+
+> scope = 2
+
+```
+POST    /admin_edit
+```
+
+### 参数说明
+
+| 参数     | 类型     | 默认值 | 说明     |
+| -------- | -------- | ------ | -------- |
+| id       | `number` |        | 用户id   |
+| nickname | `string` |        | 用户昵称 |
+| avatar   | `string` |        | 用户头像 |
+| scope    | `number` |        | 用户权限 |
+
+### 成功操作返回
+
+```json
+{
+    "msg": "删除用户成功",
+    "code": 200,
+    "errorCode": 0
 }
 ```

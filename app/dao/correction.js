@@ -61,8 +61,7 @@ class CorrectionDao {
                         attributes: []
                     }
                 ],
-                order: [[orderBy, order]],
-                raw: true
+                order: [[orderBy, order]]
             });
             return [null, list];
         } catch (err) {

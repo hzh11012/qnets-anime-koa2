@@ -18,6 +18,14 @@ const commonList = {
     }).nullish()
 };
 
+const commonId = {
+    id: Zod.number({
+        required_error: 'id 不能为空',
+        invalid_type_error: 'id 类型错误'
+    })
+};
+
 module.exports = {
-    commonList
+    commonList,
+    commonId
 };

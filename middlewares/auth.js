@@ -6,7 +6,7 @@ const {UserDao} = require('@app/dao/user');
 
 class Auth {
     constructor(level) {
-        // 权限等级 0-游客 1-正式会员 2-管理员
+        // 权限等级 -1-封禁 0-游客 1-正式会员 2-管理员
         this.level = level;
     }
 
@@ -30,6 +30,7 @@ class Auth {
         }
 
         return {
+            id: res.id,
             phone: res.phone.replace(/^(\d{3})\d{4}(\d+)/, '$1****$2'),
             scope: res.scope,
             nickname: res.nickname,

@@ -4,7 +4,7 @@ const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const {
     UserListValidator,
-    UserAdminDeleteValidator,
+    UserDeleteValidator,
     UserAdminEditValidator
 } = require('@app/validators/user');
 const res = new Resolve();
@@ -41,7 +41,7 @@ router.post('/list', new Auth(2).m, async ctx => {
 
 // 用户删除 - admin
 router.post('/admin_delete', new Auth(2).m, async ctx => {
-    const parameter = UserAdminDeleteValidator(ctx.request.body);
+    const parameter = UserDeleteValidator(ctx.request.body);
     const [err] = await UserDao.delete({
         id: parameter.id
     });

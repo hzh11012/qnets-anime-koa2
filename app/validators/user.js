@@ -1,6 +1,6 @@
 const Zod = require('zod');
 const {ParameterException} = require('@core/http-exception');
-const {commonList} = require('@app/validators/common');
+const {commonList, commonId} = require('@app/validators/common');
 
 const UserListValidator = parameter => {
     const schema = Zod.object({
@@ -22,12 +22,9 @@ const UserListValidator = parameter => {
     return result.data;
 };
 
-const UserAdminDeleteValidator = parameter => {
+const UserDeleteValidator = parameter => {
     const schema = Zod.object({
-        id: Zod.number({
-            required_error: 'id 不能为空',
-            invalid_type_error: 'id 类型错误'
-        })
+        ...commonId
     });
     const result = schema.safeParse(parameter);
 
@@ -68,6 +65,6 @@ const UserAdminEditValidator = parameter => {
 
 module.exports = {
     UserListValidator,
-    UserAdminDeleteValidator,
+    UserDeleteValidator,
     UserAdminEditValidator
 };

@@ -1,7 +1,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/user/
+http://localhost:5200/api/user
 ```
 
 ## 接口鉴权
@@ -70,7 +70,7 @@ GET    /info
 }
 ```
 
-## 用户列表
+## 用户列表 - 管理员
 
 > scope = 3
 
@@ -80,15 +80,15 @@ POST    /admin_list
 
 ### 参数说明
 
-| 参数     | 类型              | 默认值         | 说明                                         |
-| -------- | ----------------- | -------------- | -------------------------------------------- |
-| page     | `number`          | 1              | 分页，从 1 开始                              |
-| pageSize | `number`          | 10             | 每页数量                                     |
-| order    | `'DESC' \| 'ASC'` | `'DESC'`       | 排序字段                                     |
-| orderBy  | `string`          | `'created_at'` | 排序方式                                     |
-| scope    | `number[]`        |                | 用户权限，-1-封禁 0-游客 1-正式会员 2-管理员 |
-| type     | `string`          | `'nickname'`   | 搜索范围                                     |
-| keyword  | `string`          |                | 搜索关键字                                   |
+| 参数     | 类型              | 默认值         | 说明                                                    |
+| -------- | ----------------- | -------------- | ------------------------------------------------------- |
+| page     | `number`          | 1              | 分页，从 1 开始                                         |
+| pageSize | `number`          | 10             | 每页数量                                                |
+| order    | `'DESC' \| 'ASC'` | `'DESC'`       | 排序字段                                                |
+| orderBy  | `string`          | `'created_at'` | 排序方式                                                |
+| scope    | `number[]`        |                | 用户权限，-1-封禁 0-游客 1-普通用户 2-正式会员 3-管理员 |
+| type     | `string`          | `'nickname'`   | 搜索范围                                                |
+| keyword  | `string`          |                | 搜索关键字                                              |
 
 ### 成功操作返回
 
@@ -113,7 +113,7 @@ POST    /admin_list
 }
 ```
 
-## 用户删除 - admin
+## 用户删除 - 管理员
 
 > scope = 3
 
@@ -137,7 +137,7 @@ POST    /admin_delete
 }
 ```
 
-## 用户修改 - admin
+## 用户修改 - 管理员
 
 > scope = 3
 

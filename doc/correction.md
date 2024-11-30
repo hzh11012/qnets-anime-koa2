@@ -1,7 +1,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/correct/
+http://localhost:5200/api/correct
 ```
 
 ## 接口鉴权
@@ -64,12 +64,12 @@ POST    /create
 }
 ```
 
-## 纠错信息列表 - admin
+## 纠错信息列表 - 管理员
 
 > scope = 3
 
 ```
-POST /admin_list
+POST    /admin_list
 ```
 
 ### 参数说明
@@ -107,7 +107,7 @@ POST /admin_list
 }
 ```
 
-## 纠错信息删除 - admin
+## 纠错信息删除 - 管理员
 
 > scope = 3
 
@@ -117,9 +117,9 @@ POST    /admin_delete
 
 ### 参数说明
 
-| 参数 | 类型     | 默认值 | 说明   |
-| ---- | -------- | ------ | ------ |
-| id   | `number` |        | 用户id |
+| 参数 | 类型     | 默认值 | 说明       |
+| ---- | -------- | ------ | ---------- |
+| id   | `number` |        | 纠错信息id |
 
 ### 成功操作返回
 
@@ -131,7 +131,7 @@ POST    /admin_delete
 }
 ```
 
-## 用户修改 - admin
+## 纠错信息修改 - 管理员
 
 > scope = 3
 
@@ -143,7 +143,7 @@ POST    /admin_edit
 
 | 参数    | 类型     | 默认值 | 说明                            |
 | ------- | -------- | ------ | ------------------------------- |
-| id      | `number` |        | 用户id                          |
+| id      | `number` |        | 纠错信息id                      |
 | message | `string` |        | 纠错信息内容                    |
 | status  | `number` |        | 纠错信息状态，0-待处理 1-已完成 |
 

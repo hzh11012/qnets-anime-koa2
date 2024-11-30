@@ -45,10 +45,10 @@ router.get('/', async ctx => {
                     <h2>接口说明</h2>
                     <ul>
                         <li>
-                            按模块进行拆解，前缀是 <strong>/api</strong> 开头，比如获取用户列表，整个API请求是：<a target="_blank" href="/api/user/list">/api/user/list</a>
+                            按模块进行拆解，前缀是 <strong>/api</strong> 开头，比如获取用户列表，整个API请求是：<a target="_blank" href="/api/user/admin_list">/api/user/admin_list</a>
                         </li>
                         <li>
-                            比如获取视频列表，整个API请求是：<a target="_blank" href="/api/video/list">/api/video/list</a>，其他模块一样，建议在 Postman 工具进行调试
+                            比如获取弹幕列表，整个API请求是：<a target="_blank" href="/api/danmaku/list">/api/danmaku/list</a>，其他模块一样，建议在 Postman 工具进行调试
                         </li>
                     </ul>
                     <h2>特别说明</h2>

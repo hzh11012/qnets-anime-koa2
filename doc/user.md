@@ -72,10 +72,10 @@ GET    /info
 
 ## 用户列表
 
-> scope = 2
+> scope = 3
 
 ```
-POST    /list
+POST    /admin_list
 ```
 
 ### 参数说明
@@ -115,7 +115,7 @@ POST    /list
 
 ## 用户删除 - admin
 
-> scope = 2
+> scope = 3
 
 ```
 POST    /admin_delete
@@ -139,7 +139,7 @@ POST    /admin_delete
 
 ## 用户修改 - admin
 
-> scope = 2
+> scope = 3
 
 ```
 POST    /admin_edit

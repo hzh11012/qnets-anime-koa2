@@ -66,7 +66,7 @@ POST    /create
 
 ## 纠错信息列表 - admin
 
-> scope = 2
+> scope = 3
 
 ```
 POST /admin_list
@@ -109,7 +109,7 @@ POST /admin_list
 
 ## 纠错信息删除 - admin
 
-> scope = 2
+> scope = 3
 
 ```
 POST    /admin_delete
@@ -133,7 +133,7 @@ POST    /admin_delete
 
 ## 用户修改 - admin
 
-> scope = 2
+> scope = 3
 
 ```
 POST    /admin_edit

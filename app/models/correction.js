@@ -26,7 +26,8 @@ Correction.init(
         },
         // 纠错信息状态 0-待处理 1-已处理
         status: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.TINYINT,
+            allowNull: false,
             defaultValue: 0,
             comment: '纠错信息状态'
         },

@@ -72,7 +72,6 @@ class CorrectionDao {
     // 纠错信息删除
     static async delete(params) {
         const {id} = params;
-
         try {
             const correction = await Correction.destroy({
                 where: {

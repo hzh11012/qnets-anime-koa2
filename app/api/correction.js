@@ -6,6 +6,7 @@ const {
     CorrectionDeleteValidator,
     CorrectionEditValidator
 } = require('@validators/correction');
+const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const res = new Resolve();
@@ -15,7 +16,7 @@ const router = new Router({
 });
 
 // 创建纠错
-router.post('/create', new Auth(1).m, async ctx => {
+router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
     const parameter = CorrectionCreateValidator(ctx.request.body);
 
     const [err] = await CorrectionDao.create({
@@ -32,7 +33,7 @@ router.post('/create', new Auth(1).m, async ctx => {
 });
 
 // 纠错信息列表
-router.post('/admin_list', new Auth(2).m, async ctx => {
+router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CorrectionListValidator(ctx.request.body);
     const [err, data] = await CorrectionDao.list({
         page: parameter.page,
@@ -51,7 +52,7 @@ router.post('/admin_list', new Auth(2).m, async ctx => {
 });
 
 // 删除纠错信息 - admin
-router.post('/admin_delete', new Auth(2).m, async ctx => {
+router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CorrectionDeleteValidator(ctx.request.body);
     const [err] = await CorrectionDao.delete({
         id: parameter.id
@@ -66,7 +67,7 @@ router.post('/admin_delete', new Auth(2).m, async ctx => {
 });
 
 // 修改纠错信息 - admin
-router.post('/admin_edit', new Auth(2).m, async ctx => {
+router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CorrectionEditValidator(ctx.request.body);
     const [err] = await CorrectionDao.edit({
         id: parameter.id,

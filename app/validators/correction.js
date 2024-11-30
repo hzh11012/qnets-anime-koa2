@@ -7,9 +7,11 @@ const CorrectionCreateValidator = parameter => {
         message: Zod.string({
             required_error: 'message 不能为空',
             invalid_type_error: 'message 类型错误'
-        }).max(255, {
-            message: 'message 长度不能超过255'
         })
+            .max(255, {
+                message: 'message 长度不能超过255'
+            })
+            .min(1, 'message 不能为空')
     });
     const result = schema.safeParse(parameter);
 
@@ -57,7 +59,7 @@ const CorrectionEditValidator = parameter => {
         message: Zod.string({
             required_error: 'message 不能为空',
             invalid_type_error: 'message 类型错误'
-        }),
+        }).min(1, 'message 不能为空'),
         status: Zod.number({
             required_error: 'status 不能为空',
             invalid_type_error: 'status 类型错误'

@@ -36,14 +36,11 @@ const UserDeleteValidator = parameter => {
 
 const UserAdminEditValidator = parameter => {
     const schema = Zod.object({
-        id: Zod.number({
-            required_error: 'id 不能为空',
-            invalid_type_error: 'id 类型错误'
-        }),
+        ...commonId,
         nickname: Zod.string({
             required_error: 'nickname 不能为空',
             invalid_type_error: 'nickname 类型错误'
-        }),
+        }).min(1, 'nickname 不能为空'),
         avatar: Zod.string({
             invalid_type_error: 'avatar 类型错误'
         }).nullish(),
@@ -53,7 +50,7 @@ const UserAdminEditValidator = parameter => {
         })
             .int('scope 必须为整数')
             .min(-1, 'scope 最小为-1')
-            .max(2, 'scope 最大为2')
+            .max(3, 'scope 最大为3')
     });
     const result = schema.safeParse(parameter);
 

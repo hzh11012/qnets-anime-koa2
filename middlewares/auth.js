@@ -6,7 +6,7 @@ const {UserDao} = require('@app/dao/user');
 
 class Auth {
     constructor(level) {
-        // 权限等级 -1-封禁 0-游客 1-正式会员 2-管理员
+        // 权限等级 -1-封禁 0-游客 1-普通用户 2-正式会员 3-管理员
         this.level = level;
     }
 

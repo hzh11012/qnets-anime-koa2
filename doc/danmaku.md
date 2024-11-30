@@ -70,11 +70,11 @@ POST    /list
                 "id": "9bf4392bdea9d7452caeec423ed725f7",
                 "content": "这是一条弹幕",
                 "time_dot": "00:14:41",
-                "color": "rgb(255,255,255)",
+                "color": "#ffffff",
                 "source": "https://localhost.qnets.cn/?url=https://localhost.qnets.cn/index.m3u8",
                 "ip": "123.143.136.182",
                 "del_id": "47",
-                "create_at": "2024-10-08 02:15"
+                "created_at": "2024-10-08 02:15"
             }
         ]
     }

@@ -7,7 +7,7 @@ const {ADMIN_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const {got} = require('got-cjs');
-const {secondsToHms} = require('@lib/utils');
+const {secondsToHms, colorRgbToHex} = require('@lib/utils');
 const res = new Resolve();
 
 const router = new Router({
@@ -35,11 +35,11 @@ router.post('/list', new Auth(ADMIN_SCOPE).m, async ctx => {
                 id: item[0],
                 content: item[5],
                 time_dot: secondsToHms(item[1]),
-                color: item[3],
+                color: colorRgbToHex(item[3]),
                 source: item[9],
                 ip: item[6],
                 del_id: item[4],
-                create_at: item[7]
+                created_at: item[7]
             };
         });
 

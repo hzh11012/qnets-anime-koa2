@@ -1,35 +1,43 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const moment = require('moment');
-const {User} = require('@app/models/user');
+const {Anime} = require('@app/models/anime');
 
-// 定义纠错信息表模型
-class Correction extends Model {}
+// 视频信息表
+class Video extends Model {}
 
-Correction.init(
+Video.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '纠错信息主键ID'
+            comment: '视频信息主键ID'
         },
-        uid: {
+        aid: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '用户id'
+            comment: '动漫id'
         },
-        message: {
-            type: DataTypes.STRING,
+        title: {
+            type: DataTypes.STRING(50),
             allowNull: false,
-            comment: '纠错留言'
+            comment: '视频标题'
         },
-        // 纠错信息状态 0-待处理 1-已处理
-        status: {
+        season: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            defaultValue: 0,
-            comment: '纠错信息状态'
+            comment: '季数编号'
+        },
+        episode: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            comment: '集数编号'
+        },
+        url: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: '视频链接'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -67,15 +75,15 @@ Correction.init(
     },
     {
         sequelize,
-        modelName: 'correction',
-        tableName: 'correction'
+        modelName: 'video',
+        tableName: 'video'
     }
 );
 
-// 用户与纠错信息之间的一对一关系
-User.hasOne(Correction);
-Correction.belongsTo(User, {foreignKey: 'uid'});
+// 动漫与视频之间的一对多关系
+Anime.hasMany(Video);
+Video.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
-    Correction
+    Video
 };

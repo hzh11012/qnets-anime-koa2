@@ -2,34 +2,33 @@ const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const moment = require('moment');
 const {User} = require('@app/models/user');
+const {Anime} = require('@app/models/anime');
 
-// 定义纠错信息表模型
-class Correction extends Model {}
+// 动漫评分表模型
+class Rating extends Model {}
 
-Correction.init(
+Rating.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '纠错信息主键ID'
+            comment: '动漫评分主键ID'
         },
         uid: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
             comment: '用户id'
         },
-        message: {
-            type: DataTypes.STRING,
+        aid: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '纠错留言'
+            comment: '动漫id'
         },
-        // 纠错信息状态 0-待处理 1-已处理
-        status: {
+        score: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            defaultValue: 0,
-            comment: '纠错信息状态'
+            comment: '动漫评分'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -67,15 +66,19 @@ Correction.init(
     },
     {
         sequelize,
-        modelName: 'correction',
-        tableName: 'correction'
+        modelName: 'rating',
+        tableName: 'rating'
     }
 );
 
-// 用户与纠错信息之间的一对一关系
-User.hasOne(Correction);
-Correction.belongsTo(User, {foreignKey: 'uid'});
+// 用户与评分之间的一对多关系
+User.hasMany(Rating);
+Rating.belongsTo(User, {foreignKey: 'uid'});
+
+// 动漫与评分之间的一对多关系
+Anime.hasMany(Rating);
+Rating.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
-    Correction
+    Rating
 };

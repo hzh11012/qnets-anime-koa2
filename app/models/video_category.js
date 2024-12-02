@@ -1,7 +1,6 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const moment = require('moment');
-const {User} = require('@app/models/user');
 
 // 定义视频分类表模型
 class VideoCategory extends Model {}
@@ -18,11 +17,6 @@ VideoCategory.init(
             type: DataTypes.STRING(25),
             allowNull: false,
             comment: '视频分类'
-        },
-        created_by: {
-            type: DataTypes.INTEGER(10).UNSIGNED,
-            allowNull: false,
-            comment: '创建用户id'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -64,8 +58,6 @@ VideoCategory.init(
         tableName: 'video_category'
     }
 );
-
-VideoCategory.belongsTo(User, {foreignKey: 'created_by', targetKey: 'id'});
 
 module.exports = {
     VideoCategory

@@ -1,31 +1,29 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
-const moment = require('moment');
+const {formatDate} = require('@core/utils');
 
-// 定义视频分类表模型
-class VideoCategory extends Model {}
+// 定义动漫分类表模型
+class Category extends Model {}
 
-VideoCategory.init(
+Category.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '视频分类主键ID'
+            comment: '动漫分类主键ID'
         },
         category: {
             type: DataTypes.STRING(25),
             allowNull: false,
-            comment: '视频分类'
+            comment: '动漫分类'
         },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false,
             comment: '创建时间',
             get() {
-                return moment(this.getDataValue('created_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('created_at'));
             }
         },
         updated_at: {
@@ -33,9 +31,7 @@ VideoCategory.init(
             allowNull: false,
             comment: '更新时间',
             get() {
-                return moment(this.getDataValue('updated_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('updated_at'));
             }
         },
         deleted_at: {
@@ -43,22 +39,17 @@ VideoCategory.init(
             allowNull: true,
             comment: '删除时间',
             get() {
-                if (this.getDataValue('deleted_at')) {
-                    return moment(this.getDataValue('deleted_at')).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                    );
-                }
-                return null;
+                return formatDate(this.getDataValue('deleted_at'));
             }
         }
     },
     {
         sequelize,
-        modelName: 'video_category',
-        tableName: 'video_category'
+        modelName: 'category',
+        tableName: 'category'
     }
 );
 
 module.exports = {
-    VideoCategory
+    Category
 };

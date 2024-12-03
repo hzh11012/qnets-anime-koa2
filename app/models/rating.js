@@ -1,6 +1,6 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
-const moment = require('moment');
+const {formatDate} = require('@core/utils');
 const {User} = require('@app/models/user');
 const {Anime} = require('@app/models/anime');
 
@@ -35,9 +35,7 @@ Rating.init(
             allowNull: false,
             comment: '创建时间',
             get() {
-                return moment(this.getDataValue('created_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('created_at'));
             }
         },
         updated_at: {
@@ -45,9 +43,7 @@ Rating.init(
             allowNull: false,
             comment: '更新时间',
             get() {
-                return moment(this.getDataValue('updated_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('updated_at'));
             }
         },
         deleted_at: {
@@ -55,12 +51,7 @@ Rating.init(
             allowNull: true,
             comment: '删除时间',
             get() {
-                if (this.getDataValue('deleted_at')) {
-                    return moment(this.getDataValue('deleted_at')).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                    );
-                }
-                return null;
+                return formatDate(this.getDataValue('deleted_at'));
             }
         }
     },

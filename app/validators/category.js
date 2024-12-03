@@ -2,7 +2,7 @@ const Zod = require('zod');
 const {ParameterException} = require('@core/http-exception');
 const {commonList, commonId} = require('@app/validators/common');
 
-const VideoCategoryCreateValidator = parameter => {
+const CategoryCreateValidator = parameter => {
     const schema = Zod.object({
         category: Zod.string({
             required_error: 'category 不能为空',
@@ -21,7 +21,7 @@ const VideoCategoryCreateValidator = parameter => {
     return result.data;
 };
 
-const VideoCategoryListValidator = parameter => {
+const CategoryListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         keyword: Zod.string({
@@ -36,7 +36,7 @@ const VideoCategoryListValidator = parameter => {
     return result.data;
 };
 
-const VideoCategoryDeleteValidator = parameter => {
+const CategoryDeleteValidator = parameter => {
     const schema = Zod.object({
         ...commonId
     });
@@ -49,7 +49,7 @@ const VideoCategoryDeleteValidator = parameter => {
 };
 
 module.exports = {
-    VideoCategoryCreateValidator,
-    VideoCategoryListValidator,
-    VideoCategoryDeleteValidator
+    CategoryCreateValidator,
+    CategoryListValidator,
+    CategoryDeleteValidator
 };

@@ -1,7 +1,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/video_category
+http://localhost:5200/api/category
 ```
 
 ## 接口鉴权
@@ -38,9 +38,9 @@ ajax({
 config.headers['Authorization'] = _encode();
 ```
 
-# 视频分类
+# 动漫分类
 
-## 创建视频分类 - 管理员
+## 创建动漫分类 - 管理员
 
 > scope = 3
 
@@ -52,19 +52,19 @@ POST    /admin_create
 
 | 参数     | 类型     | 默认值 | 说明       |
 | -------- | -------- | ------ | ---------- |
-| category | `string` |        | 视频分类名 |
+| category | `string` |        | 动漫分类名 |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "创建视频分类成功",
+    "msg": "创建动漫分类成功",
     "code": 200,
     "errorCode": 0
 }
 ```
 
-## 视频分类列表 - 管理员
+## 动漫分类列表 - 管理员
 
 > scope = 3
 
@@ -88,7 +88,7 @@ POST    /admin_list
 ```json
 {
     "code": 200,
-    "msg": "获取视频分类列表成功",
+    "msg": "获取动漫分类列表成功",
     "errorCode": 0,
     "data": {
         "count": 1,
@@ -96,15 +96,14 @@ POST    /admin_list
             {
                 "id": 21,
                 "category": "异世界",
-                "created_at": "2024-11-30 20:49:30",
-                "created_by": "日常一号突击手Mio"
+                "created_at": "2024-11-30 20:49:30"
             }
         ]
     }
 }
 ```
 
-## 视频分类删除 - 管理员
+## 动漫分类删除 - 管理员
 
 > scope = 3
 
@@ -116,13 +115,13 @@ POST    /admin_delete
 
 | 参数 | 类型     | 默认值 | 说明       |
 | ---- | -------- | ------ | ---------- |
-| id   | `number` |        | 视频分类id |
+| id   | `number` |        | 动漫分类id |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "删除视频分类成功",
+    "msg": "删除动漫分类成功",
     "code": 200,
     "errorCode": 0
 }

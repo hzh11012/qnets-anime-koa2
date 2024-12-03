@@ -1,6 +1,6 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
-const moment = require('moment');
+const {formatDate} = require('@core/utils');
 
 // 动漫信息表
 class Anime extends Model {}
@@ -60,7 +60,7 @@ Anime.init(
             allowNull: false,
             comment: '动漫发行年份',
             get() {
-                return moment(this.getDataValue('released_at')).format('YYYY');
+                return formatDate(this.getDataValue('released_at'), 'YYYY');
             }
         },
         // 动漫发行月份  1-一月番 2-四月番 3-七月番 4-十月番
@@ -74,9 +74,7 @@ Anime.init(
             allowNull: false,
             comment: '创建时间',
             get() {
-                return moment(this.getDataValue('created_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('created_at'));
             }
         },
         updated_at: {
@@ -84,9 +82,7 @@ Anime.init(
             allowNull: false,
             comment: '更新时间',
             get() {
-                return moment(this.getDataValue('updated_at')).format(
-                    'YYYY-MM-DD HH:mm:ss'
-                );
+                return formatDate(this.getDataValue('updated_at'));
             }
         },
         deleted_at: {
@@ -94,12 +90,7 @@ Anime.init(
             allowNull: true,
             comment: '删除时间',
             get() {
-                if (this.getDataValue('deleted_at')) {
-                    return moment(this.getDataValue('deleted_at')).format(
-                        'YYYY-MM-DD HH:mm:ss'
-                    );
-                }
-                return null;
+                return formatDate(this.getDataValue('deleted_at'));
             }
         }
     },

@@ -1,6 +1,6 @@
 const Zod = require('zod');
 const {ParameterException} = require('@core/http-exception');
-const {commonList, commonId} = require('@app/validators/common');
+const {commonList, commonId} = require('@validators/common');
 
 const CorrectionCreateValidator = parameter => {
     const schema = Zod.object({

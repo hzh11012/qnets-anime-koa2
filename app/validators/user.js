@@ -1,6 +1,6 @@
 const Zod = require('zod');
 const {ParameterException} = require('@core/http-exception');
-const {commonList, commonId} = require('@app/validators/common');
+const {commonList, commonId} = require('@validators/common');
 
 const UserListValidator = parameter => {
     const schema = Zod.object({
@@ -40,10 +40,18 @@ const UserAdminEditValidator = parameter => {
         nickname: Zod.string({
             required_error: 'nickname 不能为空',
             invalid_type_error: 'nickname 类型错误'
-        }).min(1, 'nickname 不能为空'),
+        })
+            .max(25, {
+                message: 'nickname 长度不能超过25'
+            })
+            .min(1, 'nickname 不能为空'),
         avatar: Zod.string({
             invalid_type_error: 'avatar 类型错误'
-        }).nullish(),
+        })
+            .max(255, {
+                message: 'avatar 长度不能超过255'
+            })
+            .nullish(),
         scope: Zod.number({
             required_error: 'scope 不能为空',
             invalid_type_error: 'scope 类型错误'

@@ -2,7 +2,7 @@ const basicAuth = require('basic-auth');
 const {Forbidden, AuthFailed, HttpException} = require('@core/http-exception');
 const {got} = require('got-cjs');
 const {encodeBase64} = require('@core/utils');
-const {UserDao} = require('@app/dao/user');
+const {UserDao} = require('@dao/user');
 
 class Auth {
     constructor(level) {

@@ -1,7 +1,8 @@
 const {User} = require('@models/user');
 const {Correction} = require('@models/correction');
 const {NotFound} = require('@core/http-exception');
-const {col, Op} = require('sequelize');
+const {col} = require('sequelize');
+const WhereFilter = require('@lib/where-filter');
 
 class CorrectionDao {
     // 创建纠错
@@ -30,21 +31,11 @@ class CorrectionDao {
             order = 'DESC',
             orderBy = 'created_at'
         } = params;
-        let filter = {
-            deleted_at: null
-        };
 
-        if (Array.isArray(status)) {
-            filter.status = {
-                [Op.in]: status
-            };
-        }
-
-        if (keyword) {
-            filter[type] = {
-                [Op.like]: `%${keyword}%`
-            };
-        }
+        const where_filter = new WhereFilter();
+        where_filter.setFilter('status', status);
+        where_filter.setSearch(type, keyword);
+        const filter = where_filter.getFilter();
 
         try {
             const list = await Correction.findAndCountAll({
@@ -73,16 +64,10 @@ class CorrectionDao {
     static async delete(params) {
         const {id} = params;
         try {
-            const correction = await Correction.destroy({
-                where: {
-                    id,
-                    deleted_at: null
-                }
-            });
-
+            const correction = await Correction.findByPk(id);
             if (!correction) throw new NotFound('纠错信息不存在');
-
-            return [null, null];
+            await correction.destroy();
+            return [(null, null)];
         } catch (err) {
             return [err, null];
         }
@@ -91,20 +76,12 @@ class CorrectionDao {
     // 纠错信息修改
     static async edit(params) {
         const {id, message, status} = params;
-
         try {
-            const correction = await Correction.findOne({
-                where: {
-                    id,
-                    deleted_at: null
-                }
-            });
-
+            const correction = await Correction.findByPk(id);
             if (!correction) throw new NotFound('纠错信息不存在');
 
             correction.message = message;
             correction.status = status;
-
             const res = await correction.save();
             return [null, res];
         } catch (err) {

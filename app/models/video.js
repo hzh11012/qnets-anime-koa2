@@ -1,7 +1,7 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Anime} = require('@app/models/anime');
+const {Anime} = require('@models/anime');
 
 // 视频信息表
 class Video extends Model {}

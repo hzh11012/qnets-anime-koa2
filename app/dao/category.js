@@ -1,6 +1,6 @@
-const {Category} = require('@app/models/category');
+const {Category} = require('@models/category');
 const {NotFound, Existing} = require('@core/http-exception');
-const {Op} = require('sequelize');
+const WhereFilter = require('@lib/where-filter');
 
 class CategoryDao {
     // 创建动漫分类
@@ -22,7 +22,6 @@ class CategoryDao {
             await category.save();
             return [null, null];
         } catch (err) {
-            console.log(err);
             return [err, null];
         }
     }
@@ -37,15 +36,10 @@ class CategoryDao {
             order = 'DESC',
             orderBy = 'created_at'
         } = params;
-        let filter = {
-            deleted_at: null
-        };
 
-        if (keyword) {
-            filter[type] = {
-                [Op.like]: `%${keyword}%`
-            };
-        }
+        const where_filter = new WhereFilter();
+        where_filter.setSearch(type, keyword);
+        const filter = where_filter.getFilter();
 
         try {
             const list = await Category.findAndCountAll({
@@ -67,18 +61,15 @@ class CategoryDao {
     static async delete(params) {
         const {id} = params;
         try {
-            // TODO 与 动漫表建立多对多关系后，需要先查询是否存在关联，再进行删除
-
-            const category = await Category.destroy({
-                where: {
-                    id,
-                    deleted_at: null
-                }
-            });
-
+            // 与动漫表存在多对多关系，需要先查询是否存在关联，再进行删除
+            const category = await Category.findByPk(id);
             if (!category) throw new NotFound('动漫分类不存在');
 
-            return [null, null];
+            const anime = await category.getAnimes();
+            if (anime.length > 0)
+                throw new Existing('动漫分类存在关联动漫，无法删除');
+            await category.destroy();
+            return [(null, null)];
         } catch (err) {
             return [err, null];
         }

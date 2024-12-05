@@ -1,7 +1,7 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {User} = require('@app/models/user');
+const {User} = require('@models/user');
 
 // 定义纠错信息表模型
 class Correction extends Model {}

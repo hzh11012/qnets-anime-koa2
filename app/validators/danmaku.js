@@ -1,6 +1,6 @@
 const Zod = require('zod');
 const {ParameterException} = require('@core/http-exception');
-const {commonList} = require('@app/validators/common');
+const {commonList} = require('@validators/common');
 
 const DanmakuListValidator = parameter => {
     const schema = Zod.object({

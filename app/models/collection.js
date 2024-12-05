@@ -1,8 +1,8 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {User} = require('@app/models/user');
-const {Anime} = require('@app/models/anime');
+const {User} = require('@models/user');
+const {Anime} = require('@models/anime');
 
 // 动漫收藏表模型
 class Collection extends Model {}

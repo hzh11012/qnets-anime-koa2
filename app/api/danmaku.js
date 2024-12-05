@@ -7,7 +7,7 @@ const {ADMIN_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const {got} = require('got-cjs');
-const {secondsToHms, colorRgbToHex} = require('@lib/utils');
+const {secondsToHms, colorRgbToHex} = require('@core/utils');
 const res = new Resolve();
 
 const router = new Router({

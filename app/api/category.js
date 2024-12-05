@@ -17,7 +17,7 @@ const router = new Router({
 // 创建动漫分类 - admin
 router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CategoryCreateValidator(ctx.request.body);
-console.log(parameter);
+
     const [err] = await CategoryDao.create({
         category: parameter.category
     });

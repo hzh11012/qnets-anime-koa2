@@ -1,6 +1,6 @@
-const {User} = require('@app/models/user');
+const {User} = require('@models/user');
 const {random} = require('@core/utils');
-const {Op} = require('sequelize');
+const WhereFilter = require('@lib/where-filter');
 
 class UserDao {
     // 用户信息创建/获取
@@ -42,21 +42,11 @@ class UserDao {
             order = 'DESC',
             orderBy = 'created_at'
         } = params;
-        let filter = {
-            deleted_at: null
-        };
 
-        if (Array.isArray(scope)) {
-            filter.scope = {
-                [Op.in]: scope
-            };
-        }
-
-        if (keyword) {
-            filter[type] = {
-                [Op.like]: `%${keyword}%`
-            };
-        }
+        const where_filter = new WhereFilter();
+        where_filter.setFilter('scope', scope);
+        where_filter.setSearch(type, keyword);
+        const filter = where_filter.getFilter();
 
         try {
             const list = await User.findAndCountAll({
@@ -77,19 +67,11 @@ class UserDao {
     // 用户信息删除
     static async delete(params) {
         const {id} = params;
-
         try {
-            const user = await User.destroy({
-                where: {
-                    id,
-                    deleted_at: null
-                }
-            });
-
+            const user = await User.findByPk(id);
             if (!user) throw new NotFound('用户不存在');
-
-            // Todo 后续可能要连带删除其他表中该用户的数据
-
+            await user.destroy();
+            // TODO: 后续可能要连带删除其他表中该用户的数据
             return [null, null];
         } catch (err) {
             return [err, null];
@@ -99,21 +81,13 @@ class UserDao {
     // 用户信息修改 - admin
     static async adminEdit(params) {
         const {id, nickname, avatar, scope} = params;
-
         try {
-            const user = await User.findOne({
-                where: {
-                    id,
-                    deleted_at: null
-                }
-            });
-
+            const user = await User.findByPk(id);
             if (!user) throw new NotFound('用户不存在');
 
             user.nickname = nickname;
             user.avatar = avatar;
             user.scope = scope;
-
             const res = await user.save();
             return [null, res];
         } catch (err) {

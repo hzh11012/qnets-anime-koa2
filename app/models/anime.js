@@ -13,9 +13,10 @@ Anime.init(
             autoIncrement: true,
             comment: '动漫信息主键ID'
         },
-        title: {
+        name: {
             type: DataTypes.STRING(50),
             allowNull: false,
+            unique: true,
             comment: '动漫名称'
         },
         description: {
@@ -30,16 +31,16 @@ Anime.init(
         },
         remark: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
             comment: '动漫备注'
         },
-        // 动漫状态  1-连载中 2-已完结
+        // 动漫状态  0-即将上线 1-连载中 2-已完结
         status: {
             type: DataTypes.TINYINT,
             allowNull: false,
             comment: '动漫状态'
         },
-        // 动漫类型  1-日番 2-美番 3-里番 4-剧场版
+        // 动漫类型 0-剧场版 1-日番 2-美番 3-里番
         type: {
             type: DataTypes.TINYINT,
             allowNull: false,
@@ -47,23 +48,20 @@ Anime.init(
         },
         director: {
             type: DataTypes.STRING(25),
-            allowNull: false,
+            allowNull: true,
             comment: '动漫导演'
         },
         cv: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             comment: '动漫声优'
         },
         year: {
-            type: DataTypes.DATE,
+            type: DataTypes.STRING(4),
             allowNull: false,
-            comment: '动漫发行年份',
-            get() {
-                return formatDate(this.getDataValue('released_at'), 'YYYY');
-            }
+            comment: '动漫发行年份'
         },
-        // 动漫发行月份  1-一月番 2-四月番 3-七月番 4-十月番
+        // 动漫发行月份  0-一月番 1-四月番 2-七月番 3-十月番
         month: {
             type: DataTypes.TINYINT,
             allowNull: false,

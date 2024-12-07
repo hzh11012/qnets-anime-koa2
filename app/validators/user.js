@@ -12,7 +12,7 @@ const UserListValidator = parameter => {
             .optional(),
         keyword: Zod.string({
             invalid_type_error: 'keyword 类型错误'
-        }).nullish()
+        }).optional()
     });
     const result = schema.safeParse(parameter);
 
@@ -51,7 +51,7 @@ const UserAdminEditValidator = parameter => {
             .max(255, {
                 message: 'avatar 长度不能超过255'
             })
-            .nullish(),
+            .optional(),
         scope: Zod.number({
             required_error: 'scope 不能为空',
             invalid_type_error: 'scope 类型错误'

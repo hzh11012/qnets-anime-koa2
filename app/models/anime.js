@@ -40,7 +40,7 @@ Anime.init(
             allowNull: false,
             comment: '动漫状态'
         },
-        // 动漫类型 0-剧场版 1-日番 2-美番 3-里番
+        // 动漫类型 0-剧场版 1-日番 2-美番 3-国番 4-里番
         type: {
             type: DataTypes.TINYINT,
             allowNull: false,

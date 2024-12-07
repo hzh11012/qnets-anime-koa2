@@ -40,8 +40,10 @@ class AnimeDao {
             anime.cv = cv;
             anime.year = year;
             anime.month = month;
-            anime.setCategories(category);
             await anime.save();
+            if (category.length) {
+                anime.setCategories(category);
+            }
 
             return [null, null];
         } catch (err) {
@@ -66,8 +68,8 @@ class AnimeDao {
         } = params;
 
         let type = params.type;
-        // 权限不够的时候 过滤掉类型3动漫
-        if (scope === 1) type = type.filter(item => item !== 3);
+        // 权限不够的时候 过滤掉类型4动漫
+        if (scope === 1) type = type.filter(item => item !== 4);
 
         const where_filter = new WhereFilter();
         where_filter.setFilter('status', status);
@@ -159,7 +161,9 @@ class AnimeDao {
             anime.cv = cv;
             anime.year = year;
             anime.month = month;
-            anime.setCategories(category);
+            if (category.length) {
+                anime.setCategories(category);
+            }
             const res = await anime.save();
             return [null, res];
         } catch (err) {

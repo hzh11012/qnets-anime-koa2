@@ -3,7 +3,8 @@ const {AnimeDao} = require('@dao/anime');
 const {
     AnimeCreateValidator,
     AnimeListValidator,
-    AnimeDeleteValidator
+    AnimeDeleteValidator,
+    AnimeEditValidator
 } = require('@validators/anime');
 const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
@@ -28,7 +29,8 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         director: parameter.director,
         cv: parameter.cv,
         year: parameter.year,
-        month: parameter.month
+        month: parameter.month,
+        category: parameter.category
     });
 
     if (!err) {
@@ -74,6 +76,24 @@ router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.success('删除动漫成功');
+    } else {
+        ctx.body = res.fail(err);
+    }
+});
+
+// 修改动漫 - admin
+router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
+    const parameter = AnimeEditValidator(ctx.request.body);
+    const [err] = await AnimeDao.edit({
+        id: parameter.id,
+        nickname: parameter.nickname,
+        avatar: parameter.avatar,
+        scope: parameter.scope
+    });
+
+    if (!err) {
+        ctx.response.status = 200;
+        ctx.body = res.success('修改动漫成功');
     } else {
         ctx.body = res.fail(err);
     }

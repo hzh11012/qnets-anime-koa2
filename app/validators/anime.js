@@ -238,9 +238,7 @@ const AnimeEditValidator = parameter => {
             .max(3, 'month 最大为3'),
         category: Zod.number({
             invalid_type_error: 'category 类型错误'
-        })
-            .array()
-            .optional()
+        }).array()
     });
     const result = schema.safeParse(parameter);
 

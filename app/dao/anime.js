@@ -41,9 +41,7 @@ class AnimeDao {
             anime.year = year;
             anime.month = month;
             await anime.save();
-            if (category.length) {
-                anime.setCategories(category);
-            }
+            anime.setCategories(category);
 
             return [null, null];
         } catch (err) {
@@ -161,9 +159,8 @@ class AnimeDao {
             anime.cv = cv;
             anime.year = year;
             anime.month = month;
-            if (category.length) {
-                anime.setCategories(category);
-            }
+            anime.setCategories(category);
+
             const res = await anime.save();
             return [null, res];
         } catch (err) {

@@ -40,7 +40,7 @@ const AnimeCreateValidator = parameter => {
             .max(50, {
                 message: 'remark 长度不能超过50'
             })
-            .nullish(),
+            .optional(),
         status: Zod.number({
             required_error: 'status 不能为空',
             invalid_type_error: 'status 类型错误'
@@ -61,14 +61,14 @@ const AnimeCreateValidator = parameter => {
             .max(25, {
                 message: 'director 长度不能超过25'
             })
-            .nullish(),
+            .optional(),
         cv: Zod.string({
             invalid_type_error: 'cv 类型错误'
         })
             .max(255, {
                 message: 'cv 长度不能超过255'
             })
-            .nullish(),
+            .optional(),
         year: Zod.string({
             required_error: 'year 不能为空',
             invalid_type_error: 'year 类型错误'
@@ -103,12 +103,12 @@ const AnimeCreateValidator = parameter => {
 const AnimeListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
-        searchType: Zod.enum(['name', 'director', 'cv', '', null], {
+        searchType: Zod.enum(['name', 'director', 'cv', ''], {
             message: 'type 参数错误'
-        }).nullish(),
+        }).optional(),
         keyword: Zod.string({
             invalid_type_error: 'keyword 类型错误'
-        }).nullish(),
+        }).optional(),
         status: Zod.number({
             invalid_type_error: 'status 类型错误'
         })
@@ -190,7 +190,7 @@ const AnimeEditValidator = parameter => {
             .max(50, {
                 message: 'remark 长度不能超过50'
             })
-            .nullish(),
+            .optional(),
         status: Zod.number({
             required_error: 'status 不能为空',
             invalid_type_error: 'status 类型错误'
@@ -211,14 +211,14 @@ const AnimeEditValidator = parameter => {
             .max(25, {
                 message: 'director 长度不能超过25'
             })
-            .nullish(),
+            .optional(),
         cv: Zod.string({
             invalid_type_error: 'cv 类型错误'
         })
             .max(255, {
                 message: 'cv 长度不能超过255'
             })
-            .nullish(),
+            .optional(),
         year: Zod.string({
             required_error: 'year 不能为空',
             invalid_type_error: 'year 类型错误'

@@ -7,7 +7,7 @@ const DanmakuListValidator = parameter => {
         ...commonList,
         keyword: Zod.string({
             invalid_type_error: 'keyword 类型错误'
-        }).nullish()
+        }).optional()
     });
     const result = schema.safeParse(parameter);
 

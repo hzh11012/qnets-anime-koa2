@@ -72,7 +72,7 @@ Video.init(
 );
 
 // 动漫与视频之间的一对多关系
-Anime.hasMany(Video);
+Anime.hasMany(Video, {foreignKey: 'aid'});
 Video.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {

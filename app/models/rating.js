@@ -63,11 +63,11 @@ Rating.init(
 );
 
 // 用户与评分之间的一对多关系
-User.hasMany(Rating);
+User.hasMany(Rating, {foreignKey: 'uid'});
 Rating.belongsTo(User, {foreignKey: 'uid'});
 
 // 动漫与评分之间的一对多关系
-Anime.hasMany(Rating);
+Anime.hasMany(Rating, {foreignKey: 'aid'});
 Rating.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {

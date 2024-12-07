@@ -58,11 +58,11 @@ Collection.init(
 );
 
 // 用户与收藏之间的一对多关系
-User.hasMany(Collection);
+User.hasMany(Collection, {foreignKey: 'uid'});
 Collection.belongsTo(User, {foreignKey: 'uid'});
 
 // 动漫与收藏之间的一对多关系
-Anime.hasMany(Collection);
+Anime.hasMany(Collection, {foreignKey: 'aid'});
 Collection.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {

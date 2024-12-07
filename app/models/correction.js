@@ -64,7 +64,7 @@ Correction.init(
 );
 
 // 用户与纠错信息之间的一对一关系
-User.hasOne(Correction);
+User.hasOne(Correction, {foreignKey: 'uid'});
 Correction.belongsTo(User, {foreignKey: 'uid'});
 
 module.exports = {

@@ -141,7 +141,7 @@ class AnimeDao {
 
         try {
             const anime = await Anime.findByPk(id);
-            if (!hasAnime) throw new NotFound('动漫不存在');
+            if (!anime) throw new NotFound('动漫不存在');
 
             const hasAnime = await Anime.findOne({
                 where: {

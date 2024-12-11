@@ -63,7 +63,7 @@ router.post('/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const {id} = parameter;
 
     const BASE_URL = `${process.env.DANMAKU_BASE_URL}?ac=del&type=list&id=${id}`;
-    console.log('BASE_URL', BASE_URL)
+
     try {
         await got(BASE_URL, {
             method: 'get'

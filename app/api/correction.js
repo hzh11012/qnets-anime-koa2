@@ -39,6 +39,7 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
+        orderBy: parameter.orderBy,
         status: parameter.status,
         keyword: parameter.keyword
     });

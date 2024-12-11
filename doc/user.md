@@ -87,8 +87,7 @@ POST    /admin_list
 | order    | `'DESC' \| 'ASC'` | `'DESC'`       | -        | 排序字段                                                |
 | orderBy  | `string`          | `'created_at'` | -        | 排序方式                                                |
 | scope    | `number[]`        | -              | -        | 用户权限，-1-封禁 0-游客 1-普通用户 2-正式会员 3-管理员 |
-| type     | `string`          | `'nickname'`   | -        | 搜索范围                                                |
-| keyword  | `string`          | -              | -        | 搜索关键字                                              |
+| keyword  | `string`          | -              | -        | 搜索关键字，搜索范围为`'nickname'`                      |
 
 ### 成功操作返回
 

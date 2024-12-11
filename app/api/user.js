@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const {UserDao} = require('@app/dao/user');
+const {UserDao} = require('@dao/user');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const {ADMIN_SCOPE, VISITOR_SCOPE} = require('@lib/scope');
@@ -7,7 +7,7 @@ const {
     UserListValidator,
     UserDeleteValidator,
     UserAdminEditValidator
-} = require('@app/validators/user');
+} = require('@validators/user');
 const res = new Resolve();
 
 const router = new Router({
@@ -28,6 +28,7 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
+        orderBy: parameter.orderBy,
         scope: parameter.scope,
         keyword: parameter.keyword
     });

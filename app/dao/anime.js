@@ -61,7 +61,6 @@ class AnimeDao {
             year,
             month,
             category,
-            searchType = 'name',
             order = 'DESC',
             orderBy = 'created_at'
         } = params;
@@ -75,7 +74,7 @@ class AnimeDao {
         where_filter.setFilter('type', type);
         where_filter.setFilter('year', year);
         where_filter.setFilter('month', month);
-        where_filter.setSearch(searchType, keyword);
+        where_filter.setSearch(['name', 'director', 'cv'], keyword);
         const filter = where_filter.getFilter();
 
         const child_where_filter = new WhereFilter({});

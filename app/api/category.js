@@ -1,10 +1,10 @@
 const Router = require('koa-router');
-const {CategoryDao} = require('@app/dao/category');
+const {CategoryDao} = require('@dao/category');
 const {
     CategoryCreateValidator,
     CategoryListValidator,
     CategoryDeleteValidator
-} = require('@app/validators/category');
+} = require('@validators/category');
 const {ADMIN_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
@@ -37,6 +37,7 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
+        orderBy: parameter.orderBy,
         keyword: parameter.keyword
     });
 

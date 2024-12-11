@@ -15,9 +15,19 @@ class WhereFilter {
 
     setSearch(key, keyword) {
         if (keyword) {
-            this.filter[key] = {
-                [Op.like]: `%${keyword}%`
-            };
+            if (Array.isArray(key)) {
+                this.filter[Op.or] = [
+                    ...key.map(k => ({
+                        [k]: {
+                            [Op.like]: `%${keyword}%`
+                        }
+                    }))
+                ];
+            } else {
+                this.filter[key] = {
+                    [Op.like]: `%${keyword}%`
+                };
+            }
         }
     }
 

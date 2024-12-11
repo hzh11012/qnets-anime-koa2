@@ -1,6 +1,10 @@
 const Zod = require('zod');
-const {ParameterException} = require('@core/http-exception');
-const {commonList, commonId} = require('@validators/common');
+const {
+    commonList,
+    commonId,
+    validate,
+    commonIdValidator
+} = require('@validators/common');
 
 const UserListValidator = parameter => {
     const schema = Zod.object({
@@ -14,24 +18,7 @@ const UserListValidator = parameter => {
             invalid_type_error: 'keyword 类型错误'
         }).optional()
     });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
-};
-
-const UserDeleteValidator = parameter => {
-    const schema = Zod.object({
-        ...commonId
-    });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
+    return validate(schema, parameter);
 };
 
 const UserAdminEditValidator = parameter => {
@@ -60,16 +47,11 @@ const UserAdminEditValidator = parameter => {
             .min(-1, 'scope 最小为-1')
             .max(3, 'scope 最大为3')
     });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
+    return validate(schema, parameter);
 };
 
 module.exports = {
     UserListValidator,
-    UserDeleteValidator,
+    UserDeleteValidator: commonIdValidator,
     UserAdminEditValidator
 };

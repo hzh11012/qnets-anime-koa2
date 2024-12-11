@@ -1,7 +1,7 @@
 const Zod = require('zod');
 const {commonList, validate, commonIdValidator} = require('@validators/common');
 
-const DanmakuListValidator = parameter => {
+const RatingListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         keyword: Zod.string({
@@ -12,6 +12,7 @@ const DanmakuListValidator = parameter => {
 };
 
 module.exports = {
-    DanmakuListValidator,
-    DanmakuDeleteValidator: commonIdValidator
+    RatingCreateValidator: commonIdValidator,
+    RatingListValidator,
+    RatingCancelValidator: commonIdValidator
 };

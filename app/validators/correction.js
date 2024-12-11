@@ -1,6 +1,10 @@
 const Zod = require('zod');
-const {ParameterException} = require('@core/http-exception');
-const {commonList, commonId} = require('@validators/common');
+const {
+    commonList,
+    commonId,
+    validate,
+    commonIdValidator
+} = require('@validators/common');
 
 const CorrectionCreateValidator = parameter => {
     const schema = Zod.object({
@@ -13,12 +17,7 @@ const CorrectionCreateValidator = parameter => {
             })
             .min(1, 'message 不能为空')
     });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
+    return validate(schema, parameter);
 };
 
 const CorrectionListValidator = parameter => {
@@ -33,24 +32,7 @@ const CorrectionListValidator = parameter => {
             invalid_type_error: 'keyword 类型错误'
         }).optional()
     });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
-};
-
-const CorrectionDeleteValidator = parameter => {
-    const schema = Zod.object({
-        ...commonId
-    });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
+    return validate(schema, parameter);
 };
 
 const CorrectionEditValidator = parameter => {
@@ -72,17 +54,12 @@ const CorrectionEditValidator = parameter => {
             .min(0, 'status 最小为0')
             .max(1, 'status 最大为1')
     });
-    const result = schema.safeParse(parameter);
-
-    if (!result.success) {
-        throw new ParameterException(result.error.issues[0].message);
-    }
-    return result.data;
+    return validate(schema, parameter);
 };
 
 module.exports = {
     CorrectionCreateValidator,
     CorrectionListValidator,
-    CorrectionDeleteValidator,
+    CorrectionDeleteValidator: commonIdValidator,
     CorrectionEditValidator
 };

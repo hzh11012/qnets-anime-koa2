@@ -21,7 +21,7 @@ router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
     const [err] = await RatingDao.create({
         uid: ctx.auth.id,
         aid: parameter.id,
-        rating: parameter.rating,
+        score: parameter.score,
         content: parameter.content
     });
 

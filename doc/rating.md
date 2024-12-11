@@ -53,7 +53,7 @@ POST    /create
 | 参数    | 类型     | 默认值 | 是否必填 | 说明         |
 | ------- | -------- | ------ | -------- | ------------ |
 | id      | `number` | -      | ✅       | 动漫id       |
-| source  | `number` | -      | ✅       | 动漫评分分数 |
+| score   | `number` | -      | ✅       | 动漫评分分数 |
 | content | `string` | -      | ✅       | 动漫评分内容 |
 
 ### 成功操作返回
@@ -98,7 +98,7 @@ POST    /list
                 "id": 4,
                 "uid": 1,
                 "aid": 2,
-                "rating": 5,
+                "score": 5,
                 "content": "这部动漫的非常棒！",
                 "nickname": "日常一号突击手Mio",
                 "anime": {
@@ -147,7 +147,7 @@ POST    /admin_list
                 "id": 4,
                 "uid": 1,
                 "aid": 2,
-                "rating": 5,
+                "score": 5,
                 "content": "这部动漫的非常棒！",
                 "nickname": "日常一号突击手Mio",
                 "anime": {

@@ -9,13 +9,13 @@ const {
 const RatingCreateValidator = parameter => {
     const schema = Zod.object({
         ...commonId,
-        rating: Zod.number({
-            required_error: 'rating 不能为空',
-            invalid_type_error: 'rating 类型错误'
+        score: Zod.number({
+            required_error: 'score 不能为空',
+            invalid_type_error: 'score 类型错误'
         })
-            .int('rating 必须为整数')
-            .min(1, 'rating 最小为1')
-            .max(5, 'rating 最大为5'),
+            .int('score 必须为整数')
+            .min(1, 'score 最小为1')
+            .max(5, 'score 最大为5'),
         content: Zod.string({
             required_error: 'content 不能为空',
             invalid_type_error: 'content 类型错误'

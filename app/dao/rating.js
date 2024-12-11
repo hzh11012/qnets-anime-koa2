@@ -25,7 +25,7 @@ class RatingDao {
             const rating = new Rating();
             rating.uid = uid;
             rating.aid = aid;
-            rating.rating = score;
+            rating.score = score;
             rating.content = content;
             await rating.save();
             return [null, null];

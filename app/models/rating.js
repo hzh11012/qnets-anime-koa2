@@ -25,7 +25,7 @@ Rating.init(
             allowNull: false,
             comment: '动漫id'
         },
-        rating: {
+        score: {
             type: DataTypes.TINYINT,
             allowNull: false,
             comment: '动漫评分分数'

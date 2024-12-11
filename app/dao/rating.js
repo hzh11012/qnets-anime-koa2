@@ -1,35 +1,37 @@
 const {User} = require('@models/user');
 const {Anime} = require('@models/anime');
-const {Collection} = require('@models/collection');
+const {Rating} = require('@models/rating');
 const {NotFound, Existing} = require('@core/http-exception');
 const {col} = require('sequelize');
 const WhereFilter = require('@lib/where-filter');
 
-class CollectionDao {
-    // 创建收藏
+class RatingDao {
+    // 创建评分
     static async create(params) {
-        const {uid, aid} = params;
+        const {uid, aid, score, content} = params;
         try {
-            const hasCollection = await Collection.findOne({
+            const hasRating = await Rating.findOne({
                 where: {
                     uid,
                     aid,
                     deleted_at: null
                 }
             });
-            if (hasCollection) throw new Existing('已收藏');
+            if (hasRating) throw new Existing('已评分');
 
-            const collection = new Collection();
-            collection.uid = uid;
-            collection.aid = aid;
-            await collection.save();
+            const rating = new Rating();
+            rating.uid = uid;
+            rating.aid = aid;
+            rating.score = score;
+            rating.content = content;
+            await rating.save();
             return [null, null];
         } catch (err) {
             return [err, null];
         }
     }
 
-    // 收藏列表
+    // 评分列表
     static async list(params) {
         const {
             page = 1,
@@ -45,7 +47,7 @@ class CollectionDao {
         const filter = where_filter.getFilter();
 
         try {
-            const list = await Collection.findAndCountAll({
+            const list = await Rating.findAndCountAll({
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
@@ -75,7 +77,7 @@ class CollectionDao {
         }
     }
 
-    // 收藏列表 - admin
+    // 评分列表 - admin
     static async adminList(params) {
         const {
             page = 1,
@@ -86,11 +88,14 @@ class CollectionDao {
         } = params;
 
         const where_filter = new WhereFilter();
-        where_filter.setSearch(['$User.nickname$', '$Anime.name$'], keyword);
+        where_filter.setSearch(
+            ['$User.nickname$', '$Anime.name$', 'content'],
+            keyword
+        );
         const filter = where_filter.getFilter();
 
         try {
-            const list = await Collection.findAndCountAll({
+            const list = await Rating.findAndCountAll({
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
@@ -124,32 +129,32 @@ class CollectionDao {
         }
     }
 
-    // 取消收藏
-    static async cancel(params) {
+    // 删除评分
+    static async delete(params) {
         const {uid, aid} = params;
         try {
-            const collection = await Collection.findOne({
+            const rating = await Rating.findOne({
                 where: {
                     uid,
                     aid,
                     deleted_at: null
                 }
             });
-            if (!collection) throw new NotFound('收藏不存在');
-            await collection.destroy();
+            if (!rating) throw new NotFound('评分不存在');
+            await rating.destroy();
             return [(null, null)];
         } catch (err) {
             return [err, null];
         }
     }
 
-    // 取消收藏 - admin
-    static async adminCancel(params) {
+    // 删除评分 - admin
+    static async adminDelete(params) {
         const {id} = params;
         try {
-            const collection = await Collection.findByPk(id);
-            if (!collection) throw new NotFound('收藏不存在');
-            await collection.destroy();
+            const rating = await Rating.findByPk(id);
+            if (!rating) throw new NotFound('评分不存在');
+            await rating.destroy();
             return [(null, null)];
         } catch (err) {
             return [err, null];
@@ -158,5 +163,5 @@ class CollectionDao {
 }
 
 module.exports = {
-    CollectionDao
+    RatingDao
 };

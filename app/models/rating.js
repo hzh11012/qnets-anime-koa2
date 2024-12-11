@@ -28,7 +28,12 @@ Rating.init(
         score: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            comment: '动漫评分'
+            comment: '动漫评分分数'
+        },
+        content: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: '动漫评分内容'
         },
         created_at: {
             type: DataTypes.DATE,

@@ -1,40 +1,42 @@
 const Router = require('koa-router');
-const {CollectionDao} = require('@dao/collection');
+const {RatingDao} = require('@dao/rating');
 const {
-    CollectionCreateValidator,
-    CollectionListValidator,
-    CollectionCancelValidator
-} = require('@validators/collection');
+    RatingCreateValidator,
+    RatingListValidator,
+    RatingDeleteValidator
+} = require('@validators/rating');
 const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 const router = new Router({
-    prefix: '/api/collection'
+    prefix: '/api/rating'
 });
 
-// 创建收藏
+// 创建评分
 router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = CollectionCreateValidator(ctx.request.body);
+    const parameter = RatingCreateValidator(ctx.request.body);
 
-    const [err] = await CollectionDao.create({
+    const [err] = await RatingDao.create({
         uid: ctx.auth.id,
-        aid: parameter.id
+        aid: parameter.id,
+        score: parameter.score,
+        content: parameter.content
     });
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('收藏成功');
+        ctx.body = res.success('评分成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 收藏列表
+// 评分列表
 router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = CollectionListValidator(ctx.request.body);
-    const [err, data] = await CollectionDao.list({
+    const parameter = RatingListValidator(ctx.request.body);
+    const [err, data] = await RatingDao.list({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -44,17 +46,16 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.json(data, '获取收藏列表成功');
+        ctx.body = res.json(data, '获取评分列表成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-
-// 收藏列表 - admin
+// 评分列表 - admin
 router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
-    const parameter = CollectionListValidator(ctx.request.body);
-    const [err, data] = await CollectionDao.adminList({
+    const parameter = RatingListValidator(ctx.request.body);
+    const [err, data] = await RatingDao.adminList({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -64,38 +65,38 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.json(data, '获取收藏列表成功');
+        ctx.body = res.json(data, '获取评分列表成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 取消收藏
-router.post('/cancel', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = CollectionCancelValidator(ctx.request.body);
-    const [err] = await CollectionDao.cancel({
+// 删除评分
+router.post('/delete', new Auth(GENERAL_SCOPE).m, async ctx => {
+    const parameter = RatingDeleteValidator(ctx.request.body);
+    const [err] = await RatingDao.delete({
         uid: ctx.auth.id,
         aid: parameter.id
     });
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('取消收藏成功');
+        ctx.body = res.success('删除评分成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 取消收藏 - admin
-router.post('/admin_cancel', new Auth(ADMIN_SCOPE).m, async ctx => {
-    const parameter = CollectionCancelValidator(ctx.request.body);
-    const [err] = await CollectionDao.adminCancel({
+// 删除评分 - admin
+router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+    const parameter = RatingDeleteValidator(ctx.request.body);
+    const [err] = await RatingDao.adminDelete({
         id: parameter.id
     });
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('取消收藏成功');
+        ctx.body = res.success('删除评分成功');
     } else {
         ctx.body = res.fail(err);
     }

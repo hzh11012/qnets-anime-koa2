@@ -1,7 +1,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/rating
+http://localhost:5200/api/score
 ```
 
 ## 接口鉴权

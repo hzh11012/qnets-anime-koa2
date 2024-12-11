@@ -1,33 +1,33 @@
 const {User} = require('@models/user');
 const {Anime} = require('@models/anime');
-const {Rating} = require('@models/rating');
+const {Score} = require('@models/score');
 const {NotFound, Existing} = require('@core/http-exception');
 const {col} = require('sequelize');
 const WhereFilter = require('@lib/where-filter');
 
-class RatingDao {
+class ScoreDao {
     // 创建评分
     static async create(params) {
-        const {uid, aid, score, content} = params;
+        const {uid, aid, score: _score, content} = params;
         try {
             const hasAnime = await Anime.findByPk(aid);
             if (!hasAnime) throw new NotFound('动漫不存在');
 
-            const hasRating = await Rating.findOne({
+            const hasScore = await Score.findOne({
                 where: {
                     uid,
                     aid,
                     deleted_at: null
                 }
             });
-            if (hasRating) throw new Existing('已评分');
+            if (hasScore) throw new Existing('已评分');
 
-            const rating = new Rating();
-            rating.uid = uid;
-            rating.aid = aid;
-            rating.score = score;
-            rating.content = content;
-            await rating.save();
+            const score = new Score();
+            score.uid = uid;
+            score.aid = aid;
+            score.score = _score;
+            score.content = content;
+            await score.save();
             return [null, null];
         } catch (err) {
             return [err, null];
@@ -50,7 +50,7 @@ class RatingDao {
         const filter = where_filter.getFilter();
 
         try {
-            const list = await Rating.findAndCountAll({
+            const list = await Score.findAndCountAll({
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
@@ -98,7 +98,7 @@ class RatingDao {
         const filter = where_filter.getFilter();
 
         try {
-            const list = await Rating.findAndCountAll({
+            const list = await Score.findAndCountAll({
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
@@ -136,15 +136,15 @@ class RatingDao {
     static async delete(params) {
         const {uid, aid} = params;
         try {
-            const rating = await Rating.findOne({
+            const score = await Score.findOne({
                 where: {
                     uid,
                     aid,
                     deleted_at: null
                 }
             });
-            if (!rating) throw new NotFound('评分不存在');
-            await rating.destroy();
+            if (!score) throw new NotFound('评分不存在');
+            await score.destroy();
             return [(null, null)];
         } catch (err) {
             return [err, null];
@@ -155,9 +155,9 @@ class RatingDao {
     static async adminDelete(params) {
         const {id} = params;
         try {
-            const rating = await Rating.findByPk(id);
-            if (!rating) throw new NotFound('评分不存在');
-            await rating.destroy();
+            const score = await Score.findByPk(id);
+            if (!score) throw new NotFound('评分不存在');
+            await score.destroy();
             return [(null, null)];
         } catch (err) {
             return [err, null];
@@ -166,5 +166,5 @@ class RatingDao {
 }
 
 module.exports = {
-    RatingDao
+    ScoreDao
 };

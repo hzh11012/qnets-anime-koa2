@@ -5,9 +5,9 @@ const {User} = require('@models/user');
 const {Anime} = require('@models/anime');
 
 // 动漫评分表模型
-class Rating extends Model {}
+class Score extends Model {}
 
-Rating.init(
+Score.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
@@ -62,19 +62,19 @@ Rating.init(
     },
     {
         sequelize,
-        modelName: 'rating',
-        tableName: 'rating'
+        modelName: 'score',
+        tableName: 'score'
     }
 );
 
 // 用户与评分之间的一对多关系
-User.hasMany(Rating, {foreignKey: 'uid'});
-Rating.belongsTo(User, {foreignKey: 'uid'});
+User.hasMany(Score, {foreignKey: 'uid'});
+Score.belongsTo(User, {foreignKey: 'uid'});
 
 // 动漫与评分之间的一对多关系
-Anime.hasMany(Rating, {foreignKey: 'aid'});
-Rating.belongsTo(Anime, {foreignKey: 'aid'});
+Anime.hasMany(Score, {foreignKey: 'aid'});
+Score.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
-    Rating
+    Score
 };

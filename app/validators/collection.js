@@ -14,5 +14,5 @@ const CollectionListValidator = parameter => {
 module.exports = {
     CollectionCreateValidator: commonIdValidator,
     CollectionListValidator,
-    CollectionCancelValidator: commonIdValidator
+    CollectionDeleteValidator: commonIdValidator
 };

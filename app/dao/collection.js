@@ -128,7 +128,7 @@ class CollectionDao {
     }
 
     // 取消收藏
-    static async cancel(params) {
+    static async delete(params) {
         const {uid, aid} = params;
         try {
             const collection = await Collection.findOne({
@@ -147,7 +147,7 @@ class CollectionDao {
     }
 
     // 取消收藏 - admin
-    static async adminCancel(params) {
+    static async adminDelete(params) {
         const {id} = params;
         try {
             const collection = await Collection.findByPk(id);

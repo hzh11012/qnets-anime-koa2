@@ -3,7 +3,7 @@ const {CollectionDao} = require('@dao/collection');
 const {
     CollectionCreateValidator,
     CollectionListValidator,
-    CollectionCancelValidator
+    CollectionDeleteValidator
 } = require('@validators/collection');
 const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
@@ -71,9 +71,9 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 取消收藏
-router.post('/cancel', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = CollectionCancelValidator(ctx.request.body);
-    const [err] = await CollectionDao.cancel({
+router.post('/delete', new Auth(GENERAL_SCOPE).m, async ctx => {
+    const parameter = CollectionDeleteValidator(ctx.request.body);
+    const [err] = await CollectionDao.delete({
         uid: ctx.auth.id,
         aid: parameter.id
     });
@@ -87,9 +87,9 @@ router.post('/cancel', new Auth(GENERAL_SCOPE).m, async ctx => {
 });
 
 // 取消收藏 - admin
-router.post('/admin_cancel', new Auth(ADMIN_SCOPE).m, async ctx => {
-    const parameter = CollectionCancelValidator(ctx.request.body);
-    const [err] = await CollectionDao.adminCancel({
+router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+    const parameter = CollectionDeleteValidator(ctx.request.body);
+    const [err] = await CollectionDao.adminDelete({
         id: parameter.id
     });
 

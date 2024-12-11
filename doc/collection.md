@@ -163,7 +163,7 @@ POST    /admin_list
 > scope = 1
 
 ```
-POST    /cancel
+POST    /delete
 ```
 
 ### 参数说明
@@ -187,7 +187,7 @@ POST    /cancel
 > scope = 3
 
 ```
-POST    /cancel
+POST    /delete
 ```
 
 ### 参数说明

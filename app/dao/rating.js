@@ -10,6 +10,9 @@ class RatingDao {
     static async create(params) {
         const {uid, aid, score, content} = params;
         try {
+            const hasAnime = await Anime.findByPk(aid);
+            if (!hasAnime) throw new NotFound('动漫不存在');
+
             const hasRating = await Rating.findOne({
                 where: {
                     uid,

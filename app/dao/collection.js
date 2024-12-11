@@ -10,6 +10,9 @@ class CollectionDao {
     static async create(params) {
         const {uid, aid} = params;
         try {
+            const hasAnime = await Anime.findByPk(aid);
+            if (!hasAnime) throw new NotFound('动漫不存在');
+
             const hasCollection = await Collection.findOne({
                 where: {
                     uid,

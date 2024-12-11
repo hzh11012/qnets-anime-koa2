@@ -2,7 +2,6 @@ const {Anime} = require('@models/anime');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
 const {Category} = require('@models/category');
-const {Op} = require('sequelize');
 
 class AnimeDao {
     // 创建动漫

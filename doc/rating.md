@@ -1,7 +1,7 @@
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/score
+http://localhost:5200/api/rating
 ```
 
 ## 接口鉴权
@@ -98,7 +98,7 @@ POST    /list
                 "id": 4,
                 "uid": 1,
                 "aid": 2,
-                "score": 5,
+                "rating": 5,
                 "content": "这部动漫的非常棒！",
                 "nickname": "日常一号突击手Mio",
                 "anime": {
@@ -147,7 +147,7 @@ POST    /admin_list
                 "id": 4,
                 "uid": 1,
                 "aid": 2,
-                "score": 5,
+                "rating": 5,
                 "content": "这部动漫的非常棒！",
                 "nickname": "日常一号突击手Mio",
                 "anime": {

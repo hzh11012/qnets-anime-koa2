@@ -1,27 +1,27 @@
 const Router = require('koa-router');
-const {ScoreDao} = require('@dao/score');
+const {RatingDao} = require('@dao/rating');
 const {
-    ScoreCreateValidator,
-    ScoreListValidator,
-    ScoreDeleteValidator
-} = require('@validators/score');
+    RatingCreateValidator,
+    RatingListValidator,
+    RatingDeleteValidator
+} = require('@validators/rating');
 const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const res = new Resolve();
 
 const router = new Router({
-    prefix: '/api/score'
+    prefix: '/api/rating'
 });
 
 // 创建评分
 router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = ScoreCreateValidator(ctx.request.body);
+    const parameter = RatingCreateValidator(ctx.request.body);
 
-    const [err] = await ScoreDao.create({
+    const [err] = await RatingDao.create({
         uid: ctx.auth.id,
         aid: parameter.id,
-        score: parameter.score,
+        rating: parameter.rating,
         content: parameter.content
     });
 
@@ -35,8 +35,8 @@ router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
 
 // 评分列表
 router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = ScoreListValidator(ctx.request.body);
-    const [err, data] = await ScoreDao.list({
+    const parameter = RatingListValidator(ctx.request.body);
+    const [err, data] = await RatingDao.list({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -54,8 +54,8 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
 
 // 评分列表 - admin
 router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
-    const parameter = ScoreListValidator(ctx.request.body);
-    const [err, data] = await ScoreDao.adminList({
+    const parameter = RatingListValidator(ctx.request.body);
+    const [err, data] = await RatingDao.adminList({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -73,8 +73,8 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 
 // 删除评分
 router.post('/delete', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = ScoreDeleteValidator(ctx.request.body);
-    const [err] = await ScoreDao.delete({
+    const parameter = RatingDeleteValidator(ctx.request.body);
+    const [err] = await RatingDao.delete({
         uid: ctx.auth.id,
         aid: parameter.id
     });
@@ -89,8 +89,8 @@ router.post('/delete', new Auth(GENERAL_SCOPE).m, async ctx => {
 
 // 删除评分 - admin
 router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
-    const parameter = ScoreDeleteValidator(ctx.request.body);
-    const [err] = await ScoreDao.adminDelete({
+    const parameter = RatingDeleteValidator(ctx.request.body);
+    const [err] = await RatingDao.adminDelete({
         id: parameter.id
     });
 

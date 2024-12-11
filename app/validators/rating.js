@@ -6,16 +6,16 @@ const {
     commonIdValidator
 } = require('@validators/common');
 
-const ScoreCreateValidator = parameter => {
+const RatingCreateValidator = parameter => {
     const schema = Zod.object({
         ...commonId,
-        score: Zod.number({
-            required_error: 'score 不能为空',
-            invalid_type_error: 'score 类型错误'
+        rating: Zod.number({
+            required_error: 'rating 不能为空',
+            invalid_type_error: 'rating 类型错误'
         })
-            .int('score 必须为整数')
-            .min(1, 'score 最小为1')
-            .max(5, 'score 最大为5'),
+            .int('rating 必须为整数')
+            .min(1, 'rating 最小为1')
+            .max(5, 'rating 最大为5'),
         content: Zod.string({
             required_error: 'content 不能为空',
             invalid_type_error: 'content 类型错误'
@@ -28,7 +28,7 @@ const ScoreCreateValidator = parameter => {
     return validate(schema, parameter);
 };
 
-const ScoreListValidator = parameter => {
+const RatingListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         keyword: Zod.string({
@@ -39,7 +39,7 @@ const ScoreListValidator = parameter => {
 };
 
 module.exports = {
-    ScoreCreateValidator,
-    ScoreListValidator,
-    ScoreDeleteValidator: commonIdValidator
+    RatingCreateValidator,
+    RatingListValidator,
+    RatingDeleteValidator: commonIdValidator
 };

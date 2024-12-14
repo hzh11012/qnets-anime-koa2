@@ -9,10 +9,7 @@ class CategoryDao {
 
         try {
             const hasCategory = await Category.findOne({
-                where: {
-                    category: _category,
-                    deleted_at: null
-                }
+                where: {category: _category}
             });
 
             if (hasCategory) throw new Existing('动漫分类已存在');
@@ -47,7 +44,7 @@ class CategoryDao {
                 offset: (page - 1) * pageSize,
                 where: filter,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at']
+                    exclude: ['updated_at']
                 },
                 order: [[orderBy, order]]
             });
@@ -69,7 +66,7 @@ class CategoryDao {
             if (anime.length > 0)
                 throw new Existing('动漫分类存在关联动漫，无法删除');
             await category.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }

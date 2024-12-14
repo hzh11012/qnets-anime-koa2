@@ -16,8 +16,7 @@ class CollectionDao {
             const hasCollection = await Collection.findOne({
                 where: {
                     uid,
-                    aid,
-                    deleted_at: null
+                    aid
                 }
             });
             if (hasCollection) throw new Existing('已收藏');
@@ -52,7 +51,7 @@ class CollectionDao {
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
-                    exclude: ['uid', 'aid', 'updated_at', 'deleted_at']
+                    exclude: ['uid', 'aid', 'updated_at']
                 },
                 distinct: true,
                 include: [
@@ -97,7 +96,7 @@ class CollectionDao {
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at'],
+                    exclude: ['updated_at'],
                     include: [[col('User.nickname'), 'nickname']]
                 },
                 distinct: true,
@@ -134,13 +133,12 @@ class CollectionDao {
             const collection = await Collection.findOne({
                 where: {
                     uid,
-                    aid,
-                    deleted_at: null
+                    aid
                 }
             });
             if (!collection) throw new NotFound('收藏不存在');
             await collection.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }
@@ -153,7 +151,7 @@ class CollectionDao {
             const collection = await Collection.findByPk(id);
             if (!collection) throw new NotFound('收藏不存在');
             await collection.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }

@@ -16,8 +16,7 @@ class RatingDao {
             const hasRating = await Rating.findOne({
                 where: {
                     uid,
-                    aid,
-                    deleted_at: null
+                    aid
                 }
             });
             if (hasRating) throw new Existing('已评分');
@@ -54,7 +53,7 @@ class RatingDao {
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
-                    exclude: ['uid', 'aid', 'updated_at', 'deleted_at']
+                    exclude: ['uid', 'aid', 'updated_at']
                 },
                 distinct: true,
                 include: [
@@ -102,7 +101,7 @@ class RatingDao {
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at'],
+                    exclude: ['updated_at'],
                     include: [[col('User.nickname'), 'nickname']]
                 },
                 distinct: true,
@@ -139,13 +138,12 @@ class RatingDao {
             const rating = await Rating.findOne({
                 where: {
                     uid,
-                    aid,
-                    deleted_at: null
+                    aid
                 }
             });
             if (!rating) throw new NotFound('评分不存在');
             await rating.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }
@@ -158,7 +156,7 @@ class RatingDao {
             const rating = await Rating.findByPk(id);
             if (!rating) throw new NotFound('评分不存在');
             await rating.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }

@@ -51,14 +51,6 @@ User.init(
             get() {
                 return formatDate(this.getDataValue('updated_at'));
             }
-        },
-        deleted_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            comment: '删除时间',
-            get() {
-                return formatDate(this.getDataValue('deleted_at'));
-            }
         }
     },
     {

@@ -8,12 +8,7 @@ class UserDao {
         const {phone} = params;
 
         try {
-            const hasUser = await User.findOne({
-                where: {
-                    phone,
-                    deleted_at: null
-                }
-            });
+            const hasUser = await User.findOne({where: {phone}});
 
             if (hasUser) {
                 return [null, hasUser];
@@ -54,7 +49,7 @@ class UserDao {
                 offset: (page - 1) * pageSize,
                 where: filter,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at']
+                    exclude: ['updated_at']
                 },
                 order: [[orderBy, order]]
             });

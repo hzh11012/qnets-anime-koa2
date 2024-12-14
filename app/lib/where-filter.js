@@ -2,9 +2,13 @@ const {Op} = require('sequelize');
 
 class WhereFilter {
     constructor(params) {
-        this.filter = params || {
-            deleted_at: null
-        };
+        this.filter = params || {};
+    }
+
+    setWhere(key, value) {
+        if (key && value) {
+            this.filter[key] = value;
+        }
     }
 
     setFilter(key, condition, operator = Op.in) {

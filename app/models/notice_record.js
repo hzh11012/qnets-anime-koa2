@@ -1,48 +1,36 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Anime} = require('@models/anime');
+const {Notice} = require('@models/notice');
+const {User} = require('@models/user');
 
-// 视频信息表
-class Video extends Model {}
+// 定义公告记录表模型
+class NoticeRecord extends Model {}
 
-Video.init(
+NoticeRecord.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '视频信息主键ID'
+            comment: '公告记录主键ID'
         },
-        aid: {
+        nid: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '动漫id'
+            comment: '公告id'
         },
-        title: {
-            type: DataTypes.STRING(50),
+        uid: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '视频标题'
+            comment: '用户id'
         },
-        season: {
+        // 公告阅读状态 0-未读 1-已读
+        status: {
             type: DataTypes.TINYINT,
             allowNull: false,
-            comment: '季数编号'
-        },
-        episode: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '集数编号'
-        },
-        url: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '视频链接'
-        },
-        play_count: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            comment: '视频播放次数'
+            defaultValue: 0,
+            comment: '公告阅读状态'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -63,15 +51,19 @@ Video.init(
     },
     {
         sequelize,
-        modelName: 'video',
-        tableName: 'video'
+        modelName: 'notice_record',
+        tableName: 'notice_record'
     }
 );
 
-// 动漫与视频之间的一对多关系
-Anime.hasMany(Video, {foreignKey: 'aid', onDelete: 'CASCADE'});
-Video.belongsTo(Anime, {foreignKey: 'aid'});
+// 用户与公告记录之间的一对多关系
+User.hasMany(NoticeRecord, {foreignKey: 'uid', onDelete: 'CASCADE'});
+NoticeRecord.belongsTo(User, {foreignKey: 'uid'});
+
+// 公告与公告记录之间的一对多关系
+Notice.hasMany(NoticeRecord, {foreignKey: 'nid', onDelete: 'CASCADE'});
+NoticeRecord.belongsTo(Notice, {foreignKey: 'nid'});
 
 module.exports = {
-    Video
+    NoticeRecord
 };

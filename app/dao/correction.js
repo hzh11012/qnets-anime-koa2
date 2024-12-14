@@ -43,7 +43,7 @@ class CorrectionDao {
                 offset: (page - 1) * pageSize,
                 where: filter,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at'],
+                    exclude: ['updated_at'],
                     include: [[col('User.nickname'), 'nickname']]
                 },
                 include: [
@@ -67,7 +67,7 @@ class CorrectionDao {
             const correction = await Correction.findByPk(id);
             if (!correction) throw new NotFound('纠错信息不存在');
             await correction.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }

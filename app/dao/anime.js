@@ -21,12 +21,7 @@ class AnimeDao {
         } = params;
 
         try {
-            const hasAnime = await Anime.findOne({
-                where: {
-                    name,
-                    deleted_at: null
-                }
-            });
+            const hasAnime = await Anime.findOne({where: {name}});
             if (hasAnime) throw new Existing('动漫已存在');
 
             const anime = new Anime();
@@ -86,7 +81,7 @@ class AnimeDao {
                 offset: (page - 1) * pageSize,
                 where: filter,
                 attributes: {
-                    exclude: ['updated_at', 'deleted_at']
+                    exclude: ['updated_at']
                 },
                 distinct: true,
                 include: {
@@ -114,7 +109,7 @@ class AnimeDao {
             const anime = await Anime.findByPk(id);
             if (!anime) throw new NotFound('动漫不存在');
             await anime.destroy();
-            return [(null, null)];
+            return [null, null];
         } catch (err) {
             return [err, null];
         }
@@ -141,12 +136,7 @@ class AnimeDao {
             const anime = await Anime.findByPk(id);
             if (!anime) throw new NotFound('动漫不存在');
 
-            const hasAnime = await Anime.findOne({
-                where: {
-                    name,
-                    deleted_at: null
-                }
-            });
+            const hasAnime = await Anime.findOne({where: {name}});
             if (hasAnime) throw new Existing('动漫已存在');
 
             anime.name = name;

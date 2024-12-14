@@ -50,7 +50,6 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
     }
 });
 
-
 // 收藏列表 - admin
 router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CollectionListValidator(ctx.request.body);

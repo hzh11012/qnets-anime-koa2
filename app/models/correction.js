@@ -46,14 +46,6 @@ Correction.init(
             get() {
                 return formatDate(this.getDataValue('updated_at'));
             }
-        },
-        deleted_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            comment: '删除时间',
-            get() {
-                return formatDate(this.getDataValue('deleted_at'));
-            }
         }
     },
     {
@@ -64,7 +56,7 @@ Correction.init(
 );
 
 // 用户与纠错信息之间的一对一关系
-User.hasOne(Correction, {foreignKey: 'uid'});
+User.hasOne(Correction, {foreignKey: 'uid', onDelete: 'CASCADE'});
 Correction.belongsTo(User, {foreignKey: 'uid'});
 
 module.exports = {

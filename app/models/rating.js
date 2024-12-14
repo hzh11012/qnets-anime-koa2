@@ -50,14 +50,6 @@ Rating.init(
             get() {
                 return formatDate(this.getDataValue('updated_at'));
             }
-        },
-        deleted_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            comment: '删除时间',
-            get() {
-                return formatDate(this.getDataValue('deleted_at'));
-            }
         }
     },
     {
@@ -68,11 +60,11 @@ Rating.init(
 );
 
 // 用户与评分之间的一对多关系
-User.hasMany(Rating, {foreignKey: 'uid'});
+User.hasMany(Rating, {foreignKey: 'uid', onDelete: 'CASCADE'});
 Rating.belongsTo(User, {foreignKey: 'uid'});
 
 // 动漫与评分之间的一对多关系
-Anime.hasMany(Rating, {foreignKey: 'aid'});
+Anime.hasMany(Rating, {foreignKey: 'aid', onDelete: 'CASCADE'});
 Rating.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {

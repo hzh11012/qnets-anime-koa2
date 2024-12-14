@@ -12,10 +12,9 @@ const sequelize = new Sequelize(
         timezone: '+08:00',
         define: {
             timestamps: true,
-            paranoid: true,
+            paranoid: false,
             createdAt: 'created_at',
             updatedAt: 'updated_at',
-            deletedAt: 'deleted_at',
             // 把驼峰命名转换为下划线
             underscored: true
         }

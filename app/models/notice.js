@@ -1,24 +1,27 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Anime} = require('@models/anime');
 
-// 定义动漫分类表模型
-class Category extends Model {}
+// 定义公告表模型
+class Notice extends Model {}
 
-Category.init(
+Notice.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫分类主键ID'
+            comment: '公告主键ID'
         },
-        category: {
+        title: {
             type: DataTypes.STRING(25),
             allowNull: false,
-            unique: true,
-            comment: '动漫分类'
+            comment: '公告标题'
+        },
+        content: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: '公告内容'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -39,14 +42,11 @@ Category.init(
     },
     {
         sequelize,
-        modelName: 'category',
-        tableName: 'category'
+        modelName: 'notice',
+        tableName: 'notice'
     }
 );
 
-Anime.belongsToMany(Category, {through: 'anime_category', foreignKey: 'aid'});
-Category.belongsToMany(Anime, {through: 'anime_category', foreignKey: 'cid'});
-
 module.exports = {
-    Category
+    Notice
 };

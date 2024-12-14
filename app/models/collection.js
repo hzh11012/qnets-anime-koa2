@@ -40,14 +40,6 @@ Collection.init(
             get() {
                 return formatDate(this.getDataValue('updated_at'));
             }
-        },
-        deleted_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            comment: '删除时间',
-            get() {
-                return formatDate(this.getDataValue('deleted_at'));
-            }
         }
     },
     {
@@ -58,11 +50,11 @@ Collection.init(
 );
 
 // 用户与收藏之间的一对多关系
-User.hasMany(Collection, {foreignKey: 'uid'});
+User.hasMany(Collection, {foreignKey: 'uid', onDelete: 'CASCADE'});
 Collection.belongsTo(User, {foreignKey: 'uid'});
 
 // 动漫与收藏之间的一对多关系
-Anime.hasMany(Collection, {foreignKey: 'aid'});
+Anime.hasMany(Collection, {foreignKey: 'aid', onDelete: 'CASCADE'});
 Collection.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {

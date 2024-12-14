@@ -81,7 +81,6 @@ class NoticeDao {
             });
             return [null, list];
         } catch (err) {
-            console.log(err);
             return [err, null];
         }
     }

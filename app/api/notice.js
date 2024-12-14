@@ -27,7 +27,6 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         ctx.response.status = 200;
         ctx.body = res.success('创建公告成功');
     } else {
-        console.log(err);
         ctx.body = res.fail(err);
     }
 });

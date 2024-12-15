@@ -4,7 +4,8 @@ const {
     AnimeCreateValidator,
     AnimeListValidator,
     AnimeDeleteValidator,
-    AnimeEditValidator
+    AnimeEditValidator,
+    AnimeDetailValidator
 } = require('@validators/anime');
 const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
@@ -94,6 +95,21 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.success('修改动漫成功');
+    } else {
+        ctx.body = res.fail(err);
+    }
+});
+
+// 动漫详情 - admin
+router.post('/detail', new Auth(ADMIN_SCOPE).m, async ctx => {
+    const parameter = AnimeDetailValidator(ctx.request.body);
+    const [err, data] = await AnimeDao.detail({
+        id: parameter.id
+    });
+
+    if (!err) {
+        ctx.response.status = 200;
+        ctx.body = res.json(data, '获取动漫详情成功');
     } else {
         ctx.body = res.fail(err);
     }

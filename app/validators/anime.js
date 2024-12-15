@@ -131,5 +131,6 @@ module.exports = {
     AnimeCreateValidator: AnimeCreateOrEditValidator,
     AnimeListValidator,
     AnimeDeleteValidator: commonIdValidator,
-    AnimeEditValidator: AnimeCreateOrEditValidator
+    AnimeEditValidator: AnimeCreateOrEditValidator,
+    AnimeDetailValidator: commonIdValidator
 };

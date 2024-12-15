@@ -1,4 +1,5 @@
 const {Anime} = require('@models/anime');
+const {Video} = require('@models/video');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
 const {Category} = require('@models/category');
@@ -153,6 +154,23 @@ class AnimeDao {
 
             const res = await anime.save();
             return [null, res];
+        } catch (err) {
+            return [err, null];
+        }
+    }
+
+    // 动漫详情
+    static async detail(params) {
+        const {id} = params;
+        try {
+            const anime = await Anime.findOne({
+                where: {id},
+                include: {
+                    model: Video
+                }
+            });
+            if (!anime) throw new NotFound('动漫不存在');
+            return [null, anime];
         } catch (err) {
             return [err, null];
         }

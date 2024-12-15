@@ -42,6 +42,7 @@ Video.init(
         play_count: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 0,
             comment: '视频播放次数'
         },
         created_at: {

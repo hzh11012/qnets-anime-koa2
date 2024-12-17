@@ -1,6 +1,7 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
+const {Series} = require('@models/series');
 
 // 动漫信息表
 class Anime extends Model {}
@@ -12,6 +13,11 @@ Anime.init(
             primaryKey: true,
             autoIncrement: true,
             comment: '动漫信息主键ID'
+        },
+        sid: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
+            allowNull: false,
+            comment: '系列id'
         },
         name: {
             type: DataTypes.STRING(50),
@@ -67,6 +73,22 @@ Anime.init(
             allowNull: false,
             comment: '动漫发行月份'
         },
+        season_name: {
+            type: DataTypes.STRING(10),
+            allowNull: true,
+            comment: '动漫所属季名称',
+            get() {
+                return (
+                    this.getDataValue('season_name') ??
+                    `第${this.getDataValue('season')}季`
+                );
+            }
+        },
+        season: {
+            type: DataTypes.TINYINT,
+            allowNull: false,
+            comment: '动漫所属季'
+        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -90,6 +112,10 @@ Anime.init(
         tableName: 'anime'
     }
 );
+
+// 系列与动漫之间的一对多关系
+Series.hasMany(Anime, {foreignKey: 'sid', onDelete: 'CASCADE'});
+Anime.belongsTo(Series, {foreignKey: 'sid'});
 
 module.exports = {
     Anime

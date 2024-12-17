@@ -1,3 +1,4 @@
+const {Anime} = require('@models/anime');
 const {Video} = require('@models/video');
 const {Existing, NotFound} = require('@core/http-exception');
 
@@ -7,6 +8,9 @@ class VideoDao {
         const {aid, title, season, episode, url} = params;
 
         try {
+            const hasAnime = await Anime.findByPk(aid);
+            if (!hasAnime) throw new NotFound('动漫不存在');
+
             const hasVideo = await Video.findOne({
                 where: {
                     aid,

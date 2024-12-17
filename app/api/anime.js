@@ -21,6 +21,7 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeCreateValidator(ctx.request.body);
 
     const [err] = await AnimeDao.create({
+        sid: parameter.sid,
         name: parameter.name,
         description: parameter.description,
         cover: parameter.cover,
@@ -87,6 +88,7 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeEditValidator(ctx.request.body);
     const [err] = await AnimeDao.edit({
         id: parameter.id,
+        sid: parameter.sid,
         nickname: parameter.nickname,
         avatar: parameter.avatar,
         scope: parameter.scope

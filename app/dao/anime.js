@@ -1,13 +1,16 @@
+const {sequelize} = require('@core/db');
 const {Anime} = require('@models/anime');
 const {Video} = require('@models/video');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
 const {Category} = require('@models/category');
+const {Op} = require('sequelize');
 
 class AnimeDao {
     // 创建动漫
     static async create(params) {
         const {
+            sid,
             name,
             description,
             cover,
@@ -25,19 +28,36 @@ class AnimeDao {
             const hasAnime = await Anime.findOne({where: {name}});
             if (hasAnime) throw new Existing('动漫已存在');
 
-            const anime = new Anime();
-            anime.name = name;
-            anime.description = description;
-            anime.cover = cover;
-            anime.remark = remark;
-            anime.status = status;
-            anime.type = type;
-            anime.director = director;
-            anime.cv = cv;
-            anime.year = year;
-            anime.month = month;
-            await anime.save();
-            anime.setCategories(category);
+            const hasCategory = await Category.findAll({
+                where: {
+                    id: {
+                        [Op.in]: category
+                    }
+                }
+            });
+            if (hasCategory.length !== category.length)
+                throw new NotFound('分类不存在');
+
+            await sequelize.transaction(async t => {
+                const anime = await Anime.create(
+                    {
+                        sid,
+                        name,
+                        description,
+                        cover,
+                        remark,
+                        status,
+                        type,
+                        director,
+                        cv,
+                        year,
+                        month
+                    },
+                    {transaction: t}
+                );
+
+                await anime.setCategories(category, {transaction: t});
+            });
 
             return [null, null];
         } catch (err) {
@@ -120,6 +140,7 @@ class AnimeDao {
     static async edit(params) {
         const {
             id,
+            sid,
             name,
             description,
             cover,
@@ -140,6 +161,17 @@ class AnimeDao {
             const hasAnime = await Anime.findOne({where: {name}});
             if (hasAnime) throw new Existing('动漫已存在');
 
+            const hasCategory = await Category.findAll({
+                where: {
+                    id: {
+                        [Op.in]: category
+                    }
+                }
+            });
+            if (hasCategory.length !== category.length)
+                throw new NotFound('分类不存在');
+
+            anime.sid = sid;
             anime.name = name;
             anime.description = description;
             anime.cover = cover;
@@ -163,11 +195,12 @@ class AnimeDao {
     static async detail(params) {
         const {id} = params;
         try {
-            const anime = await Anime.findOne({
-                where: {id},
-                include: {
-                    model: Video
-                }
+            const anime = await Anime.findByPk(id, {
+                include: [
+                    {
+                        model: Video
+                    }
+                ]
             });
             if (!anime) throw new NotFound('动漫不存在');
             return [null, anime];

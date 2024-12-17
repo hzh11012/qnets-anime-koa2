@@ -6,6 +6,10 @@ const YEAR_REG = /^\d{4}$/;
 
 const AnimeCreateOrEditValidator = parameter => {
     const schema = Zod.object({
+        sid: Zod.number({
+            required_error: 'id 不能为空',
+            invalid_type_error: 'id 类型错误'
+        }),
         name: Zod.string({
             required_error: 'name 不能为空',
             invalid_type_error: 'name 类型错误'

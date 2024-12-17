@@ -24,11 +24,6 @@ Video.init(
             allowNull: false,
             comment: '视频标题'
         },
-        season: {
-            type: DataTypes.TINYINT,
-            allowNull: false,
-            comment: '季数编号'
-        },
         episode: {
             type: DataTypes.INTEGER,
             allowNull: false,

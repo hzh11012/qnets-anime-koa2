@@ -21,11 +21,13 @@ class AnimeDao {
             cv,
             year,
             month,
-            category
+            category,
+            season,
+            season_name
         } = params;
 
         try {
-            const hasAnime = await Anime.findOne({where: {name}});
+            const hasAnime = await Anime.findOne({where: {name, season}});
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
@@ -51,7 +53,9 @@ class AnimeDao {
                         director,
                         cv,
                         year,
-                        month
+                        month,
+                        season,
+                        season_name
                     },
                     {transaction: t}
                 );
@@ -151,14 +155,16 @@ class AnimeDao {
             cv,
             year,
             month,
-            category
+            category,
+            season,
+            season_name
         } = params;
 
         try {
             const anime = await Anime.findByPk(id);
             if (!anime) throw new NotFound('动漫不存在');
 
-            const hasAnime = await Anime.findOne({where: {name}});
+            const hasAnime = await Anime.findOne({where: {name, season}});
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
@@ -182,8 +188,9 @@ class AnimeDao {
             anime.cv = cv;
             anime.year = year;
             anime.month = month;
+            anime.season = season;
+            anime.season_name = season_name;
             anime.setCategories(category);
-
             const res = await anime.save();
             return [null, res];
         } catch (err) {

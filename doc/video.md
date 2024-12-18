@@ -55,7 +55,6 @@ POST    /admin_create
 | id      | `number`     | -      | ✅       | 动漫ID       |
 | title   | `string(50)` | -      | ✅       | 视频标题     |
 | url     | `string`     | -      | ✅       | 视频链接     |
-| season  | `number`     | -      | ✅       | 视频季数编号 |
 | episode | `number`     | -      | ✅       | 视频集数编号 |
 
 ### 成功操作返回

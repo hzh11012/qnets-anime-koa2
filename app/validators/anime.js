@@ -91,7 +91,20 @@ const AnimeCreateOrEditValidator = parameter => {
             .max(3, 'month 最大为3'),
         category: Zod.number({
             invalid_type_error: 'category 类型错误'
-        }).array()
+        }).array(),
+        season: Zod.number({
+            required_error: 'season 不能为空',
+            invalid_type_error: 'season 类型错误'
+        })
+            .int('season 必须为整数')
+            .min(1, 'season 最小为1'),
+        season_name: Zod.string({
+            invalid_type_error: 'season_name 类型错误'
+        })
+            .max(10, {
+                message: 'season_name 长度不能超过10'
+            })
+            .optional()
     });
     return validate(schema, parameter);
 };

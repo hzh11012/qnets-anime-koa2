@@ -5,7 +5,7 @@ const {Existing, NotFound} = require('@core/http-exception');
 class VideoDao {
     // 添加视频
     static async create(params) {
-        const {aid, title, season, episode, url} = params;
+        const {aid, title, episode, url} = params;
 
         try {
             const hasAnime = await Anime.findByPk(aid);
@@ -14,7 +14,6 @@ class VideoDao {
             const hasVideo = await Video.findOne({
                 where: {
                     aid,
-                    season,
                     episode
                 }
             });
@@ -23,7 +22,6 @@ class VideoDao {
             const video = new Video();
             video.aid = aid;
             video.title = title;
-            video.season = season;
             video.episode = episode;
             video.url = url;
             await video.save();

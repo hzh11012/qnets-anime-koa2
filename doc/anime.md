@@ -64,6 +64,8 @@ POST    /admin_create
 | year        | `string(4)`  | -      | ✅       | 动漫发行年份 格式为YYYY                          |
 | month       | `number`     | -      | ✅       | 动漫发行月份 0-一月番 1-四月番 2-七月番 3-十月番 |
 | category    | `number[]`   | -      | ✅       | 动漫分类，可指定多个分类id                       |
+| season      | `number`     | -      | ✅       | 动漫季数编号                                     |
+| season_name | `string(10)` | -      | -        | 动漫季数名称                                     |
 
 ### 成功操作返回
 
@@ -120,6 +122,8 @@ POST    /list
                 "cv": null,
                 "year": "2023",
                 "month": 3,
+                "season": 1,
+                "season_name": "第一季",
                 "categories": [
                     {
                         "id": 1,
@@ -185,6 +189,8 @@ POST    /admin_edit
 | year        | `string(4)`  | -      | ✅       | 动漫发行年份 格式为YYYY                          |
 | month       | `number`     | -      | ✅       | 动漫发行月份 0-一月番 1-四月番 2-七月番 3-十月番 |
 | category    | `number[]`   | -      | ✅       | 动漫分类，可指定多个分类id                       |
+| season      | `number`     | -      | ✅       | 动漫季数编号                                     |
+| season_name | `string(10)` | -      | -        | 动漫季数名称                                     |
 
 ### 成功操作返回
 

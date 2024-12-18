@@ -25,12 +25,6 @@ const VideoCreateValidator = parameter => {
             .regex(URL_REG, {
                 message: 'url 格式不正确'
             }),
-        season: Zod.number({
-            required_error: 'season 不能为空',
-            invalid_type_error: 'season 类型错误'
-        })
-            .int('season 必须为整数')
-            .min(1, 'season 最小为1'),
         episode: Zod.number({
             required_error: 'episode 不能为空',
             invalid_type_error: 'episode 类型错误'

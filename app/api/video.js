@@ -22,7 +22,6 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         aid: parameter.id,
         title: parameter.title,
         url: parameter.url,
-        season: parameter.season,
         episode: parameter.episode
     });
 

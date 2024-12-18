@@ -32,7 +32,9 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         cv: parameter.cv,
         year: parameter.year,
         month: parameter.month,
-        category: parameter.category
+        category: parameter.category,
+        season: parameter.season,
+        season_name: parameter.season_name
     });
 
     if (!err) {
@@ -89,9 +91,19 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     const [err] = await AnimeDao.edit({
         id: parameter.id,
         sid: parameter.sid,
-        nickname: parameter.nickname,
-        avatar: parameter.avatar,
-        scope: parameter.scope
+        name: parameter.name,
+        description: parameter.description,
+        cover: parameter.cover,
+        remark: parameter.remark,
+        status: parameter.status,
+        type: parameter.type,
+        director: parameter.director,
+        cv: parameter.cv,
+        year: parameter.year,
+        month: parameter.month,
+        category: parameter.category,
+        season: parameter.season,
+        season_name: parameter.season_name
     });
 
     if (!err) {

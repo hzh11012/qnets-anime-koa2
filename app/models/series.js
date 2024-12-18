@@ -38,8 +38,8 @@ Series.init(
     },
     {
         sequelize,
-        modelName: 'notice',
-        tableName: 'notice'
+        modelName: 'series',
+        tableName: 'series'
     }
 );
 

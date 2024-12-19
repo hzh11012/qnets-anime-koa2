@@ -26,16 +26,16 @@ class AnimeDao {
             season_name
         } = params;
 
+        const where_filter = new WhereFilter();
+        where_filter.setFilter('id', category);
+        const filter = where_filter.getFilter();
+
         try {
             const hasAnime = await Anime.findOne({where: {name, season}});
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
-                where: {
-                    id: {
-                        [Op.in]: category
-                    }
-                }
+                where: filter
             });
             if (hasCategory.length !== category.length)
                 throw new NotFound('分类不存在');
@@ -160,6 +160,10 @@ class AnimeDao {
             season_name
         } = params;
 
+        const where_filter = new WhereFilter();
+        where_filter.setFilter('id', category);
+        const filter = where_filter.getFilter();
+
         try {
             const anime = await Anime.findByPk(id);
             if (!anime) throw new NotFound('动漫不存在');
@@ -168,11 +172,7 @@ class AnimeDao {
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
-                where: {
-                    id: {
-                        [Op.in]: category
-                    }
-                }
+                where: filter
             });
             if (hasCategory.length !== category.length)
                 throw new NotFound('分类不存在');
@@ -201,6 +201,7 @@ class AnimeDao {
     // 动漫详情
     static async detail(params) {
         const {id} = params;
+
         try {
             const anime = await Anime.findByPk(id, {
                 include: [
@@ -210,7 +211,25 @@ class AnimeDao {
                 ]
             });
             if (!anime) throw new NotFound('动漫不存在');
-            return [null, anime];
+
+            const where_filter = new WhereFilter();
+            where_filter.setWhere('sid', anime.sid);
+            where_filter.setWhere('id', {
+                [Op.ne]: id
+            });
+            const filter = where_filter.getFilter();
+
+            const relatedAnime = await Anime.findAll({
+                where: filter
+            });
+
+            return [
+                null,
+                {
+                    anime,
+                    relatedAnime
+                }
+            ];
         } catch (err) {
             return [err, null];
         }

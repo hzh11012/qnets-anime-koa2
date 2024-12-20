@@ -27,27 +27,27 @@ const AnimeCreateOrEditValidator = parameter => {
                 message: 'description 长度不能超过255'
             })
             .min(1, 'description 不能为空'),
-        cover: Zod.string({
-            required_error: 'cover 不能为空',
-            invalid_type_error: 'cover 类型错误'
+        cover_url: Zod.string({
+            required_error: 'cover_url 不能为空',
+            invalid_type_error: 'cover_url 类型错误'
         })
             .max(255, {
-                message: 'cover 长度不能超过255'
+                message: 'cover_url 长度不能超过255'
             })
-            .min(1, 'cover 不能为空')
+            .min(1, 'cover_url 不能为空')
             .regex(COVER_REG, {
-                message: 'cover 格式不正确'
+                message: 'cover_url 格式不正确'
             }),
-        banner: Zod.string({
-            required_error: 'banner 不能为空',
-            invalid_type_error: 'banner 类型错误'
+        banner_url: Zod.string({
+            required_error: 'banner_url 不能为空',
+            invalid_type_error: 'banner_url 类型错误'
         })
             .max(255, {
-                message: 'banner 长度不能超过255'
+                message: 'banner_url 长度不能超过255'
             })
-            .min(1, 'banner 不能为空')
+            .min(1, 'banner_url 不能为空')
             .regex(BANNER_REG, {
-                message: 'banner 格式不正确'
+                message: 'banner_url 格式不正确'
             }),
         remark: Zod.string({
             invalid_type_error: 'remark 类型错误'

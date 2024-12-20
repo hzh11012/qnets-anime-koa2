@@ -61,7 +61,7 @@ class CollectionDao {
                         attributes: [
                             'id',
                             'name',
-                            'cover',
+                            'cover_url',
                             'remark',
                             'status',
                             'type'
@@ -110,7 +110,7 @@ class CollectionDao {
                         as: 'anime',
                         attributes: [
                             'name',
-                            'cover',
+                            'cover_url',
                             'remark',
                             'status',
                             'type'

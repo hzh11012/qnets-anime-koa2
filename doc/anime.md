@@ -55,8 +55,8 @@ POST    /admin_create
 | sid         | `number`     | -      | ✅       | 动漫系列ID                                       |
 | name        | `string(50)` | -      | ✅       | 动漫名称                                         |
 | description | `string`     | -      | ✅       | 动漫简介                                         |
-| cover       | `string`     | -      | ✅       | 动漫封面                                         |
-| banner      | `string`     | -      | ✅       | 动漫横幅                                         |
+| cover_url   | `string`     | -      | ✅       | 动漫封面                                         |
+| banner_url  | `string`     | -      | ✅       | 动漫横幅                                         |
 | remark      | `string(50)` | -      | -        | 动漫备注                                         |
 | status      | `number`     | -      | ✅       | 动漫状态 0-即将上线 1-连载中 2-已完结            |
 | type        | `number`     | -      | ✅       | 动漫类型 0-剧场版 1-日番 2-美番 3-里番           |
@@ -115,8 +115,8 @@ POST    /list
                 "id": 1,
                 "name": "动漫",
                 "description": "我是动漫简介",
-                "cover": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
-                "banner": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
+                "cover_url": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
+                "banner_url": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
                 "remark": null,
                 "status": 2,
                 "type": 3,
@@ -182,8 +182,8 @@ POST    /admin_edit
 | sid         | `number`     | -      | ✅       | 动漫系列ID                                       |
 | name        | `string(50)` | -      | ✅       | 动漫名称                                         |
 | description | `string`     | -      | ✅       | 动漫简介                                         |
-| cover       | `string`     | -      | ✅       | 动漫封面                                         |
-| banner      | `string`     | -      | ✅       | 动漫横幅                                         |
+| cover_url   | `string`     | -      | ✅       | 动漫封面                                         |
+| banner_url  | `string`     | -      | ✅       | 动漫横幅                                         |
 | remark      | `string(50)` | -      | -        | 动漫备注                                         |
 | status      | `number`     | -      | ✅       | 动漫状态 0-即将上线 1-连载中 2-已完结            |
 | type        | `number`     | -      | ✅       | 动漫类型 0-剧场版 1-日番 2-美番 3-里番           |

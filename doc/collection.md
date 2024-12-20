@@ -99,7 +99,7 @@ POST    /list
                 "nickname": "日常一号突击手Mio",
                 "anime": {
                     "name": "xxx",
-                    "cover": "http://loclahost:9999/67503f5d43d71.jpg",
+                    "cover_url": "http://loclahost:9999/67503f5d43d71.jpg",
                     "remark": null,
                     "status": 2,
                     "type": 3
@@ -146,7 +146,7 @@ POST    /admin_list
                 "nickname": "日常一号突击手Mio",
                 "anime": {
                     "name": "xxx",
-                    "cover": "http://loclahost:9999/67503f5d43d71.jpg",
+                    "cover_url": "http://loclahost:9999/67503f5d43d71.jpg",
                     "remark": null,
                     "status": 2,
                     "type": 3

@@ -13,8 +13,8 @@ class AnimeDao {
             sid,
             name,
             description,
-            cover,
-            banner,
+            cover_url,
+            banner_url,
             remark,
             status,
             type,
@@ -61,8 +61,8 @@ class AnimeDao {
                         sid,
                         name,
                         description,
-                        cover,
-                        banner,
+                        cover_url,
+                        banner_url,
                         remark,
                         status,
                         type,
@@ -163,8 +163,8 @@ class AnimeDao {
             sid,
             name,
             description,
-            cover,
-            banner,
+            cover_url,
+            banner_url,
             remark,
             status,
             type,
@@ -197,8 +197,8 @@ class AnimeDao {
             anime.sid = sid;
             anime.name = name;
             anime.description = description;
-            anime.cover = cover;
-            anime.banner = banner;
+            anime.cover_url = cover_url;
+            anime.banner_url = banner_url;
             anime.remark = remark;
             anime.status = status;
             anime.type = type;
@@ -243,7 +243,13 @@ class AnimeDao {
             const relatedAnime = await Anime.findAll({
                 where: filter,
                 attributes: {
-                    include: ['id', 'name', 'cover', 'banner', 'status']
+                    include: [
+                        'id',
+                        'name',
+                        'banner_url',
+                        'banner_url',
+                        'status'
+                    ]
                 }
             });
 

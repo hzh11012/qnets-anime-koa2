@@ -30,12 +30,12 @@ Anime.init(
             allowNull: false,
             comment: '动漫简介'
         },
-        cover: {
+        cover_url: {
             type: DataTypes.STRING,
             allowNull: false,
             comment: '动漫封面'
         },
-        banner: {
+        banner_url: {
             type: DataTypes.STRING,
             allowNull: false,
             comment: '动漫横幅'

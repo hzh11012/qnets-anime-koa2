@@ -63,7 +63,7 @@ class RatingDao {
                         attributes: [
                             'id',
                             'name',
-                            'cover',
+                            'cover_url',
                             'remark',
                             'status',
                             'type'
@@ -115,7 +115,7 @@ class RatingDao {
                         as: 'anime',
                         attributes: [
                             'name',
-                            'cover',
+                            'cover_url',
                             'remark',
                             'status',
                             'type'

@@ -56,6 +56,7 @@ POST    /admin_create
 | name        | `string(50)` | -      | ✅       | 动漫名称                                         |
 | description | `string`     | -      | ✅       | 动漫简介                                         |
 | cover       | `string`     | -      | ✅       | 动漫封面                                         |
+| banner      | `string`     | -      | ✅       | 动漫横幅                                         |
 | remark      | `string(50)` | -      | -        | 动漫备注                                         |
 | status      | `number`     | -      | ✅       | 动漫状态 0-即将上线 1-连载中 2-已完结            |
 | type        | `number`     | -      | ✅       | 动漫类型 0-剧场版 1-日番 2-美番 3-里番           |
@@ -115,6 +116,7 @@ POST    /list
                 "name": "动漫",
                 "description": "我是动漫简介",
                 "cover": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
+                "banner": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
                 "remark": null,
                 "status": 2,
                 "type": 3,
@@ -181,6 +183,7 @@ POST    /admin_edit
 | name        | `string(50)` | -      | ✅       | 动漫名称                                         |
 | description | `string`     | -      | ✅       | 动漫简介                                         |
 | cover       | `string`     | -      | ✅       | 动漫封面                                         |
+| banner      | `string`     | -      | ✅       | 动漫横幅                                         |
 | remark      | `string(50)` | -      | -        | 动漫备注                                         |
 | status      | `number`     | -      | ✅       | 动漫状态 0-即将上线 1-连载中 2-已完结            |
 | type        | `number`     | -      | ✅       | 动漫类型 0-剧场版 1-日番 2-美番 3-里番           |

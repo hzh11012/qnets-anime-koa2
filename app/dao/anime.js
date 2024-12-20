@@ -14,6 +14,7 @@ class AnimeDao {
             name,
             description,
             cover,
+            banner,
             remark,
             status,
             type,
@@ -27,15 +28,29 @@ class AnimeDao {
         } = params;
 
         const where_filter = new WhereFilter();
-        where_filter.setFilter('id', category);
+        where_filter.setWhere(Op.or, [
+            {
+                name
+            },
+            {
+                sid,
+                season
+            }
+        ]);
         const filter = where_filter.getFilter();
 
+        const category_where_filter = new WhereFilter();
+        category_where_filter.setFilter('id', category);
+        const category_filter = category_where_filter.getFilter();
+
         try {
-            const hasAnime = await Anime.findOne({where: {name, season}});
+            const hasAnime = await Anime.findOne({
+                where: filter
+            });
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
-                where: filter
+                where: category_filter
             });
             if (hasCategory.length !== category.length)
                 throw new NotFound('分类不存在');
@@ -47,6 +62,7 @@ class AnimeDao {
                         name,
                         description,
                         cover,
+                        banner,
                         remark,
                         status,
                         type,
@@ -148,6 +164,7 @@ class AnimeDao {
             name,
             description,
             cover,
+            banner,
             remark,
             status,
             type,
@@ -181,6 +198,7 @@ class AnimeDao {
             anime.name = name;
             anime.description = description;
             anime.cover = cover;
+            anime.banner = banner;
             anime.remark = remark;
             anime.status = status;
             anime.type = type;
@@ -208,7 +226,10 @@ class AnimeDao {
                     {
                         model: Video
                     }
-                ]
+                ],
+                attributes: {
+                    exclude: ['updated_at']
+                }
             });
             if (!anime) throw new NotFound('动漫不存在');
 
@@ -220,14 +241,17 @@ class AnimeDao {
             const filter = where_filter.getFilter();
 
             const relatedAnime = await Anime.findAll({
-                where: filter
+                where: filter,
+                attributes: {
+                    include: ['id', 'name', 'cover', 'banner', 'status']
+                }
             });
 
             return [
                 null,
                 {
-                    anime,
-                    relatedAnime
+                    ...anime.toJSON(),
+                    related: relatedAnime
                 }
             ];
         } catch (err) {

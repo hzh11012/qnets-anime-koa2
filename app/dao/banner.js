@@ -51,7 +51,7 @@ class BannerDao {
                     include: [
                         [col('Anime.name'), 'title'],
                         [col('Anime.description'), 'description'],
-                        [col('Anime.cover'), 'cover'],
+                        [col('Anime.banner'), 'banner'],
                         [col('Anime.type'), 'type']
                     ]
                 },

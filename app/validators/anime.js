@@ -1,14 +1,15 @@
 const Zod = require('zod');
 const {commonList, validate, commonIdValidator} = require('@validators/common');
 
-const COVER_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/;
+const COVER_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/,
+    BANNER_REG = /^(https?:)?\/\/.*\.(jpe?g|png|webp)$/;
 const YEAR_REG = /^\d{4}$/;
 
 const AnimeCreateOrEditValidator = parameter => {
     const schema = Zod.object({
         sid: Zod.number({
-            required_error: 'id 不能为空',
-            invalid_type_error: 'id 类型错误'
+            required_error: 'sid 不能为空',
+            invalid_type_error: 'sid 类型错误'
         }),
         name: Zod.string({
             required_error: 'name 不能为空',
@@ -36,6 +37,17 @@ const AnimeCreateOrEditValidator = parameter => {
             .min(1, 'cover 不能为空')
             .regex(COVER_REG, {
                 message: 'cover 格式不正确'
+            }),
+        banner: Zod.string({
+            required_error: 'banner 不能为空',
+            invalid_type_error: 'banner 类型错误'
+        })
+            .max(255, {
+                message: 'banner 长度不能超过255'
+            })
+            .min(1, 'banner 不能为空')
+            .regex(BANNER_REG, {
+                message: 'banner 格式不正确'
             }),
         remark: Zod.string({
             invalid_type_error: 'remark 类型错误'

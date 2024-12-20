@@ -35,6 +35,11 @@ Anime.init(
             allowNull: false,
             comment: '动漫封面'
         },
+        banner: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            comment: '动漫横幅'
+        },
         remark: {
             type: DataTypes.STRING(50),
             allowNull: true,

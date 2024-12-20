@@ -25,6 +25,7 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         name: parameter.name,
         description: parameter.description,
         cover: parameter.cover,
+        banner: parameter.banner,
         remark: parameter.remark,
         status: parameter.status,
         type: parameter.type,
@@ -94,6 +95,7 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
         name: parameter.name,
         description: parameter.description,
         cover: parameter.cover,
+        banner: parameter.banner,
         remark: parameter.remark,
         status: parameter.status,
         type: parameter.type,
@@ -115,7 +117,7 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 动漫详情 - admin
-router.post('/detail', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin_detail', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeDetailValidator(ctx.request.body);
     const [err, data] = await AnimeDao.detail({
         id: parameter.id

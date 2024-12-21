@@ -179,6 +179,7 @@ POST    /admin_edit
 
 | 参数        | 类型         | 默认值 | 是否必填 | 说明                                             |
 | ----------- | ------------ | ------ | -------- | ------------------------------------------------ |
+| id          | `number`     | -      | ✅       | 动漫ID                                           |
 | sid         | `number`     | -      | ✅       | 动漫系列ID                                       |
 | name        | `string(50)` | -      | ✅       | 动漫名称                                         |
 | description | `string`     | -      | ✅       | 动漫简介                                         |
@@ -202,5 +203,84 @@ POST    /admin_edit
     "msg": "修改动漫成功",
     "code": 200,
     "errorCode": 0
+}
+```
+
+## 动漫详情 - 管理员
+
+> scope = 3
+
+```
+POST    /admin_detail
+```
+
+### 参数说明
+
+| 参数 | 类型     | 默认值 | 是否必填 | 说明   |
+| ---- | -------- | ------ | -------- | ------ |
+| id   | `number` | -      | ✅       | 动漫ID |
+
+### 成功操作返回
+
+```json
+{
+    "msg": "修改动漫成功",
+    "code": 200,
+    "errorCode": 0,
+    "data": {
+        "id": 1,
+        "sid": 1,
+        "season_name": "第一季",
+        "created_at": "2024-12-21 03:19:57",
+        "name": "无职转生：到了异世界就拿出真本事",
+        "description": "一场车祸夺走了34岁无业家里蹲男青年的生命，当他再度苏醒之后，震惊的发现自己竟然穿越到了异世界中，附身在了一位名为鲁迪乌斯（内山夕实配音）的贵族少爷身上。面对这命运之神给予他的重新来过的机会，男子发誓这一世一定要拿出点真本事来认真的生活。然而，尽管鲁迪乌斯有着这般宏达的决心，但废柴大叔的本性却还是屡屡暴露。",
+        "cover_url": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
+        "banner_url": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
+        "remark": "",
+        "status": 2,
+        "type": 1,
+        "director": "冈本学",
+        "cv": "内山夕实/小原好美/茅野爱衣/加隈亚衣/森川智之/金元寿子/Lynn/浪川大辅",
+        "year": "2021",
+        "month": 0,
+        "season": 1,
+        "play_count": "21035",
+        "score_count": 0,
+        "collection_count": 0,
+        "score": null,
+        "videos": [
+            {
+                "id": 1,
+                "title": "你好世界",
+                "episode": 1,
+                "url": "https://localhost.qnets.cn/anime/01/index.m3u8",
+                "play_count": 11112
+            }
+        ],
+        "categories": [
+            {
+                "id": 1,
+                "category": "异世界"
+            },
+            {
+                "id": 2,
+                "category": "冒险"
+            }
+        ],
+        "related": [
+            {
+                "id": 2,
+                "name": "无职转生Ⅱ ～到了异世界就拿出真本事～",
+                "cover_url": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
+                "banner_url": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
+                "year": "2023",
+                "month": 2,
+                "cv": "内山夕实/杉田智和/白石晴香/小林优/羽多野涉/泽城千春/山本格/鸟海浩辅/上田丽奈/兴津和幸/茅野爱衣",
+                "director": "平野宏树 ",
+                "status": 2,
+                "type": 1
+            }
+        ]
+    }
 }
 ```

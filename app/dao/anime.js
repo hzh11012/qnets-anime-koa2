@@ -180,18 +180,35 @@ class AnimeDao {
         } = params;
 
         const where_filter = new WhereFilter();
-        where_filter.setFilter('id', category);
+        where_filter.setWhere('id', {
+            [Op.ne]: id
+        });
+        where_filter.setWhere(Op.or, [
+            {
+                name
+            },
+            {
+                sid,
+                season
+            }
+        ]);
         const filter = where_filter.getFilter();
+
+        const category_where_filter = new WhereFilter();
+        category_where_filter.setFilter('id', category);
+        const category_filter = category_where_filter.getFilter();
 
         try {
             const anime = await Anime.findByPk(id);
             if (!anime) throw new NotFound('动漫不存在');
 
-            const hasAnime = await Anime.findOne({where: {name, season}});
+            const hasAnime = await Anime.findOne({
+                where: filter
+            });
             if (hasAnime) throw new Existing('动漫已存在');
 
             const hasCategory = await Category.findAll({
-                where: filter
+                where: category_filter
             });
             if (hasCategory.length !== category.length)
                 throw new NotFound('分类不存在');

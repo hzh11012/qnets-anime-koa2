@@ -26,7 +26,7 @@ Anime.init(
             comment: '动漫名称'
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             allowNull: false,
             comment: '动漫简介'
         },

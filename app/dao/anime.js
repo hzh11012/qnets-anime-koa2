@@ -1,10 +1,12 @@
 const {sequelize} = require('@core/db');
 const {Anime} = require('@models/anime');
 const {Video} = require('@models/video');
+const {Rating} = require('@models/rating');
+const {Collection} = require('@models/collection');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
 const {Category} = require('@models/category');
-const {Op} = require('sequelize');
+const {Op, literal} = require('sequelize');
 
 class AnimeDao {
     // 创建动漫
@@ -224,12 +226,75 @@ class AnimeDao {
             const anime = await Anime.findByPk(id, {
                 include: [
                     {
-                        model: Video
+                        model: Video,
+                        as: 'videos',
+                        attributes: [
+                            'id',
+                            'title',
+                            'episode',
+                            'url',
+                            'play_count'
+                        ]
+                    },
+                    {
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        as: 'categories',
+                        attributes: ['id', 'category']
+                    },
+                    {
+                        model: Rating,
+                        attributes: []
+                    },
+                    {
+                        model: Collection,
+                        attributes: []
                     }
                 ],
                 attributes: {
-                    exclude: ['updated_at']
-                }
+                    exclude: ['updated_at'],
+                    include: [
+                        [
+                            literal(`(
+                                SELECT SUM(play_count)
+                                    FROM video
+                                    WHERE
+                                    video.aid = anime.id
+                                )`),
+                            'play_count'
+                        ],
+                        [
+                            literal(`(
+                                SELECT COUNT(*)
+                                    FROM rating
+                                    WHERE
+                                    rating.aid = anime.id
+                                )`),
+                            'score_count'
+                        ],
+                        [
+                            literal(`(
+                                SELECT COUNT(*)
+                                    FROM collection
+                                    WHERE
+                                    collection.aid = anime.id
+                                )`),
+                            'collection_count'
+                        ],
+                        [
+                            literal(`(
+                                SELECT ROUND(AVG(score), 1)
+                                    FROM rating
+                                    WHERE
+                                    rating.aid = anime.id
+                                )`),
+                            'score'
+                        ]
+                    ]
+                },
+                order: [['videos', 'episode', 'ASC']]
             });
             if (!anime) throw new NotFound('动漫不存在');
 
@@ -242,15 +307,18 @@ class AnimeDao {
 
             const relatedAnime = await Anime.findAll({
                 where: filter,
-                attributes: {
-                    include: [
-                        'id',
-                        'name',
-                        'banner_url',
-                        'banner_url',
-                        'status'
-                    ]
-                }
+                attributes: [
+                    'id',
+                    'name',
+                    'cover_url',
+                    'banner_url',
+                    'year',
+                    'month',
+                    'cv',
+                    'director',
+                    'status',
+                    'type'
+                ]
             });
 
             return [

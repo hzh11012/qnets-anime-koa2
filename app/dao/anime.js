@@ -2,6 +2,7 @@ const {sequelize} = require('@core/db');
 const {Anime} = require('@models/anime');
 const {Video} = require('@models/video');
 const {Rating} = require('@models/rating');
+const {Banner} = require('@models/banner');
 const {Collection} = require('@models/collection');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
@@ -124,22 +125,40 @@ class AnimeDao {
                 offset: (page - 1) * pageSize,
                 where: filter,
                 attributes: {
-                    exclude: ['updated_at']
+                    exclude: ['updated_at'],
+                    include: [
+                        [
+                            literal(`(
+                                SELECT COUNT(*)
+                                    FROM banner
+                                    WHERE
+                                    banner.aid = anime.id
+                                )`),
+                            'is_swiper'
+                        ]
+                    ]
                 },
                 distinct: true,
-                include: {
-                    model: Category,
-                    through: {
-                        attributes: []
+                include: [
+                    {
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        as: 'categories',
+                        attributes: ['id', 'category'],
+                        where: child_filter
                     },
-                    as: 'categories',
-                    attributes: ['id', 'category'],
-                    where: child_filter
-                },
+                    {
+                        model: Banner,
+                        attributes: []
+                    }
+                ],
                 order: [[orderBy, order]]
             });
             return [null, list];
         } catch (err) {
+            console.log(err);
             return [err, null];
         }
     }

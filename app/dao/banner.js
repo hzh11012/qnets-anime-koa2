@@ -43,7 +43,7 @@ class BannerDao {
         const filter = where_filter.getFilter();
 
         try {
-            const list = await Rating.findAndCountAll({
+            const list = await Banner.findAndCountAll({
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
                 attributes: {
@@ -51,7 +51,7 @@ class BannerDao {
                     include: [
                         [col('Anime.name'), 'title'],
                         [col('Anime.description'), 'description'],
-                        [col('Anime.banner'), 'banner'],
+                        [col('Anime.banner_url'), 'banner_url'],
                         [col('Anime.type'), 'type']
                     ]
                 },
@@ -67,15 +67,20 @@ class BannerDao {
             });
             return [null, list];
         } catch (err) {
+            console.log(err);
             return [err, null];
         }
     }
 
-    // 删除评分
+    // 删除轮播图
     static async delete(params) {
         const {id} = params;
         try {
-            const banner = await Banner.findByPk(id);
+            const banner = await Banner.findOne({
+                where: {
+                    aid: id
+                }
+            });
             if (!banner) throw new NotFound('轮播图不存在');
             await banner.destroy();
             return [null, null];

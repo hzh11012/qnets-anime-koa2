@@ -19,7 +19,7 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = BannerCreateValidator(ctx.request.body);
 
     const [err] = await BannerDao.create({
-        aid: parameter.id
+        aids: parameter.ids
     });
 
     if (!err) {

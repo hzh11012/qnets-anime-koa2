@@ -7,21 +7,35 @@ const WhereFilter = require('@lib/where-filter');
 class BannerDao {
     // 新增轮播图
     static async create(params) {
-        const {aid} = params;
+        const {aids} = params;
+
+        const where_filter = new WhereFilter();
+        where_filter.setFilter('id', aids);
+        const filter = where_filter.getFilter();
+
+        const banner_where_filter = new WhereFilter();
+        banner_where_filter.setFilter('aid', aids);
+        const banner_filter = banner_where_filter.getFilter();
+
         try {
-            const hasAnime = await Anime.findByPk(aid);
-            if (!hasAnime) throw new NotFound('动漫不存在');
-
-            const hasBanner = await Banner.findOne({
-                where: {
-                    aid
-                }
+            const hasAnime = await Anime.findAll({
+                where: filter
             });
-            if (hasBanner) throw new Existing('轮播图已存在');
+            if (hasAnime.length !== aids.length)
+                throw new NotFound('动漫不存在');
 
-            const banner = new Banner();
-            banner.aid = aid;
-            await banner.save();
+            const hasBanner = await Banner.findAll({
+                where: banner_filter
+            });
+
+            if (hasBanner.length) throw new Existing('轮播图已存在');
+
+            const banners = aids.map(id => {
+                return {
+                    aid: id
+                };
+            });
+            await Banner.bulkCreate(banners);
             return [null, null];
         } catch (err) {
             return [err, null];

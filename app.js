@@ -8,6 +8,8 @@ const ratelimit = require('koa-ratelimit');
 const InitManager = require('@core/init');
 const errorConf = require('@middlewares/exception');
 const dotenv = require('dotenv');
+const {createServer} = require('http');
+const {Server} = require('socket.io');
 
 const envFile =
     process.env.NODE_ENV === 'production'
@@ -46,10 +48,19 @@ app.use(
 // routes自动注册
 InitManager.initCore(app);
 
-app.listen(process.env.NODE_PORT, () =>
+const httpServer = createServer(app.callback());
+const io = new Server(httpServer, {
+    cors: true
+});
+
+io.on('connection', socket => {
+    // TODO
+});
+
+httpServer.listen(process.env.NODE_PORT, () =>
     console.log(
         `当前环境: ${process.env.NODE_ENV} Node.js 已启动服务，地址: http://localhost:${process.env.NODE_PORT}`
     )
 );
 
-module.exports = app;
+module.exports = httpServer;

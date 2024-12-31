@@ -1,5 +1,7 @@
 const {Banner} = require('@models/banner');
 const {Anime} = require('@models/anime');
+const {Video} = require('@app/models/video');
+const {Collection} = require('@app/models/collection');
 const {NotFound, Existing} = require('@core/http-exception');
 const {col} = require('sequelize');
 const WhereFilter = require('@lib/where-filter');
@@ -42,8 +44,8 @@ class BannerDao {
         }
     }
 
-    // 轮播图列表
-    static async list(params) {
+    // 轮播图列表 - admin
+    static async adminList(params) {
         const {
             page = 1,
             pageSize = 10,
@@ -81,7 +83,63 @@ class BannerDao {
             });
             return [null, list];
         } catch (err) {
-            console.log(err);
+            return [err, null];
+        }
+    }
+
+    // 轮播图展示
+    static async list(params) {
+        const {uid} = params;
+
+        try {
+            const list = await Banner.findAll({
+                limit: 6,
+                offset: 0,
+                attributes: ['id', 'aid'],
+                distinct: true,
+                include: [
+                    {
+                        model: Anime,
+                        attributes: ['id', 'name', 'description', 'banner_url'],
+                        include: [
+                            {
+                                model: Video,
+                                attributes: ['id', 'episode', 'title'],
+                                limit: 1,
+                                order: [['episode', 'DESC']],
+                                separate: true
+                            },
+                            {
+                                model: Collection,
+                                attributes: ['id'],
+                                where: {
+                                    uid
+                                },
+                                separate: true
+                            }
+                        ]
+                    }
+                ],
+                order: [['created_at', 'DESC']]
+            });
+
+            const data = list.map(item => {
+                const {id, aid, anime} = item;
+                const {name, description, banner_url, videos, collections} =
+                    anime;
+                return {
+                    id,
+                    aid,
+                    title: name,
+                    description,
+                    banner_url,
+                    is_collected: !!collections.length,
+                    latest_video: videos[0]
+                };
+            });
+
+            return [null, data];
+        } catch (err) {
             return [err, null];
         }
     }

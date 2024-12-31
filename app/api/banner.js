@@ -30,10 +30,10 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
     }
 });
 
-//动漫轮播图列表
-router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
+//动漫轮播图列表 - admin
+router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = BannerListValidator(ctx.request.body);
-    const [err, data] = await BannerDao.list({
+    const [err, data] = await BannerDao.adminList({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -41,6 +41,19 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
         keyword: parameter.keyword
     });
 
+    if (!err) {
+        ctx.response.status = 200;
+        ctx.body = res.json(data, '获取动漫轮播图列表成功');
+    } else {
+        ctx.body = res.fail(err);
+    }
+});
+
+//动漫轮播图列表
+router.get('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
+    const [err, data] = await BannerDao.list({
+        uid: ctx.auth.id
+    });
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.json(data, '获取动漫轮播图列表成功');

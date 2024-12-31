@@ -64,12 +64,12 @@ POST    /admin_create
 }
 ```
 
-## 动漫轮播图列表
+## 动漫轮播图列表 - 管理员
 
-> scope = 1
+> scope = 3
 
 ```
-POST    /list
+POST    /admin_list
 ```
 
 ### 参数说明
@@ -100,6 +100,46 @@ POST    /list
                 "banner_url": "https://localhost:5200/images/banner.png",
                 "type": 1,
                 "created_at": "2024-11-30 20:49:30"
+            }
+        ]
+    }
+}
+```
+
+## 动漫轮播图列表
+
+> scope = 1
+
+```
+POST    /list
+```
+
+### 参数说明
+
+无
+
+### 成功操作返回
+
+```json
+{
+    "code": 200,
+    "msg": "获取动漫轮播图列表成功",
+    "errorCode": 0,
+    "data": {
+        "count": 1,
+        "rows": [
+            {
+                "id": 21,
+                "aid": 2,
+                "title": "再见人生、你好龙生",
+                "description": "有一天，最古老的神龙被人类讨伐了。历经悠久的岁月，力量强大到足以令诸神跪拜的龙，在孤独之中接受了自己的死亡。但当龙再次回过神来时，他已经获得了身为边境村民多兰的第二人生。",
+                "banner_url": "https://localhost:5200/images/banner.png",
+                "is_collected": false,
+                "latest_video": {
+                    "id": 21,
+                    "episode": 2,
+                    "title": "禁忌"
+                }
             }
         ]
     }

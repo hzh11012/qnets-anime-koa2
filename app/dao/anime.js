@@ -7,6 +7,7 @@ const {Collection} = require('@models/collection');
 const {Existing, NotFound} = require('@core/http-exception');
 const WhereFilter = require('@lib/where-filter');
 const {Category} = require('@models/category');
+const {NewAnime} = require('@app/models/new_anime');
 const {Op, literal} = require('sequelize');
 
 class AnimeDao {
@@ -135,6 +136,15 @@ class AnimeDao {
                                     banner.aid = anime.id
                                 )`),
                             'is_swiper'
+                        ],
+                        [
+                            literal(`(
+                                SELECT COUNT(*)
+                                    FROM new_anime
+                                    WHERE
+                                    new_anime.aid = anime.id
+                                )`),
+                            'is_new_anime'
                         ]
                     ]
                 },
@@ -152,13 +162,16 @@ class AnimeDao {
                     {
                         model: Banner,
                         attributes: []
+                    },
+                    {
+                        model: NewAnime,
+                        attributes: []
                     }
                 ],
                 order: [[orderBy, order]]
             });
             return [null, list];
         } catch (err) {
-            console.log(err);
             return [err, null];
         }
     }

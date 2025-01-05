@@ -111,7 +111,7 @@ POST    /admin_list
 > scope = 1
 
 ```
-POST    /list
+GET    /list
 ```
 
 ### 参数说明

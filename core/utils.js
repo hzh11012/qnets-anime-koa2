@@ -21,6 +21,10 @@ const formatDate = (date, format = 'YYYY-MM-DD HH:mm:ss') => {
     return date ? moment(date).format(format) : null;
 };
 
+const formatTime = (date, format = 'HH:mm') => {
+    return date ? moment(date, 'LTS').format(format) : null;
+};
+
 const secondsToHms = seconds => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -62,6 +66,7 @@ module.exports = {
     random,
     encodeBase64,
     formatDate,
+    formatTime,
     secondsToHms,
     colorRgbToHex
 };

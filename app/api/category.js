@@ -5,7 +5,7 @@ const {
     CategoryListValidator,
     CategoryDeleteValidator
 } = require('@validators/category');
-const {ADMIN_SCOPE} = require('@lib/scope');
+const {ADMIN_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
 const res = new Resolve();
@@ -33,7 +33,7 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
 // 动漫分类列表 - admin
 router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CategoryListValidator(ctx.request.body);
-    const [err, data] = await CategoryDao.list({
+    const [err, data] = await CategoryDao.adminList({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -41,6 +41,17 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
         keyword: parameter.keyword
     });
 
+    if (!err) {
+        ctx.response.status = 200;
+        ctx.body = res.json(data, '获取动漫分类列表成功');
+    } else {
+        ctx.body = res.fail(err);
+    }
+});
+
+// 动漫分类列表
+router.get('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
+    const [err, data] = await CategoryDao.list();
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.json(data, '获取动漫分类列表成功');

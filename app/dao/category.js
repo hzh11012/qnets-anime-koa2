@@ -23,8 +23,8 @@ class CategoryDao {
         }
     }
 
-    // 动漫分类列表
-    static async list(params) {
+    // 动漫分类列表 - admin
+    static async adminList(params) {
         const {
             page = 1,
             pageSize = 10,
@@ -47,6 +47,20 @@ class CategoryDao {
                     exclude: ['updated_at']
                 },
                 order: [[orderBy, order]]
+            });
+            return [null, list];
+        } catch (err) {
+            return [err, null];
+        }
+    }
+
+    // 动漫分类
+    static async list() {
+        try {
+            const list = await Category.findAll({
+                attributes: {
+                    exclude: ['created_at', 'updated_at']
+                }
             });
             return [null, list];
         } catch (err) {

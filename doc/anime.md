@@ -124,6 +124,7 @@ POST    /list
                 "cv": null,
                 "year": "2023",
                 "is_swiper": 0,
+                "is_new_anime": 0,
                 "month": 3,
                 "season": 1,
                 "season_name": "第一季",

@@ -34,8 +34,8 @@ class NewAnimeDao {
         }
     }
 
-    // 新番列表 - admin
-    static async adminList(params) {
+    // 新番列表
+    static async list(params) {
         const {
             page = 1,
             pageSize = 10,

@@ -35,7 +35,7 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
 // 新番列表
 router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
     const parameter = NewAnimeListValidator(ctx.request.body);
-    const [err, data] = await NewAnimeDao.adminList({
+    const [err, data] = await NewAnimeDao.list({
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,

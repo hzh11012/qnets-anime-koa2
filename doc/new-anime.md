@@ -52,9 +52,9 @@ POST    /admin_create
 
 | 参数        | 类型          | 默认值 | 是否必填 | 说明     |
 | ----------- | ------------- | ------ | -------- | -------- |
-| id          | `number`      | -      | -        | 动漫ID   |
-| update_day  | `number(1-7)` | -      | -        | 更新日期 |
-| update_time | `string`      | -      | -        | 更新时间 |
+| id          | `number`      | -      | ✅       | 动漫ID   |
+| update_day  | `number(1-7)` | -      | ✅       | 更新日期 |
+| update_time | `string`      | -      | ✅       | 更新时间 |
 
 ### 成功操作返回
 
@@ -124,7 +124,7 @@ POST    /admin_delete
 
 | 参数 | 类型     | 默认值 | 是否必填 | 说明   |
 | ---- | -------- | ------ | -------- | ------ |
-| id   | `number` | -      | ✅       | 动漫id |
+| id   | `number` | -      | ✅       | 新番id |
 
 ### 成功操作返回
 

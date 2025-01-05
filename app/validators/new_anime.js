@@ -32,9 +32,7 @@ const NewAnimeListValidator = parameter => {
         update_day: Zod.number({
             invalid_type_error: 'update_day 类型错误'
         })
-            .int('update_day 必须为整数')
-            .min(1, 'update_day 最小为1')
-            .max(7, 'update_day 最大为7')
+            .array()
             .optional(),
         keyword: Zod.string({
             invalid_type_error: 'keyword 类型错误'

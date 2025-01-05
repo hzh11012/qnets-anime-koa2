@@ -83,7 +83,7 @@ POST    /list
 | order      | `'DESC' \| 'ASC'` | `'DESC'`       | -        | 排序字段                             |
 | orderBy    | `string`          | `'created_at'` | -        | 排序方式                             |
 | keyword    | `string`          | -              | -        | 搜索关键字，搜索范围为`'Anime.name'` |
-| update_day | `number(1-7)`     | -              | -        | 更新日期                             |
+| update_day | `number(1-7)[]`   | -              | -        | 更新日期                             |
 
 ### 成功操作返回
 

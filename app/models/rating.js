@@ -1,11 +1,23 @@
 const {sequelize} = require('@core/db');
-const {Model, DataTypes} = require('sequelize');
+const {Model, DataTypes, fn, col} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {User} = require('@models/user');
-const {Anime} = require('@models/anime');
 
-// 动漫评分表模型
-class Rating extends Model {}
+/**
+ * @title 动漫评分模型
+ */
+class Rating extends Model {
+    /**
+     * @title 获取动漫平均分
+     * @param {number} animeId - 动漫ID
+     * @returns {Promise<number>} - 动漫平均分
+     */
+    static async getAverageScore(animeId) {
+        return await this.findOne({
+            where: {anime_id: animeId},
+            attributes: [[fn('AVG', col('score')), 'average_score']]
+        });
+    }
+}
 
 Rating.init(
     {
@@ -13,25 +25,25 @@ Rating.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫评分主键ID'
+            comment: '动漫评分ID'
         },
-        uid: {
+        user_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '用户id'
+            comment: '用户ID'
         },
-        aid: {
+        anime_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '动漫id'
+            comment: '动漫ID'
         },
         score: {
-            type: DataTypes.TINYINT,
+            type: DataTypes.TINYINT.UNSIGNED,
             allowNull: false,
             comment: '动漫评分分数'
         },
         content: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(1000),
             allowNull: false,
             comment: '动漫评分内容'
         },
@@ -55,17 +67,16 @@ Rating.init(
     {
         sequelize,
         modelName: 'rating',
-        tableName: 'rating'
+        tableName: 'rating',
+        indexes: [
+            {
+                fields: ['user_id', 'anime_id'],
+                unique: true,
+                name: 'idx__rating__user_id__anime_id'
+            }
+        ]
     }
 );
-
-// 用户与评分之间的一对多关系
-User.hasMany(Rating, {foreignKey: 'uid', onDelete: 'CASCADE'});
-Rating.belongsTo(User, {foreignKey: 'uid'});
-
-// 动漫与评分之间的一对多关系
-Anime.hasMany(Rating, {foreignKey: 'aid', onDelete: 'CASCADE'});
-Rating.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
     Rating

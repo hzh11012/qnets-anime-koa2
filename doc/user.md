@@ -1,48 +1,14 @@
+# 用户
+
 ## 接口前缀
 
 ```shell
 http://localhost:5200/api/user
 ```
 
-## 接口鉴权
-
-> 接口无特殊说明，必须携带token
-
-在 Postman 软件里选择 Authorization，Type选择Basic Auth，Username 填写上token值即可。
-
-在代码中需要在header上携带token：
-
-```js
-// 转码 token
-// 需要安装一下base64: npm install js-base64
-import {Base64} from 'js-base64';
-function _encode() {
-    const token = localStorage.getItem('token');
-    const base64 = Base64.encode(token + ':');
-    return 'Basic ' + base64;
-}
-
-// 代码示例：重点看header携带 Authorization Basic + token
-ajax({
-    url: 'http://localhost:5200/api/user/info',
-    method: 'GET',
-    success: res => {
-        console.log(res.data);
-    },
-    header: {
-        Authorization: _encode()
-    }
-});
-
-// 在 axios 携带token
-config.headers['Authorization'] = _encode();
-```
-
-# 用户
-
 ## 用户信息
 
-> scope = 0
+> scope >= 0
 
 ```
 GET    /info
@@ -57,13 +23,12 @@ GET    /info
 ```json
 {
     "code": 200,
-    "msg": "success",
-    "errorCode": 0,
+    "msg": "获取用户信息成功",
     "data": {
         "id": 1,
         "phone": "166****6241",
-        "scope": 0,
-        "nickname": "用户25244885",
+        "scope": 3,
+        "nickname": "日常一号突击手",
         "avatar": null,
         "created_at": "2024-11-14 11:33:00"
     }
@@ -75,7 +40,7 @@ GET    /info
 > scope = 3
 
 ```
-POST    /admin_list
+POST    /admin/list
 ```
 
 ### 参数说明
@@ -95,14 +60,13 @@ POST    /admin_list
 {
     "code": 200,
     "msg": "获取用户列表成功",
-    "errorCode": 0,
     "data": {
         "count": 1,
         "rows": [
             {
                 "id": 1,
                 "phone": "166****6241",
-                "nickname": "用户25244885",
+                "nickname": "日常一号突击手",
                 "avatar": null,
                 "scope": 2,
                 "created_at": "2024-11-14 11:33:00"
@@ -117,7 +81,7 @@ POST    /admin_list
 > scope = 3
 
 ```
-POST    /admin_delete
+POST    /admin/delete
 ```
 
 ### 参数说明
@@ -130,9 +94,8 @@ POST    /admin_delete
 
 ```json
 {
-    "msg": "删除用户成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "删除用户成功"
 }
 ```
 
@@ -141,7 +104,7 @@ POST    /admin_delete
 > scope = 3
 
 ```
-POST    /admin_edit
+POST    /admin/edit
 ```
 
 ### 参数说明
@@ -149,16 +112,39 @@ POST    /admin_edit
 | 参数     | 类型     | 默认值 | 是否必填 | 说明     |
 | -------- | -------- | ------ | -------- | -------- |
 | id       | `number` | -      | ✅       | 用户id   |
-| nickname | `string` | -      | ✅       | 用户昵称 |
-| avatar   | `string` | -      | ✅       | 用户头像 |
-| scope    | `number` | -      | ✅       | 用户权限 |
+| nickname | `string` | -      | -        | 用户昵称 |
+| avatar   | `string` | -      | -        | 用户头像 |
+| scope    | `number` | -      | -        | 用户权限 |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "修改用户信息成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "修改用户信息成功"
+}
+```
+
+## 用户修改
+
+> scope >= 1
+
+```
+POST    /edit
+```
+
+### 参数说明
+
+| 参数     | 类型     | 默认值 | 是否必填 | 说明     |
+| -------- | -------- | ------ | -------- | -------- |
+| nickname | `string` | -      | -        | 用户昵称 |
+| avatar   | `string` | -      | -        | 用户头像 |
+
+### 成功操作返回
+
+```json
+{
+    "code": 200,
+    "msg": "修改信息成功"
 }
 ```

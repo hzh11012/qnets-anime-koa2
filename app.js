@@ -17,6 +17,9 @@ const envFile =
         : '.env.development';
 dotenv.config({path: envFile});
 
+// 初始化MySQL数据库
+require('@models/index');
+
 const app = new Koa();
 
 app.use(cors());

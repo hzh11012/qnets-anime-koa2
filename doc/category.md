@@ -1,75 +1,40 @@
+# 分类
+
 ## 接口前缀
 
 ```shell
 http://localhost:5200/api/category
 ```
 
-## 接口鉴权
-
-> 接口无特殊说明，必须携带token
-
-在 Postman 软件里选择 Authorization，Type选择Basic Auth，Username 填写上token值即可。
-
-在代码中需要在header上携带token：
-
-```js
-// 转码 token
-// 需要安装一下base64: npm install js-base64
-import {Base64} from 'js-base64';
-function _encode() {
-    const token = localStorage.getItem('token');
-    const base64 = Base64.encode(token + ':');
-    return 'Basic ' + base64;
-}
-
-// 代码示例：重点看header携带 Authorization Basic + token
-ajax({
-    url: 'http://localhost:5200/api/user/info',
-    method: 'GET',
-    success: res => {
-        console.log(res.data);
-    },
-    header: {
-        Authorization: _encode()
-    }
-});
-
-// 在 axios 携带token
-config.headers['Authorization'] = _encode();
-```
-
-# 动漫分类
-
-## 创建动漫分类 - 管理员
+## 创建分类 - 管理员
 
 > scope = 3
 
 ```
-POST    /admin_create
+POST    /admin/create
 ```
 
 ### 参数说明
 
-| 参数     | 类型         | 默认值 | 是否必填 | 说明       |
-| -------- | ------------ | ------ | -------- | ---------- |
-| category | `string(25)` | -      | ✅       | 动漫分类名 |
+| 参数 | 类型         | 默认值 | 是否必填 | 说明     |
+| ---- | ------------ | ------ | -------- | -------- |
+| name | `string(25)` | -      | ✅       | 分类名称 |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "创建动漫分类成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "创建分类成功"
 }
 ```
 
-## 动漫分类列表 - 管理员
+## 分类列表 - 管理员
 
 > scope = 3
 
 ```
-POST    /admin_list
+POST    /admin/list
 ```
 
 ### 参数说明
@@ -87,14 +52,13 @@ POST    /admin_list
 ```json
 {
     "code": 200,
-    "msg": "获取动漫分类列表成功",
-    "errorCode": 0,
+    "msg": "获取分类列表成功",
     "data": {
         "count": 1,
         "rows": [
             {
                 "id": 21,
-                "category": "异世界",
+                "name": "异世界",
                 "created_at": "2024-11-30 20:49:30"
             }
         ]
@@ -102,54 +66,25 @@ POST    /admin_list
 }
 ```
 
-## 动漫分类列表
-
-> scope = 1
-
-```
-GET    /list
-```
-
-### 参数说明
-
-无
-
-### 成功操作返回
-
-```json
-{
-    "code": 200,
-    "msg": "获取动漫分类列表成功",
-    "errorCode": 0,
-    "data": [
-        {
-            "id": 21,
-            "category": "异世界"
-        }
-    ]
-}
-```
-
-## 动漫分类删除 - 管理员
+## 分类删除 - 管理员
 
 > scope = 3
 
 ```
-POST    /admin_delete
+POST    /admin/delete
 ```
 
 ### 参数说明
 
-| 参数 | 类型     | 默认值 | 是否必填 | 说明       |
-| ---- | -------- | ------ | -------- | ---------- |
-| id   | `number` | -      | ✅       | 动漫分类id |
+| 参数 | 类型     | 默认值 | 是否必填 | 说明   |
+| ---- | -------- | ------ | -------- | ------ |
+| id   | `number` | -      | ✅       | 分类id |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "删除动漫分类成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "删除分类成功"
 }
 ```

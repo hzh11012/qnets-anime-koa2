@@ -27,10 +27,10 @@ sequelize.sync({force: false});
 sequelize
     .authenticate()
     .then(res => {
-        console.log('已成功建立连接');
+        console.log('已成功连接到MySQL');
     })
     .catch(err => {
-        console.error('无法连接到数据库:', err);
+        console.error('无法连接到MySQL:', err);
     });
 
 module.exports = {

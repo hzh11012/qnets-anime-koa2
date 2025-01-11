@@ -2,26 +2,24 @@ const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
 
-// 定义公告表模型
-class Notice extends Model {}
+/**
+ * @title 动漫轮播模型
+ */
+class AnimeBanner extends Model {}
 
-Notice.init(
+AnimeBanner.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '公告主键ID'
+            comment: '动漫轮播图ID'
         },
-        title: {
-            type: DataTypes.STRING(25),
+        anime_id: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '公告标题'
-        },
-        content: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '公告内容'
+            unique: true,
+            comment: '动漫ID'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -42,11 +40,11 @@ Notice.init(
     },
     {
         sequelize,
-        modelName: 'notice',
-        tableName: 'notice'
+        modelName: 'anime_banner',
+        tableName: 'anime_banner'
     }
 );
 
 module.exports = {
-    Notice
+    AnimeBanner
 };

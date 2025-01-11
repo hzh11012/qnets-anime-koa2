@@ -12,19 +12,17 @@ class Resolve {
         };
     }
 
-    success(msg = 'success', errorCode = 0, code = 200) {
+    success(msg = 'success', code = 200) {
         return {
-            msg,
             code,
-            errorCode
+            msg
         };
     }
 
-    json(data, msg = 'success', errorCode = 0, code = 200) {
+    json(data, msg = 'success', code = 200) {
         return {
             code,
             msg,
-            errorCode,
             data
         };
     }

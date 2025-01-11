@@ -1,24 +1,38 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
-const {formatDate} = require('@core/utils');
-const {Anime} = require('@models/anime');
+const {formatDate, formatTime} = require('@core/utils');
 
-// 定义动漫轮播图表模型
-class Banner extends Model {}
+/**
+ * @title 新番导视模型
+ */
+class AnimeGuide extends Model {}
 
-Banner.init(
+AnimeGuide.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫轮播图主键ID'
+            comment: '新番导视ID'
         },
-        aid: {
+        anime_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
             unique: true,
             comment: '动漫ID'
+        },
+        update_day: {
+            type: DataTypes.TINYINT.UNSIGNED,
+            allowNull: false,
+            comment: '动漫更新日 1-7 分别对应周一到周日'
+        },
+        update_time: {
+            type: DataTypes.TIME,
+            allowNull: false,
+            comment: '动漫更新时间',
+            get() {
+                return formatTime(this.getDataValue('update_time'));
+            }
         },
         created_at: {
             type: DataTypes.DATE,
@@ -39,15 +53,11 @@ Banner.init(
     },
     {
         sequelize,
-        modelName: 'banner',
-        tableName: 'banner'
+        modelName: 'anime_guide',
+        tableName: 'anime_guide'
     }
 );
 
-// 动漫轮播图与动漫之间的一对一关系
-Anime.hasOne(Banner, {foreignKey: 'aid', onDelete: 'CASCADE'});
-Banner.belongsTo(Anime, {foreignKey: 'aid'});
-
 module.exports = {
-    Banner
+    AnimeGuide
 };

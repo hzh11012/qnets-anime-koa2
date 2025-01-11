@@ -1,9 +1,10 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Anime} = require('@models/anime');
 
-// 定义动漫分类表模型
+/**
+ * @title 分类模型
+ */
 class Category extends Model {}
 
 Category.init(
@@ -12,13 +13,13 @@ Category.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫分类主键ID'
+            comment: '分类ID'
         },
-        category: {
+        name: {
             type: DataTypes.STRING(25),
             allowNull: false,
             unique: true,
-            comment: '动漫分类'
+            comment: '分类名称'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -43,9 +44,6 @@ Category.init(
         tableName: 'category'
     }
 );
-
-Anime.belongsToMany(Category, {through: 'anime_category', foreignKey: 'aid'});
-Category.belongsToMany(Anime, {through: 'anime_category', foreignKey: 'cid'});
 
 module.exports = {
     Category

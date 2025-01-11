@@ -1,7 +1,7 @@
 const Zod = require('zod');
 const {commonList, validate, commonIdValidator} = require('@validators/common');
 
-const NoticeCreateValidator = parameter => {
+const AnnouncementCreateValidator = parameter => {
     const schema = Zod.object({
         title: Zod.string({
             required_error: 'title 不能为空',
@@ -15,15 +15,15 @@ const NoticeCreateValidator = parameter => {
             required_error: 'content 不能为空',
             invalid_type_error: 'content 类型错误'
         })
-            .max(255, {
-                message: 'content 长度不能超过255'
+            .max(1000, {
+                message: 'content 长度不能超过1000'
             })
             .min(1, 'content 不能为空')
     });
     return validate(schema, parameter);
 };
 
-const NoticeListValidator = parameter => {
+const AnnouncementListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         keyword: Zod.string({
@@ -33,8 +33,27 @@ const NoticeListValidator = parameter => {
     return validate(schema, parameter);
 };
 
+const AnnouncementUserListValidator = parameter => {
+    const schema = Zod.object({
+        ...commonList,
+        keyword: Zod.string({
+            invalid_type_error: 'keyword 类型错误'
+        }).optional(),
+        is_read: Zod.boolean({
+            invalid_type_error: 'is_read 类型错误'
+        })
+            .array()
+            .optional()
+    });
+    return validate(schema, parameter);
+};
+
 module.exports = {
-    NoticeCreateValidator,
-    NoticeListValidator,
-    NoticeDeleteValidator: commonIdValidator
+    AnnouncementCreateValidator,
+    AnnouncementListValidator,
+    AnnouncementDeleteValidator: commonIdValidator,
+    AnnouncementReadValidator: commonIdValidator,
+    AnnouncementUserListValidator,
+    AnnouncementUserDeleteValidator: commonIdValidator,
+    AnnouncementUserAdminDeleteValidator: commonIdValidator
 };

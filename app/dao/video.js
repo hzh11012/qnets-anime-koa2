@@ -1,37 +1,46 @@
 const {Anime} = require('@models/anime');
 const {Video} = require('@models/video');
 const {Existing, NotFound} = require('@core/http-exception');
+const WhereFilter = require('@app/lib/where-filter');
 
 class VideoDao {
-    // 添加视频
+    /**
+     * @title 添加视频
+     * @param {number} anime_id 动漫ID
+     * @param {string} title 视频标题
+     * @param {number} episode 视频集数
+     * @param {string} url 视频链接
+     */
     static async create(params) {
-        const {aid, title, episode, url} = params;
+        const {anime_id, title, episode, url} = params;
+
+        const where = new WhereFilter()
+            .setWhere('anime_id', anime_id)
+            .setWhere('episode', episode);
 
         try {
-            const hasAnime = await Anime.findByPk(aid);
-            if (!hasAnime) throw new NotFound('动漫不存在');
+            const anime = await Anime.findByPk(anime_id);
+            if (!anime) throw new NotFound('动漫不存在');
 
-            const hasVideo = await Video.findOne({
-                where: {
-                    aid,
-                    episode
-                }
+            const video = await Video.findOne({where});
+            if (video) throw new Existing('视频已存在');
+
+            await Video.create({
+                anime_id,
+                title,
+                episode,
+                url
             });
-            if (hasVideo) throw new Existing('视频已存在');
-
-            const video = new Video();
-            video.aid = aid;
-            video.title = title;
-            video.episode = episode;
-            video.url = url;
-            await video.save();
             return [null, null];
         } catch (err) {
             return [err, null];
         }
     }
 
-    // 播放
+    /**
+     * @title 播放视频
+     * @param {number} id 视频ID
+     */
     static async play(params) {
         const {id} = params;
 
@@ -39,15 +48,19 @@ class VideoDao {
             const video = await Video.findByPk(id);
             if (!video) throw new NotFound('视频不存在');
 
-            video.play_count += 1;
-            await video.save();
+            await video.update({
+                play_count: video.play_count + 1
+            });
             return [null, null];
         } catch (err) {
             return [err, null];
         }
     }
 
-    // 删除视频
+    /**
+     * @title 删除视频
+     * @param {number} id 视频ID
+     */
     static async delete(params) {
         const {id} = params;
 

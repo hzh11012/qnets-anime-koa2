@@ -7,19 +7,40 @@ class RedisService {
             port: process.env.REDIS_PORT,
             password: process.env.REDIS_PASSWORD
         });
-    }
 
-    async get(key) {
-        return new Promise((resolve, reject) => {
-            this.redis.get(key, (err, result) => {
-                if (err) reject('获取redis数据失败');
-                resolve(result);
-            });
+        this.redis.on('error', err => {
+            console.error('无法连接到Redis:', err);
+        });
+
+        this.redis.on('ready', () => {
+            console.log('已成功连接到Redis');
         });
     }
 
-    set(key, value) {
-        this.redis.set(key, value);
+    async executeCommand(operation, ...args) {
+        try {
+            return await operation.apply(this.redis, args);
+        } catch (err) {
+            console.error(`Redis操作失败: ${err.message}`);
+        }
+    }
+
+    async get(key) {
+        return await this.executeCommand(this.redis.get, key);
+    }
+
+    async set(key, value, expireTime = null) {
+        const args = [key, value];
+        if (expireTime) args.push('EX', expireTime);
+        return await this.executeCommand(this.redis.set, ...args);
+    }
+
+    async del(key) {
+        return await this.executeCommand(this.redis.del, key);
+    }
+
+    async exists(key) {
+        return await this.executeCommand(this.redis.exists, key);
     }
 }
 

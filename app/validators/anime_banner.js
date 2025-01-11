@@ -1,7 +1,7 @@
 const Zod = require('zod');
 const {commonList, validate, commonIdValidator} = require('@validators/common');
 
-const BannerCreateValidator = parameter => {
+const AnimeBannerCreateValidator = parameter => {
     const schema = Zod.object({
         ids: Zod.number({
             invalid_type_error: 'id 类型错误'
@@ -12,7 +12,7 @@ const BannerCreateValidator = parameter => {
     return validate(schema, parameter);
 };
 
-const BannerListValidator = parameter => {
+const AnimeBannerListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         keyword: Zod.string({
@@ -23,7 +23,7 @@ const BannerListValidator = parameter => {
 };
 
 module.exports = {
-    BannerCreateValidator,
-    BannerListValidator,
-    BannerDeleteValidator: commonIdValidator
+    AnimeBannerCreateValidator,
+    AnimeBannerListValidator,
+    AnimeBannerDeleteValidator: commonIdValidator
 };

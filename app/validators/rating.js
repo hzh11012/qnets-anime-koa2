@@ -23,7 +23,7 @@ const RatingCreateValidator = parameter => {
             .max(255, {
                 message: 'content 长度不能超过255'
             })
-            .min(1, 'category 不能为空')
+            .min(1, 'content 不能为空')
     });
     return validate(schema, parameter);
 };

@@ -2,11 +2,12 @@ const Router = require('koa-router');
 const {UserDao} = require('@dao/user');
 const {Auth} = require('@middlewares/auth');
 const {Resolve} = require('@lib/helper');
-const {ADMIN_SCOPE, VISITOR_SCOPE} = require('@lib/scope');
+const {ADMIN_SCOPE, VISITOR_SCOPE, GENERAL_SCOPE} = require('@lib/scope');
 const {
     UserListValidator,
     UserDeleteValidator,
-    UserAdminEditValidator
+    UserAdminEditValidator,
+    UserEditValidator
 } = require('@validators/user');
 const res = new Resolve();
 
@@ -22,7 +23,7 @@ router.get('/info', new Auth(VISITOR_SCOPE).m, async ctx => {
 });
 
 // 用户列表 - admin
-router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = UserListValidator(ctx.request.body);
     const [err, data] = await UserDao.list({
         page: parameter.page,
@@ -42,7 +43,7 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 用户删除 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = UserDeleteValidator(ctx.request.body);
     const [err] = await UserDao.delete({
         id: parameter.id
@@ -56,10 +57,10 @@ router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     }
 });
 
-// 用户信息修改 - admin
-router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 用户修改 - admin
+router.post('/admin/edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = UserAdminEditValidator(ctx.request.body);
-    const [err] = await UserDao.adminEdit({
+    const [err] = await UserDao.edit({
         id: parameter.id,
         nickname: parameter.nickname,
         avatar: parameter.avatar,
@@ -69,6 +70,23 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     if (!err) {
         ctx.response.status = 200;
         ctx.body = res.success('修改用户信息成功');
+    } else {
+        ctx.body = res.fail(err);
+    }
+});
+
+// 用户修改
+router.post('/edit', new Auth(GENERAL_SCOPE).m, async ctx => {
+    const parameter = UserEditValidator(ctx.request.body);
+    const [err] = await UserDao.edit({
+        id: ctx.auth.id,
+        nickname: parameter.nickname,
+        avatar: parameter.avatar
+    });
+
+    if (!err) {
+        ctx.response.status = 200;
+        ctx.body = res.success('修改信息成功');
     } else {
         ctx.body = res.fail(err);
     }

@@ -1,9 +1,10 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Series} = require('@models/series');
 
-// 动漫信息表
+/**
+ * @title 动漫模型
+ */
 class Anime extends Model {}
 
 Anime.init(
@@ -12,17 +13,16 @@ Anime.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫信息主键ID'
+            comment: '动漫信息ID'
         },
-        sid: {
+        series_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '系列id'
+            comment: '系列ID'
         },
         name: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            unique: true,
             comment: '动漫名称'
         },
         description: {
@@ -45,17 +45,15 @@ Anime.init(
             allowNull: true,
             comment: '动漫备注'
         },
-        // 动漫状态  0-即将上线 1-连载中 2-已完结
         status: {
-            type: DataTypes.TINYINT,
+            type: DataTypes.TINYINT.UNSIGNED,
             allowNull: false,
-            comment: '动漫状态'
+            comment: '动漫状态 0-即将上线 1-连载中 2-已完结'
         },
-        // 动漫类型 0-剧场版 1-日番 2-美番 3-国番 4-里番
         type: {
-            type: DataTypes.TINYINT,
+            type: DataTypes.TINYINT.UNSIGNED,
             allowNull: false,
-            comment: '动漫类型'
+            comment: '动漫类型 0-剧场版 1-日番 2-美番 3-国番 4-里番'
         },
         director: {
             type: DataTypes.STRING(25),
@@ -68,15 +66,14 @@ Anime.init(
             comment: '动漫声优'
         },
         year: {
-            type: DataTypes.STRING(4),
+            type: DataTypes.SMALLINT.UNSIGNED,
             allowNull: false,
             comment: '动漫发行年份'
         },
-        // 动漫发行月份  0-一月番 1-四月番 2-七月番 3-十月番
         month: {
-            type: DataTypes.TINYINT,
+            type: DataTypes.TINYINT.UNSIGNED,
             allowNull: false,
-            comment: '动漫发行月份'
+            comment: '动漫发行月份 0-一月番 1-四月番 2-七月番 3-十月番'
         },
         season_name: {
             type: DataTypes.STRING(10),
@@ -117,10 +114,6 @@ Anime.init(
         tableName: 'anime'
     }
 );
-
-// 系列与动漫之间的一对多关系
-Series.hasMany(Anime, {foreignKey: 'sid', onDelete: 'CASCADE'});
-Anime.belongsTo(Series, {foreignKey: 'sid'});
 
 module.exports = {
     Anime

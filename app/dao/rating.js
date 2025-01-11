@@ -1,85 +1,53 @@
 const {User} = require('@models/user');
 const {Anime} = require('@models/anime');
-const {Rating} = require('@models/rating');
+const {Rating} = require('@app/models/rating');
 const {NotFound, Existing} = require('@core/http-exception');
 const {col} = require('sequelize');
 const WhereFilter = require('@lib/where-filter');
 
 class RatingDao {
-    // 创建评分
+    /**
+     * @title 创建评分
+     * @param {number} user_id 用户ID
+     * @param {number} anime_id 动漫ID
+     * @param {number} score 评分
+     * @param {string} content 评论
+     */
     static async create(params) {
-        const {uid, aid, score, content} = params;
+        const {user_id, anime_id, score, content} = params;
+
+        const where = new WhereFilter()
+            .setWhere('user_id', user_id)
+            .setWhere('anime_id', anime_id);
+
         try {
-            const hasAnime = await Anime.findByPk(aid);
-            if (!hasAnime) throw new NotFound('动漫不存在');
+            const anime = await Anime.findByPk(anime_id);
+            if (!anime) throw new NotFound('动漫不存在');
 
-            const hasRating = await Rating.findOne({
-                where: {
-                    uid,
-                    aid
-                }
+            const rating = await Rating.findOne({where});
+            if (rating) throw new Existing('已评分');
+
+            await Rating.create({
+                user_id,
+                anime_id,
+                score,
+                content
             });
-            if (hasRating) throw new Existing('已评分');
 
-            const rating = new Rating();
-            rating.uid = uid;
-            rating.aid = aid;
-            rating.score = score;
-            rating.content = content;
-            await rating.save();
             return [null, null];
         } catch (err) {
             return [err, null];
         }
     }
 
-    // 评分列表
-    static async list(params) {
-        const {
-            page = 1,
-            pageSize = 10,
-            keyword,
-            type = 'name',
-            order = 'DESC',
-            orderBy = 'created_at'
-        } = params;
-
-        const where_filter = new WhereFilter();
-        where_filter.setSearch(type, keyword);
-        const filter = where_filter.getFilter();
-
-        try {
-            const list = await Rating.findAndCountAll({
-                limit: pageSize,
-                offset: (page - 1) * pageSize,
-                attributes: {
-                    exclude: ['uid', 'aid', 'updated_at']
-                },
-                distinct: true,
-                include: [
-                    {
-                        model: Anime,
-                        as: 'anime',
-                        attributes: [
-                            'id',
-                            'name',
-                            'cover_url',
-                            'remark',
-                            'status',
-                            'type'
-                        ],
-                        where: filter
-                    }
-                ],
-                order: [[orderBy, order]]
-            });
-            return [null, list];
-        } catch (err) {
-            return [err, null];
-        }
-    }
-
-    // 评分列表 - admin
+    /**
+     * @title 评分列表 - admin
+     * @param {number} page 分页 [可选]
+     * @param {number} pageSize 每页数量 [可选]
+     * @param {string} keyword 搜索关键词 [可选]
+     * @param {string} order 排序 [可选]
+     * @param {string} orderBy 排序字段 [可选]
+     */
     static async adminList(params) {
         const {
             page = 1,
@@ -89,17 +57,13 @@ class RatingDao {
             orderBy = 'created_at'
         } = params;
 
-        const where_filter = new WhereFilter();
-        where_filter.setSearch(
-            ['$User.nickname$', '$Anime.name$', 'content'],
-            keyword
-        );
-        const filter = where_filter.getFilter();
+        const where = new WhereFilter()
+            .setSearch(['$User.nickname$', '$Anime.name$', 'content'], keyword)
+            .getFilter();
 
         try {
             const list = await Rating.findAndCountAll({
-                limit: pageSize,
-                offset: (page - 1) * pageSize,
+                where,
                 attributes: {
                     exclude: ['updated_at'],
                     include: [[col('User.nickname'), 'nickname']]
@@ -112,7 +76,6 @@ class RatingDao {
                     },
                     {
                         model: Anime,
-                        as: 'anime',
                         attributes: [
                             'name',
                             'cover_url',
@@ -122,8 +85,9 @@ class RatingDao {
                         ]
                     }
                 ],
-                where: filter,
-                order: [[orderBy, order]]
+                order: [[orderBy, order]],
+                limit: pageSize,
+                offset: (page - 1) * pageSize
             });
             return [null, list];
         } catch (err) {
@@ -131,30 +95,16 @@ class RatingDao {
         }
     }
 
-    // 删除评分
-    static async delete(params) {
-        const {uid, aid} = params;
-        try {
-            const rating = await Rating.findOne({
-                where: {
-                    uid,
-                    aid
-                }
-            });
-            if (!rating) throw new NotFound('评分不存在');
-            await rating.destroy();
-            return [null, null];
-        } catch (err) {
-            return [err, null];
-        }
-    }
-
-    // 删除评分 - admin
+    /**
+     * @title 删除评分 - admin
+     * @param {number} id 评分ID
+     */
     static async adminDelete(params) {
         const {id} = params;
         try {
             const rating = await Rating.findByPk(id);
             if (!rating) throw new NotFound('评分不存在');
+
             await rating.destroy();
             return [null, null];
         } catch (err) {

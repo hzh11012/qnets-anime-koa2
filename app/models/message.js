@@ -1,36 +1,46 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Notice} = require('@models/notice');
-const {User} = require('@models/user');
 
-// 定义公告记录表模型
-class NoticeRecord extends Model {}
+/**
+ * @title 留言模型
+ */
+class Message extends Model {}
 
-NoticeRecord.init(
+Message.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '公告记录主键ID'
+            comment: '留言ID'
         },
-        nid: {
+        user_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '公告id'
+            comment: '用户ID'
         },
-        uid: {
-            type: DataTypes.INTEGER(10).UNSIGNED,
-            allowNull: false,
-            comment: '用户id'
-        },
-        // 公告阅读状态 0-未读 1-已读
-        status: {
-            type: DataTypes.TINYINT,
+        type: {
+            type: DataTypes.TINYINT.UNSIGNED,
             allowNull: false,
             defaultValue: 0,
-            comment: '公告阅读状态'
+            comment: '留言类型 0-咨询 1-建议 2-投诉 3-其他'
+        },
+        content: {
+            type: DataTypes.STRING(1000),
+            allowNull: false,
+            comment: '留言内容'
+        },
+        reply_content: {
+            type: DataTypes.STRING(1000),
+            allowNull: true,
+            comment: '回复留言内容'
+        },
+        status: {
+            type: DataTypes.TINYINT.UNSIGNED,
+            allowNull: false,
+            defaultValue: 0,
+            comment: '留言状态 0-待处理 1-处理中 2-已完成 3-已关闭'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -51,19 +61,11 @@ NoticeRecord.init(
     },
     {
         sequelize,
-        modelName: 'notice_record',
-        tableName: 'notice_record'
+        modelName: 'message',
+        tableName: 'message'
     }
 );
 
-// 用户与公告记录之间的一对多关系
-User.hasMany(NoticeRecord, {foreignKey: 'uid', onDelete: 'CASCADE'});
-NoticeRecord.belongsTo(User, {foreignKey: 'uid'});
-
-// 公告与公告记录之间的一对多关系
-Notice.hasMany(NoticeRecord, {foreignKey: 'nid', onDelete: 'CASCADE'});
-NoticeRecord.belongsTo(Notice, {foreignKey: 'nid'});
-
 module.exports = {
-    NoticeRecord
+    Message
 };

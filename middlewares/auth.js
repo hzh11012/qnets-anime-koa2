@@ -23,11 +23,8 @@ class Auth {
         ).json();
 
         const {phone} = data;
-        const [err, res] = await UserDao.init({phone});
-
-        if (err) {
-            throw new HttpException();
-        }
+        const [err, res] = await UserDao.createOrFind({phone});
+        if (err) throw new HttpException();
 
         return {
             id: res.id,
@@ -41,33 +38,23 @@ class Auth {
 
     get m() {
         return async (ctx, next) => {
-            const tokenToken = basicAuth(ctx.req);
+            const token = basicAuth(ctx.req);
 
-            let errMsg = '无效的token';
-
-            if (!tokenToken || !tokenToken.name) {
-                errMsg = '需要携带token值';
-                throw new AuthFailed(errMsg);
-            }
+            if (!token?.name) throw new AuthFailed('需要携带token值');
 
             try {
-                var decode = await this.verifyToken(tokenToken.name);
+                const user = await this.verifyToken(token.name);
+
+                if (user.scope < this.level) throw new Forbidden('权限不足');
+
+                ctx.auth = user;
             } catch (error) {
-                if (error.name === 'TokenExpiredError') {
-                    errMsg = 'token已过期';
-                }
+                const errMsg =
+                    error.name === 'TokenExpiredError'
+                        ? 'token已过期'
+                        : '无效的token';
                 throw new AuthFailed(errMsg);
             }
-
-            if (decode.scope < this.level) {
-                errMsg = '权限不足';
-                throw new Forbidden(errMsg);
-            }
-
-            ctx.auth = {
-                ...decode
-            };
-
             await next();
         };
     }

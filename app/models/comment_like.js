@@ -1,35 +1,29 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {User} = require('@models/user');
 
-// 定义纠错信息表模型
-class Correction extends Model {}
+/**
+ * @title 评论点赞模型
+ */
+class CommentLike extends Model {}
 
-Correction.init(
+CommentLike.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '纠错信息主键ID'
+            comment: '评论点赞ID'
         },
-        uid: {
+        user_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '用户id'
+            comment: '用户ID'
         },
-        message: {
-            type: DataTypes.STRING,
+        comment_id: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '纠错留言'
-        },
-        // 纠错信息状态 0-待处理 1-已处理
-        status: {
-            type: DataTypes.TINYINT,
-            allowNull: false,
-            defaultValue: 0,
-            comment: '纠错信息状态'
+            comment: '评论ID'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -50,15 +44,18 @@ Correction.init(
     },
     {
         sequelize,
-        modelName: 'correction',
-        tableName: 'correction'
+        modelName: 'comment_like',
+        tableName: 'comment_like',
+        indexes: [
+            {
+                unique: true,
+                fields: ['user_id', 'comment_id'],
+                name: 'idx__comment_like__user_id__comment_id'
+            }
+        ]
     }
 );
 
-// 用户与纠错信息之间的一对一关系
-User.hasOne(Correction, {foreignKey: 'uid', onDelete: 'CASCADE'});
-Correction.belongsTo(User, {foreignKey: 'uid'});
-
 module.exports = {
-    Correction
+    CommentLike
 };

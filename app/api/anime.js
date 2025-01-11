@@ -17,11 +17,11 @@ const router = new Router({
 });
 
 // 创建动漫 - admin
-router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeCreateValidator(ctx.request.body);
 
     const [err] = await AnimeDao.create({
-        sid: parameter.sid,
+        series_id: parameter.series_id,
         name: parameter.name,
         description: parameter.description,
         cover_url: parameter.cover_url,
@@ -33,9 +33,9 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
         cv: parameter.cv,
         year: parameter.year,
         month: parameter.month,
-        category: parameter.category,
+        season_name: parameter.season_name,
         season: parameter.season,
-        season_name: parameter.season_name
+        category: parameter.category
     });
 
     if (!err) {
@@ -49,8 +49,8 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
 // 动漫列表
 router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
     const parameter = AnimeListValidator(ctx.request.body);
+
     const [err, data] = await AnimeDao.list({
-        scope: ctx.auth.scope,
         page: parameter.page,
         pageSize: parameter.pageSize,
         order: parameter.order,
@@ -60,7 +60,8 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
         status: parameter.status,
         year: parameter.year,
         month: parameter.month,
-        category: parameter.category
+        category: parameter.category,
+        scope: ctx.auth.scope
     });
 
     if (!err) {
@@ -72,7 +73,7 @@ router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
 });
 
 // 删除动漫 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeDeleteValidator(ctx.request.body);
     const [err] = await AnimeDao.delete({
         id: parameter.id
@@ -87,11 +88,12 @@ router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 修改动漫 - admin
-router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/edit', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeEditValidator(ctx.request.body);
+
     const [err] = await AnimeDao.edit({
         id: parameter.id,
-        sid: parameter.sid,
+        series_id: parameter.series_id,
         name: parameter.name,
         description: parameter.description,
         cover_url: parameter.cover_url,
@@ -103,9 +105,9 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
         cv: parameter.cv,
         year: parameter.year,
         month: parameter.month,
-        category: parameter.category,
+        season_name: parameter.season_name,
         season: parameter.season,
-        season_name: parameter.season_name
+        category: parameter.category
     });
 
     if (!err) {
@@ -117,7 +119,7 @@ router.post('/admin_edit', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 动漫详情 - admin
-router.post('/admin_detail', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/detail', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeDetailValidator(ctx.request.body);
     const [err, data] = await AnimeDao.detail({
         id: parameter.id

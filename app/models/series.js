@@ -2,7 +2,9 @@ const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
 
-// 定义系列表模型
+/**
+ * @title 系列模型
+ */
 class Series extends Model {}
 
 Series.init(
@@ -11,7 +13,7 @@ Series.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '系列主键ID'
+            comment: '系列ID'
         },
         name: {
             type: DataTypes.STRING(50),

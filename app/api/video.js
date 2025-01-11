@@ -15,11 +15,11 @@ const router = new Router({
 });
 
 // 添加视频 - admin
-router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = VideoCreateValidator(ctx.request.body);
 
     const [err] = await VideoDao.create({
-        aid: parameter.id,
+        anime_id: parameter.id,
         title: parameter.title,
         url: parameter.url,
         episode: parameter.episode
@@ -49,7 +49,7 @@ router.post('/play', new Auth(GENERAL_SCOPE).m, async ctx => {
 });
 
 // 删除视频 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = VideoDeleteValidator(ctx.request.body);
     const [err] = await VideoDao.delete({
         id: parameter.id

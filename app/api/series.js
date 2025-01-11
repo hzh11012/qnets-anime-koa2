@@ -14,8 +14,8 @@ const router = new Router({
     prefix: '/api/series'
 });
 
-// 创建动漫系列 - admin
-router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 创建系列 - admin
+router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = SeriesCreateValidator(ctx.request.body);
 
     const [err] = await SeriesDao.create({
@@ -24,14 +24,14 @@ router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('创建动漫系列成功');
+        ctx.body = res.success('创建系列成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 动漫系列列表 - admin
-router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 系列列表 - admin
+router.post('/admin/list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = SeriesListValidator(ctx.request.body);
     const [err, data] = await SeriesDao.list({
         page: parameter.page,
@@ -43,14 +43,14 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.json(data, '获取动漫系列列表成功');
+        ctx.body = res.json(data, '获取系列列表成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 删除动漫系列 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 删除系列 - admin
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = SeriesDeleteValidator(ctx.request.body);
     const [err] = await SeriesDao.delete({
         id: parameter.id
@@ -58,7 +58,7 @@ router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('删除动漫系列成功');
+        ctx.body = res.success('删除系列成功');
     } else {
         ctx.body = res.fail(err);
     }

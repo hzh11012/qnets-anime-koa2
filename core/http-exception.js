@@ -1,56 +1,24 @@
 class HttpException extends Error {
     constructor(msg = '服务端异常', errorCode = 10001, code = 500) {
         super();
-        this.msg = msg;
-        this.errorCode = errorCode;
-        this.code = code;
+        Object.assign(this, {msg, errorCode, code});
     }
 }
 
-class ParameterException extends HttpException {
-    constructor(msg = '参数错误', errorCode = 10002) {
-        super();
-        this.msg = msg;
-        this.errorCode = errorCode;
-        this.code = 400;
-    }
-}
+// 定义通用的异常工厂函数
+const createHttpException = (defaultMsg, defaultErrorCode, statusCode) =>
+    class extends HttpException {
+        constructor(msg = defaultMsg, errorCode = defaultErrorCode) {
+            super(msg, errorCode, statusCode);
+        }
+    };
 
-class AuthFailed extends HttpException {
-    constructor(msg = '授权失败', errorCode = 10004) {
-        super();
-        this.msg = msg;
-        this.errorCode = errorCode;
-        this.code = 401;
-    }
-}
-
-class Forbidden extends HttpException {
-    constructor(msg = '禁止访问', errorCode = 10005) {
-        super();
-        this.msg = msg;
-        this.errorCode = errorCode;
-        this.code = 403;
-    }
-}
-
-class NotFound extends HttpException {
-    constructor(msg = '404找不到', errorCode = 10006) {
-        super();
-        this.msg = msg;
-        this.code = 404;
-        this.errorCode = errorCode;
-    }
-}
-
-class Existing extends HttpException {
-    constructor(msg = '已存在', errorCode = 10007) {
-        super();
-        this.msg = msg;
-        this.code = 412;
-        this.errorCode = errorCode;
-    }
-}
+// 使用工厂函数创建具体的异常类
+const ParameterException = createHttpException('参数错误', 10002, 400);
+const AuthFailed = createHttpException('授权失败', 10004, 401);
+const Forbidden = createHttpException('禁止访问', 10005, 403);
+const NotFound = createHttpException('404找不到', 10006, 404);
+const Existing = createHttpException('已存在', 10007, 412);
 
 module.exports = {
     HttpException,

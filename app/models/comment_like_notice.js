@@ -1,37 +1,40 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
-const {formatDate, formatTime} = require('@core/utils');
-const {Anime} = require('@models/anime');
+const {formatDate} = require('@core/utils');
 
-// 定义新番更新时间表模型
-class NewAnime extends Model {}
+/**
+ * @title 评论点赞通知模型
+ */
+class CommentLikeNotice extends Model {}
 
-NewAnime.init(
+CommentLikeNotice.init(
     {
         id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '新番时间主键ID'
+            comment: '评论点赞通知ID'
         },
-        aid: {
+        comment_like_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            unique: true,
-            comment: '动漫ID'
+            comment: '评论点赞ID'
         },
-        update_day: {
-            type: DataTypes.TINYINT,
+        from_user_id: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '新番更新天'
+            comment: '点赞用户ID'
         },
-        update_time: {
-            type: DataTypes.TIME,
+        to_user_id: {
+            type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '新番更新时间',
-            get() {
-                return formatTime(this.getDataValue('update_time'));
-            }
+            comment: '被点赞用户ID'
+        },
+        is_read: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            comment: '是否已读'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -52,15 +55,11 @@ NewAnime.init(
     },
     {
         sequelize,
-        modelName: 'new_anime',
-        tableName: 'new_anime'
+        modelName: 'comment_like_notice',
+        tableName: 'comment_like_notice'
     }
 );
 
-// 新番更新时间与动漫之间的一对一关系
-Anime.hasOne(NewAnime, {foreignKey: 'aid', onDelete: 'CASCADE'});
-NewAnime.belongsTo(Anime, {foreignKey: 'aid'});
-
 module.exports = {
-    NewAnime
+    CommentLikeNotice
 };

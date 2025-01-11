@@ -1,10 +1,10 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {User} = require('@models/user');
-const {Anime} = require('@models/anime');
 
-// 动漫收藏表模型
+/**
+ * @title 收藏模型
+ */
 class Collection extends Model {}
 
 Collection.init(
@@ -13,17 +13,17 @@ Collection.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '动漫收藏主键ID'
+            comment: '收藏ID'
         },
-        uid: {
+        user_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '用户id'
+            comment: '用户ID'
         },
-        aid: {
+        anime_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '动漫id'
+            comment: '动漫ID'
         },
         created_at: {
             type: DataTypes.DATE,
@@ -45,17 +45,16 @@ Collection.init(
     {
         sequelize,
         modelName: 'collection',
-        tableName: 'collection'
+        tableName: 'collection',
+        indexes: [
+            {
+                unique: true,
+                fields: ['user_id', 'anime_id'],
+                name: 'idx__collection__user_id__anime_id'
+            }
+        ]
     }
 );
-
-// 用户与收藏之间的一对多关系
-User.hasMany(Collection, {foreignKey: 'uid', onDelete: 'CASCADE'});
-Collection.belongsTo(User, {foreignKey: 'uid'});
-
-// 动漫与收藏之间的一对多关系
-Anime.hasMany(Collection, {foreignKey: 'aid', onDelete: 'CASCADE'});
-Collection.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
     Collection

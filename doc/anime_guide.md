@@ -1,74 +1,39 @@
+# 新番导视
+
 ## 接口前缀
 
 ```shell
-http://localhost:5200/api/new_anime
+http://localhost:5200/api/anime_guide
 ```
 
-## 接口鉴权
-
-> 接口无特殊说明，必须携带token
-
-在 Postman 软件里选择 Authorization，Type选择Basic Auth，Username 填写上token值即可。
-
-在代码中需要在header上携带token：
-
-```js
-// 转码 token
-// 需要安装一下base64: npm install js-base64
-import {Base64} from 'js-base64';
-function _encode() {
-    const token = localStorage.getItem('token');
-    const base64 = Base64.encode(token + ':');
-    return 'Basic ' + base64;
-}
-
-// 代码示例：重点看header携带 Authorization Basic + token
-ajax({
-    url: 'http://localhost:5200/api/user/info',
-    method: 'GET',
-    success: res => {
-        console.log(res.data);
-    },
-    header: {
-        Authorization: _encode()
-    }
-});
-
-// 在 axios 携带token
-config.headers['Authorization'] = _encode();
-```
-
-# 新番
-
-## 添加新番 - 管理员
+## 添加新番导视 - 管理员
 
 > scope = 3
 
 ```
-POST    /admin_create
+POST    /admin/create
 ```
 
 ### 参数说明
 
-| 参数        | 类型          | 默认值 | 是否必填 | 说明     |
-| ----------- | ------------- | ------ | -------- | -------- |
-| id          | `number`      | -      | ✅       | 动漫ID   |
-| update_day  | `number(1-7)` | -      | ✅       | 更新日期 |
-| update_time | `string`      | -      | ✅       | 更新时间 |
+| 参数        | 类型          | 默认值 | 是否必填 | 说明         |
+| ----------- | ------------- | ------ | -------- | ------------ |
+| id          | `number`      | -      | ✅       | 动漫ID       |
+| update_day  | `number(1-7)` | -      | ✅       | 动漫更新日期 |
+| update_time | `string`      | -      | ✅       | 动漫更新时间 |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "添加新番成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "添加新番导视成功"
 }
 ```
 
-## 动漫轮播图列表
+## 新番导视列表
 
-> scope = 1
+> scope >= 1
 
 ```
 POST    /list
@@ -90,14 +55,13 @@ POST    /list
 ```json
 {
     "code": 200,
-    "msg": "获取新番列表成功",
-    "errorCode": 0,
+    "msg": "获取新番导视列表成功",
     "data": {
         "count": 1,
         "rows": [
             {
                 "id": 21,
-                "aid": 2,
+                "anime_id": 2,
                 "title": "再见人生、你好龙生",
                 "description": "有一天，最古老的神龙被人类讨伐了。历经悠久的岁月，力量强大到足以令诸神跪拜的龙，在孤独之中接受了自己的死亡。但当龙再次回过神来时，他已经获得了身为边境村民多兰的第二人生。",
                 "cover_url": "https://localhost:5200/images/banner.png",
@@ -112,26 +76,25 @@ POST    /list
 }
 ```
 
-## 动漫轮播图删除 - 管理员
+## 新番导视删除 - 管理员
 
 > scope = 3
 
 ```
-POST    /admin_delete
+POST    /admin/delete
 ```
 
 ### 参数说明
 
-| 参数 | 类型     | 默认值 | 是否必填 | 说明   |
-| ---- | -------- | ------ | -------- | ------ |
-| id   | `number` | -      | ✅       | 新番id |
+| 参数 | 类型     | 默认值 | 是否必填 | 说明       |
+| ---- | -------- | ------ | -------- | ---------- |
+| id   | `number` | -      | ✅       | 新番导视ID |
 
 ### 成功操作返回
 
 ```json
 {
-    "msg": "删除新番成功",
     "code": 200,
-    "errorCode": 0
+    "msg": "删除新番导视成功"
 }
 ```

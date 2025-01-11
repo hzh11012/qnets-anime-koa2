@@ -14,24 +14,23 @@ const router = new Router({
     prefix: '/api/category'
 });
 
-// 创建动漫分类 - admin
-router.post('/admin_create', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 创建分类 - admin
+router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CategoryCreateValidator(ctx.request.body);
-
     const [err] = await CategoryDao.create({
-        category: parameter.category
+        name: parameter.name
     });
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('创建动漫分类成功');
+        ctx.body = res.success('创建分类成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 动漫分类列表 - admin
-router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 分类列表 - admin
+router.post('/admin/list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CategoryListValidator(ctx.request.body);
     const [err, data] = await CategoryDao.adminList({
         page: parameter.page,
@@ -43,25 +42,14 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.json(data, '获取动漫分类列表成功');
+        ctx.body = res.json(data, '获取分类列表成功');
     } else {
         ctx.body = res.fail(err);
     }
 });
 
-// 动漫分类列表
-router.get('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const [err, data] = await CategoryDao.list();
-    if (!err) {
-        ctx.response.status = 200;
-        ctx.body = res.json(data, '获取动漫分类列表成功');
-    } else {
-        ctx.body = res.fail(err);
-    }
-});
-
-// 删除动漫分类 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+// 删除分类 - admin
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = CategoryDeleteValidator(ctx.request.body);
     const [err] = await CategoryDao.delete({
         id: parameter.id
@@ -69,7 +57,7 @@ router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
 
     if (!err) {
         ctx.response.status = 200;
-        ctx.body = res.success('删除动漫分类成功');
+        ctx.body = res.success('删除分类成功');
     } else {
         ctx.body = res.fail(err);
     }

@@ -19,8 +19,8 @@ router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
     const parameter = RatingCreateValidator(ctx.request.body);
 
     const [err] = await RatingDao.create({
-        uid: ctx.auth.id,
-        aid: parameter.id,
+        user_id: ctx.auth.id,
+        anime_id: parameter.id,
         score: parameter.score,
         content: parameter.content
     });
@@ -33,27 +33,8 @@ router.post('/create', new Auth(GENERAL_SCOPE).m, async ctx => {
     }
 });
 
-// 评分列表
-router.post('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = RatingListValidator(ctx.request.body);
-    const [err, data] = await RatingDao.list({
-        page: parameter.page,
-        pageSize: parameter.pageSize,
-        order: parameter.order,
-        orderBy: parameter.orderBy,
-        keyword: parameter.keyword
-    });
-
-    if (!err) {
-        ctx.response.status = 200;
-        ctx.body = res.json(data, '获取评分列表成功');
-    } else {
-        ctx.body = res.fail(err);
-    }
-});
-
 // 评分列表 - admin
-router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = RatingListValidator(ctx.request.body);
     const [err, data] = await RatingDao.adminList({
         page: parameter.page,
@@ -71,24 +52,8 @@ router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
     }
 });
 
-// 删除评分
-router.post('/delete', new Auth(GENERAL_SCOPE).m, async ctx => {
-    const parameter = RatingDeleteValidator(ctx.request.body);
-    const [err] = await RatingDao.delete({
-        uid: ctx.auth.id,
-        aid: parameter.id
-    });
-
-    if (!err) {
-        ctx.response.status = 200;
-        ctx.body = res.success('删除评分成功');
-    } else {
-        ctx.body = res.fail(err);
-    }
-});
-
 // 删除评分 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = RatingDeleteValidator(ctx.request.body);
     const [err] = await RatingDao.adminDelete({
         id: parameter.id

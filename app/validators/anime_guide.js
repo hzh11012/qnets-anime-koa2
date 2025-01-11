@@ -6,7 +6,7 @@ const {
     commonIdValidator
 } = require('@validators/common');
 
-const NewAnimeCreateValidator = parameter => {
+const AnimeGuideCreateValidator = parameter => {
     const schema = Zod.object({
         ...commonId,
         update_day: Zod.number({
@@ -26,7 +26,7 @@ const NewAnimeCreateValidator = parameter => {
     return validate(schema, parameter);
 };
 
-const NewAnimeListValidator = parameter => {
+const AnimeGuideListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
         update_day: Zod.number({
@@ -42,7 +42,7 @@ const NewAnimeListValidator = parameter => {
 };
 
 module.exports = {
-    NewAnimeCreateValidator,
-    NewAnimeListValidator,
-    NewAnimeDeleteValidator: commonIdValidator
+    AnimeGuideCreateValidator,
+    AnimeGuideListValidator,
+    AnimeGuideDeleteValidator: commonIdValidator
 };

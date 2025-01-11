@@ -1,9 +1,10 @@
 const {sequelize} = require('@core/db');
 const {Model, DataTypes} = require('sequelize');
 const {formatDate} = require('@core/utils');
-const {Anime} = require('@models/anime');
 
-// 视频信息表
+/**
+ * @title 视频模型
+ */
 class Video extends Model {}
 
 Video.init(
@@ -12,12 +13,12 @@ Video.init(
             type: DataTypes.INTEGER(10).UNSIGNED,
             primaryKey: true,
             autoIncrement: true,
-            comment: '视频信息主键ID'
+            comment: '视频ID'
         },
-        aid: {
+        anime_id: {
             type: DataTypes.INTEGER(10).UNSIGNED,
             allowNull: false,
-            comment: '动漫id'
+            comment: '动漫ID'
         },
         title: {
             type: DataTypes.STRING(50),
@@ -25,7 +26,7 @@ Video.init(
             comment: '视频标题'
         },
         episode: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
             comment: '集数编号'
         },
@@ -35,7 +36,7 @@ Video.init(
             comment: '视频链接'
         },
         play_count: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
             defaultValue: 0,
             comment: '视频播放次数'
@@ -63,10 +64,6 @@ Video.init(
         tableName: 'video'
     }
 );
-
-// 动漫与视频之间的一对多关系
-Anime.hasMany(Video, {foreignKey: 'aid', onDelete: 'CASCADE'});
-Video.belongsTo(Anime, {foreignKey: 'aid'});
 
 module.exports = {
     Video

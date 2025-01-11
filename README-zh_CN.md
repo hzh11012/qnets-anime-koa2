@@ -15,7 +15,39 @@ Qnets 轻动漫服务端, 基于 Koa + Sequelize 实现
 
 ### 实现接口
 
-[接口文档](https://github.com/hzh11012/qnets-sso-koa2/tree/master/doc)
+> 接口无特殊说明，必须携带token进行鉴权
+
+在 Postman 软件里选择 Authorization，Type选择Basic Auth，Username 填写上token值即可。
+
+在代码中需要在header上携带token：
+
+```js
+// 转码 token
+// 需要安装一下base64: npm install js-base64
+import {Base64} from 'js-base64';
+function _encode() {
+    const token = localStorage.getItem('token');
+    const base64 = Base64.encode(token + ':');
+    return 'Basic ' + base64;
+}
+
+// 代码示例：重点看header携带 Authorization Basic + token
+ajax({
+    url: 'http://localhost:5200/api/user/info',
+    method: 'GET',
+    success: res => {
+        console.log(res.data);
+    },
+    header: {
+        Authorization: _encode()
+    }
+});
+
+// 在 axios 携带token
+config.headers['Authorization'] = _encode();
+```
+
+各模块具体接口请查看 [接口文档](https://github.com/hzh11012/qnets-sso-koa2/tree/master/doc)
 
 ### 技术栈
 

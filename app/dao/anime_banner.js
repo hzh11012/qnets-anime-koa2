@@ -9,31 +9,21 @@ const WhereFilter = require('@lib/where-filter');
 class AnimeBannerDao {
     /**
      * @title 新增轮播图
-     * @param {number[]} anime_ids - 动漫ID数组
+     * @param {number[]} id - 动漫ID
      */
     static async create(params) {
-        const {anime_ids} = params;
+        const {id} = params;
 
-        const where = new WhereFilter().setFilter('id', anime_ids).getFilter();
-
-        const banner_where = new WhereFilter()
-            .setFilter('anime_id', anime_ids)
-            .getFilter();
+        const where = new WhereFilter().setWhere('anime_id', id).getFilter();
 
         try {
-            const anime = await Anime.findAll({where});
-            if (anime.length !== anime_ids.length)
-                throw new NotFound('动漫不存在');
+            const anime = await Anime.findByPk(id);
+            if (!anime) throw new NotFound('动漫不存在');
 
-            const anime_banner = await AnimeBanner.findAll({
-                where: banner_where
-            });
-            if (anime_banner.length) throw new Existing('轮播图已存在');
+            const anime_banner = await AnimeBanner.findOne({where});
+            if (anime_banner) throw new Existing('轮播已存在');
 
-            const id_array = anime_ids.map(id => {
-                return {anime_id: id};
-            });
-            await AnimeBanner.bulkCreate(id_array);
+            await AnimeBanner.create({anime_id: id});
             return [null, null];
         } catch (err) {
             return [err, null];
@@ -86,6 +76,7 @@ class AnimeBannerDao {
             });
             return [null, list];
         } catch (err) {
+            console.log(err);
             return [err, null];
         }
     }

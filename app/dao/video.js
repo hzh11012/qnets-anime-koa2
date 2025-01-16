@@ -16,7 +16,8 @@ class VideoDao {
 
         const where = new WhereFilter()
             .setWhere('anime_id', anime_id)
-            .setWhere('episode', episode);
+            .setWhere('episode', episode)
+            .getFilter();
 
         try {
             const anime = await Anime.findByPk(anime_id);

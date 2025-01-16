@@ -69,7 +69,11 @@ POST    /list
                 "status": 1,
                 "update_day": 5,
                 "update_time": "12:03",
-                "created_at": "2024-11-30 20:49:30"
+                "created_at": "2024-11-30 20:49:30",
+                "latest_video": {
+                    "id": 1,
+                    "episode": 12
+                }
             }
         ]
     }

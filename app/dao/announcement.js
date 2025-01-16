@@ -67,7 +67,7 @@ class AnnouncementDao {
             .getFilter();
 
         try {
-            const list = await Notice.findAndCountAll({
+            const list = await Announcement.findAndCountAll({
                 where,
                 attributes: {
                     exclude: ['updated_at'],
@@ -83,12 +83,6 @@ class AnnouncementDao {
                         ]
                     ]
                 },
-                include: [
-                    {
-                        model: UserAnnouncement,
-                        attributes: []
-                    }
-                ],
                 order: [[orderBy, order]],
                 limit: pageSize,
                 offset: (page - 1) * pageSize

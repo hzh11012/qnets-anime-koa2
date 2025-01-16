@@ -30,26 +30,28 @@ class MessageDao {
      * @title 留言列表 - admin
      * @param {number} page - 页码 [可选]
      * @param {number} pageSize - 每页数量 [可选]
-     * @param {number} status - 状态 [可选]
      * @param {string} keyword - 关键词 [可选]
-     * @param {string} type - 类型 [可选]
      * @param {string} order - 排序 [可选]
      * @param {string} orderBy - 排序字段 [可选]
+     * @param {string} type - 类型 [可选]
+     * @param {number} status - 状态 [可选]
      */
     static async list(params) {
         const {
             page = 1,
             pageSize = 10,
-            status,
             keyword,
-            type = 'content',
             order = 'DESC',
-            orderBy = 'created_at'
+            orderBy = 'created_at',
+            searchType = 'content',
+            type,
+            status
         } = params;
 
         const where = new WhereFilter()
+            .setFilter('type', type)
             .setFilter('status', status)
-            .setSearch(type, keyword)
+            .setSearch(searchType, keyword)
             .getFilter();
 
         try {

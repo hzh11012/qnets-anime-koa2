@@ -62,7 +62,7 @@ POST    /list
 | keyword  | `string`          | -              | -        | 搜索关键字，搜索范围为`'name'、'director'、'cv'` |
 | type     | `number[]`        | -              | -        | 动漫类型 0-剧场版 1-日番 2-美番 3-国番 4-里番    |
 | status   | `number[]`        | -              | -        | 动漫状态 0-即将上线 1-连载中 2-已完结            |
-| year     | `string[]`        | -              | -        | 动漫发行年份 格式为YYYY                          |
+| year     | `number[]`        | -              | -        | 动漫发行年份 格式为YYYY                          |
 | month    | `number[]`        | -              | -        | 动漫发行月份 0-一月番 1-四月番 2-七月番 3-十月番 |
 | category | `number[]`        | -              | -        | 动漫分类，可指定多个分类id                       |
 
@@ -86,9 +86,9 @@ POST    /list
                 "type": 3,
                 "director": null,
                 "cv": null,
-                "year": "2023",
+                "year": 2023,
                 "is_swiper": 0,
-                "is_new_anime": 0,
+                "is_anime_guide": 0,
                 "month": 3,
                 "season": 1,
                 "season_name": "第一季",
@@ -155,7 +155,7 @@ POST    /admin/edit
 | type        | `number`       | -                 | -        | 动漫类型 0-剧场版 1-日番 2-美番 3-国番 4-里番    |
 | director    | `string(25)`   | -                 | -        | 动漫导演                                         |
 | cv          | `string`       | -                 | -        | 动漫声优                                         |
-| year        | `string(4)`    | -                 | -        | 动漫发行年份 格式为YYYY                          |
+| year        | `number`       | -                 | -        | 动漫发行年份 格式为YYYY                          |
 | month       | `number`       | -                 | -        | 动漫发行月份 0-一月番 1-四月番 2-七月番 3-十月番 |
 | season_name | `string(10)`   | `'第${season}季'` | -        | 动漫季数名称                                     |
 | season      | `number`       | -                 | -        | 动漫季数编号                                     |
@@ -199,12 +199,12 @@ POST    /admin/detail
         "description": "一场车祸夺走了34岁无业家里蹲男青年的生命，当他再度苏醒之后，震惊的发现自己竟然穿越到了异世界中，附身在了一位名为鲁迪乌斯（内山夕实配音）的贵族少爷身上。面对这命运之神给予他的重新来过的机会，男子发誓这一世一定要拿出点真本事来认真的生活。然而，尽管鲁迪乌斯有着这般宏达的决心，但废柴大叔的本性却还是屡屡暴露。",
         "cover_url": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
         "banner_url": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
-        "remark": "",
+        "remark": "cc",
         "status": 2,
         "type": 1,
         "director": "冈本学",
         "cv": "内山夕实/小原好美/茅野爱衣/加隈亚衣/森川智之/金元寿子/Lynn/浪川大辅",
-        "year": "2021",
+        "year": 2021,
         "month": 0,
         "season": 1,
         "play_count": "21035",
@@ -223,11 +223,11 @@ POST    /admin/detail
         "categories": [
             {
                 "id": 1,
-                "category": "异世界"
+                "name": "异世界"
             },
             {
                 "id": 2,
-                "category": "冒险"
+                "name": "冒险"
             }
         ],
         "related": [
@@ -236,7 +236,7 @@ POST    /admin/detail
                 "name": "无职转生Ⅱ ～到了异世界就拿出真本事～",
                 "cover_url": "https://localhost.qnets.cn/2024/12/04/cover.jpg",
                 "banner_url": "https://localhost.qnets.cn/2024/12/04/banner.jpg",
-                "year": "2023",
+                "year": 2023,
                 "month": 2,
                 "cv": "内山夕实/杉田智和/白石晴香/小林优/羽多野涉/泽城千春/山本格/鸟海浩辅/上田丽奈/兴津和幸/茅野爱衣",
                 "director": "平野宏树 ",

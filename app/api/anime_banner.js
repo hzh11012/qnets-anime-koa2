@@ -19,7 +19,7 @@ router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeBannerCreateValidator(ctx.request.body);
 
     const [err] = await AnimeBannerDao.create({
-        anime_ids: parameter.anime_id
+        id: parameter.id
     });
 
     if (!err) {
@@ -31,7 +31,7 @@ router.post('/admin/create', new Auth(ADMIN_SCOPE).m, async ctx => {
 });
 
 // 动漫轮播图列表 - admin
-router.post('/admin_list', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/list', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeBannerListValidator(ctx.request.body);
     const [err, data] = await AnimeBannerDao.adminList({
         page: parameter.page,
@@ -64,7 +64,7 @@ router.get('/list', new Auth(GENERAL_SCOPE).m, async ctx => {
 });
 
 // 删除动漫轮播图 - admin
-router.post('/admin_delete', new Auth(ADMIN_SCOPE).m, async ctx => {
+router.post('/admin/delete', new Auth(ADMIN_SCOPE).m, async ctx => {
     const parameter = AnimeBannerDeleteValidator(ctx.request.body);
     const [err] = await AnimeBannerDao.delete({
         anime_id: parameter.id

@@ -172,6 +172,15 @@ class AnimeDao {
                                     anime_banner.anime_id = anime.id
                                 )`),
                             'is_swiper'
+                        ],
+                        [
+                            literal(`(
+                                SELECT COUNT(*)
+                                    FROM anime_guide
+                                    WHERE
+                                    anime_guide.anime_id = anime.id
+                                )`),
+                            'is_anime_guide'
                         ]
                     ]
                 },
@@ -297,7 +306,7 @@ class AnimeDao {
                         model: Category,
                         through: {attributes: []},
                         as: 'categories',
-                        attributes: ['id', 'category']
+                        attributes: ['id', 'name']
                     },
                     {
                         model: Rating,

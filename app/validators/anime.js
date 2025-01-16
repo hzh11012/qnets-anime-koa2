@@ -117,7 +117,11 @@ const animeCreateSchema = {
     category: Zod.number({
         required_error: 'category 不能为空',
         invalid_type_error: 'category 类型错误'
-    }).array()
+    })
+        .array()
+        .nonempty({
+            message: `category 不能为空`
+        })
 };
 
 const animeEditSchema = {

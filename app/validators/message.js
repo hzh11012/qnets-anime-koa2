@@ -30,6 +30,11 @@ const MessageCreateValidator = parameter => {
 const MessageListValidator = parameter => {
     const schema = Zod.object({
         ...commonList,
+        type: Zod.number({
+            invalid_type_error: 'type 类型错误'
+        })
+            .array()
+            .optional(),
         status: Zod.number({
             invalid_type_error: 'status 类型错误'
         })
@@ -57,7 +62,7 @@ const MessageEditValidator = parameter => {
         })
             .int('status 必须为整数')
             .min(0, 'status 最小为0')
-            .max(1, 'status 最大为3')
+            .max(3, 'status 最大为3')
             .optional()
     }).refine(
         obj => obj.reply_content !== undefined || obj.status !== undefined,
